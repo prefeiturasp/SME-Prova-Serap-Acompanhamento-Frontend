@@ -1,22 +1,22 @@
 import { Button, Result } from 'antd';
 
-const PagNotFound = () => {
+const NaoAutenticado = () => {
   const URL_SERAP = import.meta.env.VITE_SME_SERAP;
 
   const voltarAoSerap = () => window.location.replace(URL_SERAP);
 
   return (
     <Result
-      status='404'
-      title='404'
-      subTitle='Desculpe, a página que você visitou não existe ou não possível fazer o login'
+      status='403'
+      title='Desculpe, você não está autorizado a acessar esta página'
+      subTitle='Volte ao SERAp e tente novamente'
       extra={
         <Button type='primary' onClick={() => voltarAoSerap()}>
-          Voltar ao SERAp
+          Voltar
         </Button>
       }
     />
   );
 };
 
-export default PagNotFound;
+export default NaoAutenticado;

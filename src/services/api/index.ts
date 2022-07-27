@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { store } from '../../redux';
 
 const config: AxiosRequestConfig = {
-  baseURL: import.meta.env.VITE_SERAP_ACOMPANHAMENTO_API,
+  baseURL: import.meta.env.VITE_SME_SERAP_ACOMPANHAMENTO_API,
 };
 
 const api = axios.create({

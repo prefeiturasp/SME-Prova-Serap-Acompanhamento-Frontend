@@ -55,20 +55,29 @@ const BackPreviousPage = styled.div`
   }
 `;
 
-const Header: React.FC = () => (
-  <ContainerHeader>
-    <HeaderTitle>
-      <BackPreviousPage>
-        <Button icon={<FontAwesomeIcon icon={faArrowLeft} />} type='link'>
-          Retornar a tela inicial
-        </Button>
-      </BackPreviousPage>
-      <Title>Painel de Acompanhamento de Provas</Title>
-    </HeaderTitle>
-    <ContainerFiltro>
-      <FiltroPrincipal />
-    </ContainerFiltro>
-  </ContainerHeader>
-);
+const Header: React.FC = () => {
+  const URL_SERAP = import.meta.env.VITE_SME_SERAP;
+  const voltarAoSerap = () => window.location.replace(URL_SERAP);
+
+  return (
+    <ContainerHeader>
+      <HeaderTitle>
+        <BackPreviousPage>
+          <Button
+            icon={<FontAwesomeIcon icon={faArrowLeft} />}
+            type='link'
+            onClick={() => voltarAoSerap()}
+          >
+            Retornar a tela inicial
+          </Button>
+        </BackPreviousPage>
+        <Title>Painel de Acompanhamento de Provas</Title>
+      </HeaderTitle>
+      <ContainerFiltro>
+        <FiltroPrincipal />
+      </ContainerFiltro>
+    </ContainerHeader>
+  );
+};
 
 export default Header;

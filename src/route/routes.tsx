@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import NaoAutenticado from '~/pages/403';
 import PagNotFound from '~/pages/404';
 import Autenticar from '~/pages/autenticar';
 import HomeDashboard from '~/pages/home-dashboard';
@@ -16,14 +17,14 @@ const RoutesConfig: React.FC = () => {
         <MainContent>
           <Routes>
             <Route path='/' element={<HomeDashboard />} />
-            <Route path='*' element={<Navigate replace to='/' />} />
+            <Route path='*' element={<PagNotFound />} />
           </Routes>
         </MainContent>
       ) : (
         <>
           <Routes>
             <Route path='/:codigoValidador' element={<Autenticar />} />
-            <Route path='*' element={<PagNotFound />} />
+            <Route path='*' element={<NaoAutenticado />} />
           </Routes>
         </>
       )}
