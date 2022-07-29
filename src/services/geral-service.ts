@@ -1,5 +1,9 @@
+import { DefaultOptionType } from 'antd/lib/select';
 import { AxiosResponse } from 'axios';
 import { CardTotalizador } from '~/components/cards-totalizadores';
+import { SelecioneDto } from '~/domain/dto/selecione-dto';
+import { converterSelecineDto } from '~/utils/converte-dto';
+import api from './api';
 
 // TODO: Implementar a chamada ao serviço
 const obterDadosCardsTotalizadores = (filtros: any): Promise<AxiosResponse> | any => {
@@ -60,7 +64,19 @@ const obterTiposVisualizacoesDados = (): Promise<AxiosResponse> | any => {
   return new Promise((resolve) => resolve({ data: mock }));
 };
 
+const getDefaultSelect = (url: string): Promise<DefaultOptionType[]> =>
+  api
+    .get<SelecioneDto[]>(url)
+    .catch((e) => e)
+    .then((resposta: AxiosResponse) => {
+      if (resposta?.data?.length) {
+        return converterSelecineDto(resposta.data);
+      }
+      return [];
+    });
+
 export default {
   obterDadosCardsTotalizadores,
   obterTiposVisualizacoesDados,
+  getDefaultSelect,
 };

@@ -1,6 +1,6 @@
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Select as SelectAnt, SelectProps } from 'antd';
+import { Empty, Select as SelectAnt, SelectProps } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 import { Colors } from '~/styles/colors';
@@ -34,6 +34,13 @@ const Select: React.FC<SelectProps> = (props) => {
   return (
     <SelectContainer>
       <SelectAnt
+        notFoundContent={
+          <Empty
+            description='Sem dados'
+            className='ant-empty-small'
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+          />
+        }
         suffixIcon={
           <FontAwesomeIcon icon={faAngleDown} fontSize={14} color={Colors.CinzaIconSelect} />
         }

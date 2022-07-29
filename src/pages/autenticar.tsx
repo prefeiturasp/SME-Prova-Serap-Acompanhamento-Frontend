@@ -32,7 +32,7 @@ const Autenticar: React.FC<any> = () => {
   const validarCodigoLogin = useCallback(async () => {
     const codigo = paramsRouter?.codigoValidador || '';
 
-    const resposta = await autenticacaoService.autenticar(codigo);
+    const resposta = await autenticacaoService.autenticarValidar(codigo);
 
     dispatch(setToken(resposta.data));
 

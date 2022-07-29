@@ -14,12 +14,17 @@ const RoutesConfig: React.FC = () => {
   return (
     <BrowserRouter>
       {isAuthenticated ? (
-        <MainContent>
-          <Routes>
-            <Route path='/' element={<HomeDashboard />} />
-            <Route path='*' element={<PagNotFound />} />
-          </Routes>
-        </MainContent>
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <MainContent>
+                <HomeDashboard />
+              </MainContent>
+            }
+          />
+          <Route path='*' element={<PagNotFound />} />
+        </Routes>
       ) : (
         <>
           <Routes>
