@@ -1,42 +1,34 @@
+import { Form, FormProps } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 
 import Select from '~/components/select';
-import { SelectValueType } from '~/domain/type/select';
 import filtroService from '~/services/filtro-service';
 
-interface TurmasProps {
-  onChange: (value: SelectValueType) => void;
-  value?: SelectValueType;
+interface TurmasProps extends FormProps {
   setTurmas: Dispatch<SetStateAction<DefaultOptionType[]>>;
   options: DefaultOptionType[];
-  anoLetivo: SelectValueType;
-  ue: SelectValueType;
-  modalidade: SelectValueType;
-  anoEscolar: SelectValueType;
 }
 
-const Turmas: React.FC<TurmasProps> = ({
-  onChange,
-  value,
-  setTurmas,
-  options,
-  anoLetivo,
-  ue,
-  modalidade,
-  anoEscolar,
-}) => {
+const Turmas: React.FC<TurmasProps> = ({ form, setTurmas, options }) => {
+  const nomeCampo = 'turma';
+
+  const anoLetivo = Form.useWatch('anoLetivo', form);
+  const modalidade = Form.useWatch('modalidade', form);
+  const anoEscolar = Form.useWatch('anoEscolar', form);
+  const ue = Form.useWatch('ue', form);
+
   const obterTurmas = useCallback(async () => {
     const resposta = await filtroService.obterTurmas(anoLetivo, ue, modalidade, anoEscolar);
 
     if (resposta?.length) {
       setTurmas(resposta);
-      if (resposta.length === 1) onChange(resposta[0].value ?? null);
+      if (resposta.length === 1) form?.setFieldValue(nomeCampo, resposta[0].value);
     } else {
       setTurmas([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [onChange, setTurmas, anoLetivo, ue, modalidade, anoEscolar]);
+  }, [form, setTurmas, anoLetivo, ue, modalidade, anoEscolar]);
 
   console.log('render Turmas');
 
@@ -46,19 +38,20 @@ const Turmas: React.FC<TurmasProps> = ({
       obterTurmas();
     } else {
       setTurmas([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [obterTurmas, setTurmas, onChange, anoLetivo, ue, modalidade, anoEscolar]);
+  }, [obterTurmas, setTurmas, form, anoLetivo, ue, modalidade, anoEscolar]);
 
   return (
-    <Select
-      value={value}
-      options={options}
-      onChange={(value) => onChange(value)}
-      placeholder='Turma'
-      allowClear
-      showSearch
-    />
+    <Form.Item name={nomeCampo}>
+      <Select
+        options={options}
+        disabled={options?.length === 1}
+        placeholder='Turma'
+        allowClear
+        showSearch
+      />
+    </Form.Item>
   );
 };
 

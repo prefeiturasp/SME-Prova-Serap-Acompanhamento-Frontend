@@ -1,29 +1,29 @@
+import { Form, FormProps } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 
 import Select from '~/components/select';
-import { SelectValueType } from '~/domain/type/select';
 import filtroService from '~/services/filtro-service';
 
-interface DreProps {
-  onChange: (value: SelectValueType) => void;
-  value?: SelectValueType;
+interface DreProps extends FormProps {
   setDres: Dispatch<SetStateAction<DefaultOptionType[]>>;
   options: DefaultOptionType[];
 }
 
-const Dre: React.FC<DreProps> = ({ onChange, value, setDres, options }) => {
+const Dre: React.FC<DreProps> = ({ form, setDres, options }) => {
+  const nomeCampo = 'dre';
+
   const obterDre = useCallback(async () => {
     const resposta = await filtroService.obterDres();
 
     if (resposta?.length) {
       setDres(resposta);
-      if (resposta.length === 1) onChange(resposta[0].value ?? null);
+      if (resposta.length === 1) form?.setFieldValue(nomeCampo, resposta[0].value);
     } else {
       setDres([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [onChange, setDres]);
+  }, [form, setDres]);
 
   console.log('render Dre');
 
@@ -33,14 +33,15 @@ const Dre: React.FC<DreProps> = ({ onChange, value, setDres, options }) => {
   }, [obterDre]);
 
   return (
-    <Select
-      value={value}
-      options={options}
-      onChange={(value) => onChange(value)}
-      showSearch
-      allowClear
-      placeholder='Diretoria Regional de Educação (DRE)'
-    />
+    <Form.Item name={nomeCampo}>
+      <Select
+        options={options}
+        disabled={options?.length === 1}
+        placeholder='Diretoria Regional de Educação (DRE)'
+        showSearch
+        allowClear
+      />
+    </Form.Item>
   );
 };
 

@@ -1,38 +1,32 @@
+import { Form, FormProps } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 
 import Select from '~/components/select';
-import { SelectValueType } from '~/domain/type/select';
 import filtroService from '~/services/filtro-service';
 
-interface AnosEscolaresProps {
-  onChange: (value: SelectValueType) => void;
-  value?: SelectValueType;
+interface AnosEscolaresProps extends FormProps {
   setAnosEscolares: Dispatch<SetStateAction<DefaultOptionType[]>>;
   options: DefaultOptionType[];
-  anoLetivo: SelectValueType;
-  ue: SelectValueType;
 }
 
-const AnosEscolares: React.FC<AnosEscolaresProps> = ({
-  onChange,
-  value,
-  setAnosEscolares,
-  options,
-  anoLetivo,
-  ue,
-}) => {
+const AnosEscolares: React.FC<AnosEscolaresProps> = ({ form, setAnosEscolares, options }) => {
+  const nomeCampo = 'anoEscolar';
+
+  const anoLetivo = Form.useWatch('anoLetivo', form);
+  const ue = Form.useWatch('ue', form);
+
   const obterAnosEscolares = useCallback(async () => {
     const resposta = await filtroService.obterAnosEscolares(anoLetivo, ue);
 
     if (resposta?.length) {
       setAnosEscolares(resposta);
-      if (resposta.length === 1) onChange(resposta[0].value ?? null);
+      if (resposta.length === 1) form?.setFieldValue(nomeCampo, resposta[0].value);
     } else {
       setAnosEscolares([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [onChange, setAnosEscolares, anoLetivo, ue]);
+  }, [form, setAnosEscolares, anoLetivo, ue]);
 
   console.log('render AnosEscolares');
 
@@ -42,19 +36,20 @@ const AnosEscolares: React.FC<AnosEscolaresProps> = ({
       obterAnosEscolares();
     } else {
       setAnosEscolares([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [obterAnosEscolares, setAnosEscolares, onChange, anoLetivo, ue]);
+  }, [obterAnosEscolares, setAnosEscolares, form, anoLetivo, ue]);
 
   return (
-    <Select
-      value={value}
-      options={options}
-      onChange={(value) => onChange(value)}
-      placeholder='Ano Escolar'
-      allowClear
-      showSearch
-    />
+    <Form.Item name={nomeCampo}>
+      <Select
+        options={options}
+        disabled={options?.length === 1}
+        placeholder='Ano Escolar'
+        allowClear
+        showSearch
+      />
+    </Form.Item>
   );
 };
 

@@ -18,7 +18,7 @@ const PopoverFiltroPrincipal: React.FC<{ children: ReactNode }> = ({ children })
 
   return (
     <Popover
-      overlayInnerStyle={{ width: '620px', height: '220px' }}
+      overlayInnerStyle={{ width: '620px', height: '250px' }}
       overlayStyle={{ padding: 0 }}
       showArrow={false}
       content={abrirFiltroPrincipal ? <CamposFiltroPrincipal filtroAtual={filtroAtual} /> : <></>}
