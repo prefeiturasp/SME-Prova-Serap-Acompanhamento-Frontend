@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AppState } from '~/redux';
-import { setIsAuthenticated, setToken } from '~/redux/modules/auth/actions';
+import { setDataHoraExpiracao, setIsAuthenticated, setToken } from '~/redux/modules/auth/actions';
 import autenticacaoService from '~/services/autenticacao-service';
 
 const ContainerAutenticar = styled.div`
@@ -40,11 +40,13 @@ const Autenticar: React.FC<any> = () => {
     if (resposta?.data?.token) {
       dispatch(setIsAuthenticated(true));
       dispatch(setToken(resposta.data.token));
+      dispatch(setDataHoraExpiracao(resposta.data.dataHoraExpiracao));
       navigate('/');
     } else {
       setAutenticando(false);
       dispatch(setIsAuthenticated(false));
       dispatch(setToken(''));
+      dispatch(setDataHoraExpiracao(''));
     }
   }, [navigate, dispatch, paramsRouter]);
 
