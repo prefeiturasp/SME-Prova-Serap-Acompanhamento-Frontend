@@ -4,15 +4,13 @@ import { Button } from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '~/redux';
-import { setAbrirFiltroPrincipal } from '~/redux/modules/filtro-principal/actions';
+import { setAbrirFiltroPrincipal } from '~/redux/modules/geral/actions';
 import { Colors } from '~/styles/colors';
 
 const IconeAbrirPopover: React.FC = () => {
   const dispatch = useDispatch();
 
-  const abrirFiltroPrincipal = useSelector(
-    (state: AppState) => state.filtroPrincipal.abrirFiltroPrincipal,
-  );
+  const abrirFiltroPrincipal = useSelector((state: AppState) => state.geral.abrirFiltroPrincipal);
 
   const abrirFiltroPrincipalHandler = () =>
     dispatch(setAbrirFiltroPrincipal(!abrirFiltroPrincipal));

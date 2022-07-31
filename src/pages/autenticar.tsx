@@ -31,14 +31,15 @@ const Autenticar: React.FC<any> = () => {
 
   const validarCodigoLogin = useCallback(async () => {
     const codigo = paramsRouter?.codigoValidador || '';
+    setAutenticando(true);
 
-    const resposta = await autenticacaoService.autenticarValidar(codigo);
+    const resposta = await autenticacaoService
+      .autenticarValidar(codigo)
+      .catch(() => setAutenticando(false));
 
-    dispatch(setToken(resposta.data));
-
-    if (resposta?.data) {
+    if (resposta?.data?.token) {
       dispatch(setIsAuthenticated(true));
-      dispatch(setToken(resposta.data));
+      dispatch(setToken(resposta.data.token));
       navigate('/');
     } else {
       setAutenticando(false);
@@ -47,30 +48,18 @@ const Autenticar: React.FC<any> = () => {
     }
   }, [navigate, dispatch, paramsRouter]);
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     validarCodigoLogin();
-  //   } else {
-  //     navigate('/');
-  //   }
-  // }, [isAuthenticated, navigate, validarCodigoLogin]);
-
-  // TODO - remover mock de autenticação
   useEffect(() => {
     if (!isAuthenticated) {
-      setAutenticando(true);
-      setTimeout(() => {
-        setAutenticando(false);
-        dispatch(setIsAuthenticated(true));
-        navigate('/');
-      }, 5000);
+      validarCodigoLogin();
+    } else {
+      navigate('/');
     }
-  }, [dispatch, navigate, isAuthenticated]);
+  }, [isAuthenticated, navigate, validarCodigoLogin]);
 
   return (
     <ContainerAutenticar>
-      {!autenticando ? (
-        <Spin size='large' />
+      {autenticando ? (
+        <Spin tip='Autenticando' size='large' />
       ) : (
         <Result
           status='error'

@@ -1,20 +1,25 @@
 import { Popover } from 'antd';
-import React, { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
+import React, { ReactNode, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AppState } from '~/redux';
+import { setAbrirFiltroPrincipal } from '~/redux/modules/geral/actions';
 import CamposFiltroPrincipal from './campos';
 
 const PopoverFiltroPrincipal: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  const abrirFiltroPrincipal = useSelector(
-    (state: AppState) => state.filtroPrincipal.abrirFiltroPrincipal,
-  );
+  const abrirFiltroPrincipal = useSelector((state: AppState) => state.geral.abrirFiltroPrincipal);
 
   const filtroAtual = useSelector((state: AppState) => state.filtroPrincipal.filtroAtual);
 
   console.log('PopoverFiltroPrincipal Render');
+
+  useEffect(() => {
+    return () => {
+      dispatch(setAbrirFiltroPrincipal(false));
+    };
+  }, [dispatch]);
 
   return (
     <Popover

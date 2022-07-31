@@ -1,6 +1,8 @@
 import { Button, Col, Form, Row } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setFiltroAtual } from '~/redux/modules/filtro-principal/actions';
 
 import { FiltroAtualProps } from '~/redux/modules/filtro-principal/reducers';
 import AnosEscolares from './anos-escolares';
@@ -18,11 +20,7 @@ interface CamposFiltroPrincipalProps {
 }
 
 const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtual }) => {
-  // const dispatch = useDispatch();
-
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
-  };
+  const dispatch = useDispatch();
 
   // const onFinishFailed = (errorInfo: any) => {
   //   console.log('Failed:', errorInfo);
@@ -43,35 +41,40 @@ const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtu
   );
   const [turmas, setTurmas] = useState<DefaultOptionType[]>(filtroAtual.turmas);
 
-  // const onClickAplicarFiltro = () => {
-  // dispatch(
-  //   setFiltroAtual({
-  //     anoLetivo,
-  //     situacaoProva,
-  //     prova,
-  //     modalidade,
-  //     dre,
-  //     ue,
-  //     anoEscolar,
-  //     turma,
-  //     anosLetivos,
-  //     situacoesProvas,
-  //     provas,
-  //     modalidades,
-  //     dres,
-  //     ues,
-  //     anosEscolares,
-  //     turmas,
-  //   }),
-  // );
-  // };
+  const onClickAplicarFiltro = (valores: FiltroAtualProps) => {
+    dispatch(
+      setFiltroAtual({
+        anoLetivo: valores.anoLetivo,
+        situacaoProva: valores.situacaoProva,
+        prova: valores.prova,
+        modalidade: valores.modalidade,
+        dre: valores.dre,
+        ue: valores.ue,
+        anoEscolar: valores.anoEscolar,
+        turma: valores.turma,
+        anosLetivos,
+        situacoesProvas,
+        provas,
+        modalidades,
+        dres,
+        ues,
+        anosEscolares,
+        turmas,
+      }),
+    );
+  };
 
   return (
-    <div>
+    <>
       <Row>
         <LabelPopover>Selecione itens abaixo para filtrar as informações</LabelPopover>
       </Row>
-      <Form form={form} initialValues={{ anosLetivos: [] }} onFinish={onFinish} autoComplete='off'>
+      <Form
+        form={form}
+        initialValues={{ anosLetivos: [] }}
+        onFinish={onClickAplicarFiltro}
+        autoComplete='off'
+      >
         <Row gutter={11}>
           <Col span={4}>
             <AnosLetivos form={form} setAnosLetivos={setAnosLetivos} options={anosLetivos} />
@@ -114,7 +117,7 @@ const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtu
           </Col>
         </Row>
       </Form>
-    </div>
+    </>
   );
 };
 

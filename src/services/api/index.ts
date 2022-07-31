@@ -13,10 +13,8 @@ const api = axios.create({
 api.interceptors.request.use((requestConfig) => {
   const { token } = store.getState().auth;
   if (requestConfig.headers) {
-    requestConfig.headers = {
-      authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    };
+    requestConfig.headers.Authorization = `Bearer ${token}`;
+    requestConfig.headers['Content-Type'] = 'application/json';
 
     return {
       ...requestConfig,

@@ -2,12 +2,7 @@ import { DefaultOptionType } from 'antd/lib/select';
 import produce from 'immer';
 import { SelectValueType } from '~/domain/type/select';
 
-import {
-  SetAbrirFiltroPrincipal,
-  SetFiltroAtual,
-  typeSetAbrirFiltroPrincipal,
-  typeSetFiltroAtual,
-} from './actions';
+import { SetFiltroAtual, typeSetFiltroAtual } from './actions';
 
 export interface FiltroAtualProps {
   anoLetivo: SelectValueType;
@@ -29,12 +24,10 @@ export interface FiltroAtualProps {
 }
 
 export interface FiltroPrincipalProps {
-  abrirFiltroPrincipal: boolean;
   filtroAtual: FiltroAtualProps;
 }
 
 const initialValues = {
-  abrirFiltroPrincipal: false,
   filtroAtual: {
     anoLetivo: null,
     situacaoProva: null,
@@ -55,15 +48,9 @@ const initialValues = {
   },
 };
 
-const filtroPrincipal = (
-  state: FiltroPrincipalProps = initialValues,
-  action: SetAbrirFiltroPrincipal | SetFiltroAtual,
-) => {
+const filtroPrincipal = (state: FiltroPrincipalProps = initialValues, action: SetFiltroAtual) => {
   return produce(state, (draft) => {
     switch (action.type) {
-      case typeSetAbrirFiltroPrincipal:
-        draft.abrirFiltroPrincipal = action.payload;
-        break;
       case typeSetFiltroAtual:
         draft.filtroAtual = action.payload;
         break;

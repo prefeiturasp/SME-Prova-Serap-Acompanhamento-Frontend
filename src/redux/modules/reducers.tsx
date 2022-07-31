@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import auth from './auth/reducers';
-import geral from './geral/reducers';
 import filtroPrincipal from './filtro-principal/reducers';
+import geral from './geral/reducers';
 
 const rootReducer = combineReducers({
   auth,
