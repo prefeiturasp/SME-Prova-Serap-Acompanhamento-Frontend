@@ -10,20 +10,20 @@ import TagFiltroPrincipal from './tag';
 
 const FiltroPrincipal: React.FC = () => {
   return (
-    <PopoverFiltroPrincipal>
-      <ContainerFiltroPrincipal>
-        <FontAwesomeIcon
-          icon={faMagnifyingGlass}
-          fontSize={18}
-          color={Colors.Label}
-          style={{ margin: '10px' }}
-        />
-        <ScrollContainer style={{ width: 549, display: 'flex' }}>
-          <TagFiltroPrincipal />
-        </ScrollContainer>
+    <ContainerFiltroPrincipal>
+      <FontAwesomeIcon
+        icon={faMagnifyingGlass}
+        fontSize={18}
+        color={Colors.Label}
+        style={{ margin: '10px' }}
+      />
+      <ScrollContainer style={{ width: 549, display: 'flex' }}>
+        <TagFiltroPrincipal />
+      </ScrollContainer>
+      <PopoverFiltroPrincipal>
         <IconeAbrirPopover />
-      </ContainerFiltroPrincipal>
-    </PopoverFiltroPrincipal>
+      </PopoverFiltroPrincipal>
+    </ContainerFiltroPrincipal>
   );
 };
 

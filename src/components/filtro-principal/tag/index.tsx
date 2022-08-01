@@ -1,5 +1,3 @@
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Tag } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -30,32 +28,10 @@ export interface TagItem {
 const TagFiltroPrincipal: React.FC = () => {
   const filtroAtual = useSelector((state: AppState) => state.filtroPrincipal.filtroAtual);
 
-  const onRemove = (item: any) => {
-    console.log(item);
-  };
-
   return filtroAtual?.dadosTags?.length ? (
     <>
       {filtroAtual.dadosTags.map((item, index) => {
-        return (
-          <ContainerTag key={index}>
-            <>
-              {item.descricao}
-              {item.bloquearRemover ? (
-                <></>
-              ) : (
-                <FontAwesomeIcon
-                  icon={faTimes}
-                  color={Colors.CinzaPaginador}
-                  fontSize={11}
-                  style={{ marginLeft: '5px' }}
-                  cursor='pointer'
-                  onClick={() => onRemove && onRemove(item)}
-                />
-              )}
-            </>
-          </ContainerTag>
-        );
+        return <ContainerTag key={index}>{item.descricao}</ContainerTag>;
       })}
     </>
   ) : (

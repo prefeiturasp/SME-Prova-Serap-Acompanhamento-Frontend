@@ -19,7 +19,7 @@ const IconeAbrirPopover: React.FC = () => {
     <Button
       size='small'
       shape='circle'
-      style={{ background: Colors.BorderTable, width: '28px', height: '28px' }}
+      style={{ background: Colors.BorderTable, width: '28px', height: '28px', margin: '3px' }}
       onClick={() => abrirFiltroPrincipalHandler()}
       icon={
         <FontAwesomeIcon

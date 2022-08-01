@@ -1,10 +1,11 @@
 import { Button, Col, Form, Row } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setFiltroAtual } from '~/redux/modules/filtro-principal/actions';
 
 import { FiltroAtualProps } from '~/redux/modules/filtro-principal/reducers';
+import { setAbrirFiltroPrincipal } from '~/redux/modules/geral/actions';
 import { TagItem } from '../../tag';
 import AnosEscolares from './anos-escolares';
 import AnosLetivos from './anos-letivos';
@@ -41,6 +42,19 @@ const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtu
     filtroAtual.anosEscolares,
   );
   const [turmas, setTurmas] = useState<DefaultOptionType[]>(filtroAtual.turmas);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      anoLetivo: filtroAtual.anoLetivo,
+      situacaoProva: filtroAtual.situacaoProva,
+      prova: filtroAtual.prova,
+      modalidade: filtroAtual.modalidade,
+      dre: filtroAtual.dre,
+      ue: filtroAtual.ue,
+      anoEscolar: filtroAtual.anoEscolar,
+      turma: filtroAtual.turma,
+    });
+  }, [form, filtroAtual]);
 
   const onClickAplicarFiltro = (valores: FiltroAtualProps) => {
     const dadosTags: TagItem[] = [];
@@ -125,6 +139,7 @@ const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtu
         turmas,
       }),
     );
+    dispatch(setAbrirFiltroPrincipal(false));
   };
 
   return (
