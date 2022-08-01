@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Table from '~/components/table';
+import resumoProvasService from '~/services/resumo-provas.-service';
 import { CardTabelas, TituloCardTabelas } from '../styles';
 
 const TabelaResumoGeralProvas: React.FC = () => {
   const [dados, setDados] = useState<any[]>([]);
 
-  const [totalRegistros, setTotalRegistros] = useState(15);
+  const [totalRegistros, setTotalRegistros] = useState(0);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
@@ -92,60 +93,18 @@ const TabelaResumoGeralProvas: React.FC = () => {
     return <Table columns={columns} dataSource={detalhes} pagination={false} />;
   };
 
-  const obterDados = (page: number) => {
-    // MOCK
-    const teste = [];
-    if (page === 1) {
-      for (let i = 0; i < 10; ++i) {
-        teste.push({
-          key: i.toString(),
-          tituloProva: 'Prova EJA Complementar - CH 1o Semestre 2022',
-          totalAlunos: 111,
-          provasIniciadas: 222,
-          provasNaoFinalizadas: 20,
-          provasFinalizadas: 1212,
-          tempoMedio: '50min',
-          percentualRealizado: '45.15%',
-          detalhes: [
-            {
-              dataInicio: '01/01/2020',
-              dataFim: '01/01/2020',
-              qtdQuestoesProva: '10',
-              totalQuestoes: '20',
-              respondidas: '10',
-              percentualRespondido: '50%',
-            },
-          ],
-        });
-      }
-    }
-    if (page === 2) {
-      for (let i = 0; i < 5; ++i) {
-        teste.push({
-          key: i.toString(),
-          tituloProva: 'Prova EJA Básica - CH 1o Semestre 2022',
-          totalAlunos: 3685,
-          provasIniciadas: 116,
-          provasNaoFinalizadas: 80,
-          provasFinalizadas: 1349,
-          tempoMedio: '48min',
-          percentualRealizado: '36.65%',
-        });
-      }
-    }
-
-    setDados([...teste]);
-    setCarregando(false);
-  };
-  const onChange = (page: number) => {
+  const onChange = async (page: number) => {
     setCarregando(true);
-    // MOCK  - Simulação de requisição
-    // numeroRegistros = 10; padrao
-    // numeroPagina = page; pagina atual selecionada
-    // totalRegistros = 15; total de registros
-    setTimeout(() => {
-      obterDados(page);
-    }, 2000);
+    const resposta = await resumoProvasService.obterDadosResumoGeralProvas(page);
+
+    if (resposta?.items?.length) {
+      setTotalRegistros(resposta.totalRegistros);
+      setDados(resposta.items);
+    } else {
+      setTotalRegistros(0);
+      setDados([]);
+    }
+    setCarregando(false);
   };
   return (
     <CardTabelas>
