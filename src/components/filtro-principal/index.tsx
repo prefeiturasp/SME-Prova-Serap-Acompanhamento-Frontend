@@ -6,20 +6,9 @@ import { Colors } from '~/styles/colors';
 import IconeAbrirPopover from './icone-abrir-popover';
 import PopoverFiltroPrincipal from './popover';
 import { ContainerFiltroPrincipal } from './styles';
-import TagFiltroPrincipal, { TagItem } from './tag';
+import TagFiltroPrincipal from './tag';
 
 const FiltroPrincipal: React.FC = () => {
-  const filtrosSelecionadosMock: TagItem[] = [
-    {
-      description: '2022',
-      index: 0,
-    },
-    {
-      description: 'Provas em Andamento',
-      index: 0,
-    },
-  ];
-
   return (
     <PopoverFiltroPrincipal>
       <ContainerFiltroPrincipal>
@@ -30,15 +19,7 @@ const FiltroPrincipal: React.FC = () => {
           style={{ margin: '10px' }}
         />
         <ScrollContainer style={{ width: 549, display: 'flex' }}>
-          {filtrosSelecionadosMock.map((item, index) => (
-            <TagFiltroPrincipal
-              key={index}
-              item={item}
-              onRemove={(a) => {
-                console.log(a);
-              }}
-            />
-          ))}
+          <TagFiltroPrincipal />
         </ScrollContainer>
         <IconeAbrirPopover />
       </ContainerFiltroPrincipal>

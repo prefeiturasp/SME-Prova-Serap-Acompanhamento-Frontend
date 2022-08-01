@@ -1,10 +1,12 @@
 import { DefaultOptionType } from 'antd/lib/select';
 import produce from 'immer';
+import { TagItem } from '~/components/filtro-principal/tag';
 import { SelectValueType } from '~/domain/type/select';
 
 import { SetFiltroAtual, typeSetFiltroAtual } from './actions';
 
 export interface FiltroAtualProps {
+  dadosTags: TagItem[];
   anoLetivo: SelectValueType;
   situacaoProva: SelectValueType;
   prova: SelectValueType;

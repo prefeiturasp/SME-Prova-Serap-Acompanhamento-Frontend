@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setFiltroAtual } from '~/redux/modules/filtro-principal/actions';
 
 import { FiltroAtualProps } from '~/redux/modules/filtro-principal/reducers';
+import { TagItem } from '../../tag';
 import AnosEscolares from './anos-escolares';
 import AnosLetivos from './anos-letivos';
 import Dres from './dres';
@@ -42,8 +43,70 @@ const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtu
   const [turmas, setTurmas] = useState<DefaultOptionType[]>(filtroAtual.turmas);
 
   const onClickAplicarFiltro = (valores: FiltroAtualProps) => {
+    const dadosTags: TagItem[] = [];
+
+    if (valores.anoLetivo) {
+      dadosTags.push({
+        nomeCampo: 'anoLetivo',
+        valor: valores.anoLetivo,
+        descricao: anosLetivos.find((item) => item.value === valores.anoLetivo)?.label,
+        bloquearRemover: true,
+      });
+    }
+    if (valores.situacaoProva) {
+      dadosTags.push({
+        nomeCampo: 'situacaoProva',
+        valor: valores.situacaoProva,
+        descricao: situacoesProvas.find((item) => item.value === valores.situacaoProva)?.label,
+        bloquearRemover: true,
+      });
+    }
+    if (valores.prova) {
+      dadosTags.push({
+        nomeCampo: 'prova',
+        valor: valores.prova,
+        descricao: provas.find((item) => item.value === valores.prova)?.label,
+      });
+    }
+    if (valores.modalidade) {
+      dadosTags.push({
+        nomeCampo: 'modalidade',
+        valor: valores.modalidade,
+        descricao: modalidades.find((item) => item.value === valores.modalidade)?.label,
+      });
+    }
+    if (valores.dre) {
+      dadosTags.push({
+        nomeCampo: 'dre',
+        valor: valores.dre,
+        descricao: dres.find((item) => item.value === valores.dre)?.label,
+      });
+    }
+    if (valores.ue) {
+      dadosTags.push({
+        nomeCampo: 'ue',
+        valor: valores.ue,
+        descricao: ues.find((item) => item.value === valores.ue)?.label,
+      });
+    }
+    if (valores.anoEscolar) {
+      dadosTags.push({
+        nomeCampo: 'turma',
+        valor: valores.anoEscolar,
+        descricao: anosEscolares.find((item) => item.value === valores.turma)?.label,
+      });
+    }
+    if (valores.turma) {
+      dadosTags.push({
+        nomeCampo: 'turma',
+        valor: valores.turma,
+        descricao: turmas.find((item) => item.value === valores.turma)?.label,
+      });
+    }
+
     dispatch(
       setFiltroAtual({
+        dadosTags,
         anoLetivo: valores.anoLetivo,
         situacaoProva: valores.situacaoProva,
         prova: valores.prova,
