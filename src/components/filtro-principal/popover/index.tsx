@@ -24,10 +24,10 @@ const PopoverFiltroPrincipal: React.FC<{ children: ReactNode }> = ({ children })
   return (
     <Popover
       getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
-      overlayInnerStyle={{ width: '620px', height: '250px' }}
+      overlayInnerStyle={{ width: '620px', height: '260px' }}
       align={{ targetOffset: [292, 13] }}
       showArrow={false}
-      content={abrirFiltroPrincipal ? <CamposFiltroPrincipal filtroAtual={filtroAtual} /> : <></>}
+      content={<CamposFiltroPrincipal filtroAtual={filtroAtual} />}
       trigger='click'
       visible={abrirFiltroPrincipal}
       onVisibleChange={(v) => dispatch(setAbrirFiltroPrincipal(v))}

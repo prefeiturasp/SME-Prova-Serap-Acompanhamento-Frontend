@@ -31,6 +31,18 @@ const SelectContainer = styled.div`
 `;
 
 const Select: React.FC<SelectProps> = (props) => {
+  const filterOption = (input: any, option: any) => {
+    console.log(input, option);
+
+    const value = option?.value?.toLowerCase();
+    const drescription = option?.label?.toLowerCase();
+
+    return (
+      value?.indexOf(input?.toLowerCase()) >= 0 ||
+      drescription?.toLowerCase().indexOf(input?.toLowerCase()) >= 0
+    );
+  };
+
   return (
     <SelectContainer>
       <SelectAnt
@@ -45,6 +57,7 @@ const Select: React.FC<SelectProps> = (props) => {
           <FontAwesomeIcon icon={faAngleDown} fontSize={14} color={Colors.CinzaIconSelect} />
         }
         {...props}
+        filterOption={filterOption}
       />
     </SelectContainer>
   );

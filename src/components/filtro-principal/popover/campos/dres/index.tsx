@@ -12,6 +12,7 @@ interface DreProps extends FormProps {
 
 const Dre: React.FC<DreProps> = ({ form, setDres, options }) => {
   const nomeCampo = 'dre';
+  const modalidade = Form.useWatch('modalidade', form);
 
   const obterDre = useCallback(async () => {
     const resposta = await filtroService.obterDres();
@@ -25,15 +26,12 @@ const Dre: React.FC<DreProps> = ({ form, setDres, options }) => {
     }
   }, [form, setDres]);
 
-  console.log('render Dre');
-
   useEffect(() => {
-    console.log('obterDre');
     obterDre();
   }, [obterDre]);
 
   return (
-    <Form.Item name={nomeCampo}>
+    <Form.Item name={nomeCampo} rules={[{ required: !!modalidade, message: 'Campo obrigatório' }]}>
       <Select
         options={options}
         disabled={options?.length === 1}

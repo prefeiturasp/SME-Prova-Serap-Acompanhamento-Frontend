@@ -14,6 +14,7 @@ const Ue: React.FC<UeProps> = ({ form, setUes, options }) => {
   const nomeCampo = 'ue';
 
   const dre = Form.useWatch('dre', form);
+  const modalidade = Form.useWatch('modalidade', form);
 
   const obterUe = useCallback(async () => {
     const resposta = await filtroService.obterUes(dre);
@@ -27,10 +28,7 @@ const Ue: React.FC<UeProps> = ({ form, setUes, options }) => {
     }
   }, [form, setUes, dre]);
 
-  console.log('render Ue');
-
   useEffect(() => {
-    console.log('obterUe');
     if (dre) {
       obterUe();
     } else {
@@ -40,11 +38,11 @@ const Ue: React.FC<UeProps> = ({ form, setUes, options }) => {
   }, [setUes, dre, obterUe, form]);
 
   return (
-    <Form.Item name={nomeCampo}>
+    <Form.Item name={nomeCampo} rules={[{ required: !!modalidade, message: 'Campo obrigatório' }]}>
       <Select
         options={options}
         disabled={options?.length === 1}
-        placeholder='Diretoria Regional de Educação (Ue)'
+        placeholder='Unidade Educacional (UE)'
         allowClear
         showSearch
       />

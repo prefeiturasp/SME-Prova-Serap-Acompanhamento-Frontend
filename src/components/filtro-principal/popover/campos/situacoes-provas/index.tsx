@@ -25,10 +25,7 @@ const SituacoesProvas: React.FC<SituacoesProvasProps> = ({ form, setSituacoesPro
     }
   }, [form, setSituacoesProvas]);
 
-  console.log('render SituacoesProvas');
-
   useEffect(() => {
-    console.log('obterSituacoes');
     obterSituacoes();
   }, [obterSituacoes]);
 

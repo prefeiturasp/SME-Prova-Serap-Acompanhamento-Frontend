@@ -31,6 +31,7 @@ export interface FiltroPrincipalProps {
 
 const initialValues = {
   filtroAtual: {
+    dadosTags: [],
     anoLetivo: null,
     situacaoProva: null,
     prova: null,

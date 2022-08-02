@@ -28,10 +28,7 @@ const Provas: React.FC<ProvasProps> = ({ form, setProvas, options }) => {
     }
   }, [form, setProvas, anoLetivo, situacaoProva]);
 
-  console.log('render Provas');
-
   useEffect(() => {
-    console.log('obterProvas');
     if (anoLetivo && situacaoProva) {
       obterProvas();
     } else {

@@ -25,10 +25,7 @@ const Modalidade: React.FC<ModalidadeProps> = ({ form, setModalidades, options }
     }
   }, [form, setModalidades]);
 
-  console.log('render Modalidade');
-
   useEffect(() => {
-    console.log('obterModalidade');
     obterModalidade();
   }, [obterModalidade]);
 

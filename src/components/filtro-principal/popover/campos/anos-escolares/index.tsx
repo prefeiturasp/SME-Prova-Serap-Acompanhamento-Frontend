@@ -15,6 +15,7 @@ const AnosEscolares: React.FC<AnosEscolaresProps> = ({ form, setAnosEscolares, o
 
   const anoLetivo = Form.useWatch('anoLetivo', form);
   const ue = Form.useWatch('ue', form);
+  const modalidade = Form.useWatch('modalidade', form);
 
   const obterAnosEscolares = useCallback(async () => {
     const resposta = await filtroService.obterAnosEscolares(anoLetivo, ue);
@@ -28,10 +29,7 @@ const AnosEscolares: React.FC<AnosEscolaresProps> = ({ form, setAnosEscolares, o
     }
   }, [form, setAnosEscolares, anoLetivo, ue]);
 
-  console.log('render AnosEscolares');
-
   useEffect(() => {
-    console.log('obterAnosEscolares');
     if (anoLetivo && ue) {
       obterAnosEscolares();
     } else {
@@ -41,7 +39,7 @@ const AnosEscolares: React.FC<AnosEscolaresProps> = ({ form, setAnosEscolares, o
   }, [obterAnosEscolares, setAnosEscolares, form, anoLetivo, ue]);
 
   return (
-    <Form.Item name={nomeCampo}>
+    <Form.Item name={nomeCampo} rules={[{ required: !!modalidade, message: 'Campo obrigatório' }]}>
       <Select
         options={options}
         disabled={options?.length === 1}

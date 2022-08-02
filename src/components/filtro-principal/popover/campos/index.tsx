@@ -1,7 +1,8 @@
 import { Button, Col, Form, Row } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '~/redux';
 import { setFiltroAtual } from '~/redux/modules/filtro-principal/actions';
 
 import { FiltroAtualProps } from '~/redux/modules/filtro-principal/reducers';
@@ -24,9 +25,7 @@ interface CamposFiltroPrincipalProps {
 const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtual }) => {
   const dispatch = useDispatch();
 
-  // const onFinishFailed = (errorInfo: any) => {
-  //   console.log('Failed:', errorInfo);
-  // };
+  const abrirFiltroPrincipal = useSelector((state: AppState) => state.geral.abrirFiltroPrincipal);
 
   const [form] = Form.useForm();
 
@@ -44,6 +43,7 @@ const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtu
   const [turmas, setTurmas] = useState<DefaultOptionType[]>(filtroAtual.turmas);
 
   useEffect(() => {
+    form.resetFields();
     form.setFieldsValue({
       anoLetivo: filtroAtual.anoLetivo,
       situacaoProva: filtroAtual.situacaoProva,
@@ -54,7 +54,15 @@ const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtu
       anoEscolar: filtroAtual.anoEscolar,
       turma: filtroAtual.turma,
     });
-  }, [form, filtroAtual]);
+    setAnosLetivos(filtroAtual.anosLetivos);
+    setSituacoesProvas(filtroAtual.situacoesProvas);
+    setProvas(filtroAtual.provas);
+    setModalidades(filtroAtual.modalidades);
+    setDres(filtroAtual.dres);
+    setUes(filtroAtual.ues);
+    setAnosEscolares(filtroAtual.anosEscolares);
+    setTurmas(filtroAtual.turmas);
+  }, [form, filtroAtual, abrirFiltroPrincipal]);
 
   const onClickAplicarFiltro = (valores: FiltroAtualProps) => {
     const dadosTags: TagItem[] = [];

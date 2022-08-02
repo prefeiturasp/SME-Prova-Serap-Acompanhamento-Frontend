@@ -30,10 +30,7 @@ const Turmas: React.FC<TurmasProps> = ({ form, setTurmas, options }) => {
     }
   }, [form, setTurmas, anoLetivo, ue, modalidade, anoEscolar]);
 
-  console.log('render Turmas');
-
   useEffect(() => {
-    console.log('obterTurmas');
     if (anoLetivo && ue && modalidade && anoEscolar) {
       obterTurmas();
     } else {
@@ -43,7 +40,7 @@ const Turmas: React.FC<TurmasProps> = ({ form, setTurmas, options }) => {
   }, [obterTurmas, setTurmas, form, anoLetivo, ue, modalidade, anoEscolar]);
 
   return (
-    <Form.Item name={nomeCampo}>
+    <Form.Item name={nomeCampo} rules={[{ required: !!modalidade, message: 'Campo obrigatório' }]}>
       <Select
         options={options}
         disabled={options?.length === 1}
