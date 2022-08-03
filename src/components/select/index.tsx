@@ -32,8 +32,6 @@ const SelectContainer = styled.div`
 
 const Select: React.FC<SelectProps> = (props) => {
   const filterOption = (input: any, option: any) => {
-    console.log(input, option);
-
     const value = option?.value?.toLowerCase();
     const drescription = option?.label?.toLowerCase();
 

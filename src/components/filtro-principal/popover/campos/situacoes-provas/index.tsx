@@ -18,7 +18,9 @@ const SituacoesProvas: React.FC<SituacoesProvasProps> = ({ form, setSituacoesPro
 
     if (resposta?.length) {
       setSituacoesProvas(resposta);
-      form?.setFieldValue(nomeCampo, resposta[0].value);
+      if (!form?.getFieldValue(nomeCampo)) {
+        form?.setFieldValue(nomeCampo, resposta[0].value);
+      }
     } else {
       setSituacoesProvas([]);
       form?.setFieldValue(nomeCampo, null);

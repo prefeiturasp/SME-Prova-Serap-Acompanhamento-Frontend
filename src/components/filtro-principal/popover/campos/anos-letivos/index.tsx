@@ -11,13 +11,17 @@ interface AnosLetivosProps extends FormProps {
 }
 
 const AnosLetivos: React.FC<AnosLetivosProps> = ({ form, options, setAnosLetivos }) => {
+  const nomeCampo = 'anoLetivo';
+
   const obterAnosLetivos = useCallback(async () => {
     const resposta = await filtroService.obterAnosLetivos();
     if (resposta?.length) {
       setAnosLetivos(resposta);
-      form?.setFieldValue('anoLetivo', resposta[0].value);
+      if (!form?.getFieldValue(nomeCampo)) {
+        form?.setFieldValue(nomeCampo, resposta[0].value);
+      }
     } else {
-      form?.setFieldValue('anoLetivo', null);
+      form?.setFieldValue(nomeCampo, null);
     }
   }, [form, setAnosLetivos]);
 
@@ -26,7 +30,7 @@ const AnosLetivos: React.FC<AnosLetivosProps> = ({ form, options, setAnosLetivos
   }, [obterAnosLetivos]);
 
   return (
-    <Form.Item name='anoLetivo'>
+    <Form.Item name={nomeCampo}>
       <Select options={options} disabled={options?.length === 1} />
     </Form.Item>
   );

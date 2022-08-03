@@ -1,5 +1,5 @@
 import { Tag } from 'antd';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { SelectValueType } from '~/domain/type/select';
@@ -22,15 +22,100 @@ export interface TagItem {
   nomeCampo: string;
   valor: SelectValueType;
   descricao: React.ReactNode;
-  bloquearRemover?: boolean;
 }
 
 const TagFiltroPrincipal: React.FC = () => {
-  const filtroAtual = useSelector((state: AppState) => state.filtroPrincipal.filtroAtual);
+  const filtroPrincipal = useSelector((state: AppState) => state.filtroPrincipal);
 
-  return filtroAtual?.dadosTags?.length ? (
+  const [dadosTags, setDadosTags] = useState<TagItem[]>([]);
+
+  const montarDados = useCallback(() => {
+    const dadosTagsNovo: TagItem[] = [];
+    const {
+      anoLetivo,
+      anosLetivos,
+      situacaoProva,
+      situacoesProvas,
+      prova,
+      provas,
+      modalidade,
+      modalidades,
+      dre,
+      dres,
+      ue,
+      ues,
+      anoEscolar,
+      anosEscolares,
+      turma,
+      turmas,
+    } = filtroPrincipal;
+
+    if (anoLetivo) {
+      dadosTagsNovo.push({
+        nomeCampo: 'anoLetivo',
+        valor: anoLetivo,
+        descricao: anosLetivos.find((item) => item.value === anoLetivo)?.label,
+      });
+    }
+    if (situacaoProva) {
+      dadosTagsNovo.push({
+        nomeCampo: 'situacaoProva',
+        valor: situacaoProva,
+        descricao: situacoesProvas.find((item) => item.value === situacaoProva)?.label,
+      });
+    }
+    if (prova) {
+      dadosTagsNovo.push({
+        nomeCampo: 'prova',
+        valor: prova,
+        descricao: provas.find((item) => item.value === prova)?.label,
+      });
+    }
+    if (modalidade) {
+      dadosTagsNovo.push({
+        nomeCampo: 'modalidade',
+        valor: modalidade,
+        descricao: modalidades.find((item) => item.value === modalidade)?.label,
+      });
+    }
+    if (dre) {
+      dadosTagsNovo.push({
+        nomeCampo: 'dre',
+        valor: dre,
+        descricao: dres.find((item) => item.value === dre)?.label,
+      });
+    }
+    if (ue) {
+      dadosTagsNovo.push({
+        nomeCampo: 'ue',
+        valor: ue,
+        descricao: ues.find((item) => item.value === ue)?.label,
+      });
+    }
+    if (anoEscolar) {
+      dadosTagsNovo.push({
+        nomeCampo: 'turma',
+        valor: anoEscolar,
+        descricao: anosEscolares.find((item) => item.value === turma)?.label,
+      });
+    }
+    if (turma) {
+      dadosTagsNovo.push({
+        nomeCampo: 'turma',
+        valor: turma,
+        descricao: turmas.find((item) => item.value === turma)?.label,
+      });
+    }
+    setDadosTags(dadosTagsNovo);
+  }, [filtroPrincipal]);
+
+  useEffect(() => {
+    montarDados();
+  }, [filtroPrincipal, montarDados]);
+
+  return dadosTags?.length ? (
     <>
-      {filtroAtual.dadosTags.map((item, index) => {
+      {dadosTags.map((item, index) => {
         return <ContainerTag key={index}>{item.descricao}</ContainerTag>;
       })}
     </>

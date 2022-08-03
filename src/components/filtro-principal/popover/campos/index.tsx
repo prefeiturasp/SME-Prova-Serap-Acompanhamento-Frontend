@@ -5,9 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '~/redux';
 import { setFiltroAtual } from '~/redux/modules/filtro-principal/actions';
 
-import { FiltroAtualProps } from '~/redux/modules/filtro-principal/reducers';
+import { FiltroPrincipalProps } from '~/redux/modules/filtro-principal/reducers';
 import { setAbrirFiltroPrincipal } from '~/redux/modules/geral/actions';
-import { TagItem } from '../../tag';
 import AnosEscolares from './anos-escolares';
 import AnosLetivos from './anos-letivos';
 import Dres from './dres';
@@ -18,117 +17,35 @@ import { LabelPopover } from './styles';
 import Turmas from './turmas';
 import Ues from './ues';
 
-interface CamposFiltroPrincipalProps {
-  filtroAtual: FiltroAtualProps;
-}
-
-const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtual }) => {
+const CamposFiltroPrincipal: React.FC = () => {
   const dispatch = useDispatch();
 
   const abrirFiltroPrincipal = useSelector((state: AppState) => state.geral.abrirFiltroPrincipal);
 
+  const filtroPrincipal = useSelector((state: AppState) => state.filtroPrincipal);
+
   const [form] = Form.useForm();
 
-  const [anosLetivos, setAnosLetivos] = useState<DefaultOptionType[]>(filtroAtual.anosLetivos);
+  const [anosLetivos, setAnosLetivos] = useState<DefaultOptionType[]>(filtroPrincipal.anosLetivos);
   const [situacoesProvas, setSituacoesProvas] = useState<DefaultOptionType[]>(
-    filtroAtual.situacoesProvas,
+    filtroPrincipal.situacoesProvas,
   );
-  const [provas, setProvas] = useState<DefaultOptionType[]>(filtroAtual.provas);
-  const [modalidades, setModalidades] = useState<DefaultOptionType[]>(filtroAtual.modalidades);
-  const [dres, setDres] = useState<DefaultOptionType[]>(filtroAtual.dres);
-  const [ues, setUes] = useState<DefaultOptionType[]>(filtroAtual.ues);
+  const [provas, setProvas] = useState<DefaultOptionType[]>(filtroPrincipal.provas);
+  const [modalidades, setModalidades] = useState<DefaultOptionType[]>(filtroPrincipal.modalidades);
+  const [dres, setDres] = useState<DefaultOptionType[]>(filtroPrincipal.dres);
+  const [ues, setUes] = useState<DefaultOptionType[]>(filtroPrincipal.ues);
   const [anosEscolares, setAnosEscolares] = useState<DefaultOptionType[]>(
-    filtroAtual.anosEscolares,
+    filtroPrincipal.anosEscolares,
   );
-  const [turmas, setTurmas] = useState<DefaultOptionType[]>(filtroAtual.turmas);
+  const [turmas, setTurmas] = useState<DefaultOptionType[]>(filtroPrincipal.turmas);
 
   useEffect(() => {
     form.resetFields();
-    form.setFieldsValue({
-      anoLetivo: filtroAtual.anoLetivo,
-      situacaoProva: filtroAtual.situacaoProva,
-      prova: filtroAtual.prova,
-      modalidade: filtroAtual.modalidade,
-      dre: filtroAtual.dre,
-      ue: filtroAtual.ue,
-      anoEscolar: filtroAtual.anoEscolar,
-      turma: filtroAtual.turma,
-    });
-    setAnosLetivos(filtroAtual.anosLetivos);
-    setSituacoesProvas(filtroAtual.situacoesProvas);
-    setProvas(filtroAtual.provas);
-    setModalidades(filtroAtual.modalidades);
-    setDres(filtroAtual.dres);
-    setUes(filtroAtual.ues);
-    setAnosEscolares(filtroAtual.anosEscolares);
-    setTurmas(filtroAtual.turmas);
-  }, [form, filtroAtual, abrirFiltroPrincipal]);
+  }, [form, abrirFiltroPrincipal]);
 
-  const onClickAplicarFiltro = (valores: FiltroAtualProps) => {
-    const dadosTags: TagItem[] = [];
-
-    if (valores.anoLetivo) {
-      dadosTags.push({
-        nomeCampo: 'anoLetivo',
-        valor: valores.anoLetivo,
-        descricao: anosLetivos.find((item) => item.value === valores.anoLetivo)?.label,
-        bloquearRemover: true,
-      });
-    }
-    if (valores.situacaoProva) {
-      dadosTags.push({
-        nomeCampo: 'situacaoProva',
-        valor: valores.situacaoProva,
-        descricao: situacoesProvas.find((item) => item.value === valores.situacaoProva)?.label,
-        bloquearRemover: true,
-      });
-    }
-    if (valores.prova) {
-      dadosTags.push({
-        nomeCampo: 'prova',
-        valor: valores.prova,
-        descricao: provas.find((item) => item.value === valores.prova)?.label,
-      });
-    }
-    if (valores.modalidade) {
-      dadosTags.push({
-        nomeCampo: 'modalidade',
-        valor: valores.modalidade,
-        descricao: modalidades.find((item) => item.value === valores.modalidade)?.label,
-      });
-    }
-    if (valores.dre) {
-      dadosTags.push({
-        nomeCampo: 'dre',
-        valor: valores.dre,
-        descricao: dres.find((item) => item.value === valores.dre)?.label,
-      });
-    }
-    if (valores.ue) {
-      dadosTags.push({
-        nomeCampo: 'ue',
-        valor: valores.ue,
-        descricao: ues.find((item) => item.value === valores.ue)?.label,
-      });
-    }
-    if (valores.anoEscolar) {
-      dadosTags.push({
-        nomeCampo: 'turma',
-        valor: valores.anoEscolar,
-        descricao: anosEscolares.find((item) => item.value === valores.turma)?.label,
-      });
-    }
-    if (valores.turma) {
-      dadosTags.push({
-        nomeCampo: 'turma',
-        valor: valores.turma,
-        descricao: turmas.find((item) => item.value === valores.turma)?.label,
-      });
-    }
-
+  const onClickAplicarFiltro = (valores: FiltroPrincipalProps) => {
     dispatch(
       setFiltroAtual({
-        dadosTags,
         anoLetivo: valores.anoLetivo,
         situacaoProva: valores.situacaoProva,
         prova: valores.prova,
@@ -157,7 +74,16 @@ const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtu
       </Row>
       <Form
         form={form}
-        initialValues={{ anosLetivos: [] }}
+        initialValues={{
+          anoLetivo: filtroPrincipal.anoLetivo,
+          situacaoProva: filtroPrincipal.situacaoProva,
+          prova: filtroPrincipal.prova,
+          modalidade: filtroPrincipal.modalidade,
+          dre: filtroPrincipal.dre,
+          ue: filtroPrincipal.ue,
+          anoEscolar: filtroPrincipal.anoEscolar,
+          turma: filtroPrincipal.turma,
+        }}
         onFinish={onClickAplicarFiltro}
         autoComplete='off'
       >
