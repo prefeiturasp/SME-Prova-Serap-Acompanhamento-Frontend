@@ -1,33 +1,36 @@
 import { Popover } from 'antd';
-import React, { ReactNode } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AppState } from '~/redux';
+import { setAbrirFiltroPrincipal } from '~/redux/modules/geral/actions';
+import IconeAbrirPopover from '../icone-abrir-popover';
 import CamposFiltroPrincipal from './campos';
 
-const PopoverFiltroPrincipal: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // const dispatch = useDispatch();
+const PopoverFiltroPrincipal: React.FC = () => {
+  const dispatch = useDispatch();
 
-  const abrirFiltroPrincipal = useSelector(
-    (state: AppState) => state.filtroPrincipal.abrirFiltroPrincipal,
-  );
+  const abrirFiltroPrincipal = useSelector((state: AppState) => state.geral.abrirFiltroPrincipal);
 
-  const filtroAtual = useSelector((state: AppState) => state.filtroPrincipal.filtroAtual);
-
-  console.log('PopoverFiltroPrincipal Render');
+  useEffect(() => {
+    return () => {
+      dispatch(setAbrirFiltroPrincipal(false));
+    };
+  }, [dispatch]);
 
   return (
     <Popover
-      overlayInnerStyle={{ width: '620px', height: '220px' }}
-      overlayStyle={{ padding: 0 }}
+      getPopupContainer={(triggerNode: any) => triggerNode.parentNode}
+      overlayInnerStyle={{ width: '620px', height: '260px' }}
+      align={{ targetOffset: [292, 13] }}
       showArrow={false}
-      content={abrirFiltroPrincipal ? <CamposFiltroPrincipal filtroAtual={filtroAtual} /> : <></>}
+      content={<CamposFiltroPrincipal />}
       trigger='click'
       visible={abrirFiltroPrincipal}
-      // onVisibleChange={(v) => handleVisibleChange(v)}
+      onVisibleChange={(v) => dispatch(setAbrirFiltroPrincipal(v))}
       placement='bottom'
     >
-      {children}
+      <IconeAbrirPopover />
     </Popover>
   );
 };

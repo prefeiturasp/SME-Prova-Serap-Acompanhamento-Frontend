@@ -1,38 +1,39 @@
+import { Form, FormProps } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 
 import Select from '~/components/select';
-import { SelectValueType } from '~/domain/type/select';
 import filtroService from '~/services/filtro-service';
 
-interface AnosLetivosProps {
-  onChange: (value: SelectValueType) => void;
-  value?: SelectValueType;
-  setAnosLetivos: Dispatch<SetStateAction<DefaultOptionType[]>>;
+interface AnosLetivosProps extends FormProps {
   options: DefaultOptionType[];
+  setAnosLetivos: Dispatch<SetStateAction<DefaultOptionType[]>>;
 }
 
-const AnosLetivos: React.FC<AnosLetivosProps> = ({ onChange, value, setAnosLetivos, options }) => {
+const AnosLetivos: React.FC<AnosLetivosProps> = ({ form, options, setAnosLetivos }) => {
+  const nomeCampo = 'anoLetivo';
+
   const obterAnosLetivos = useCallback(async () => {
     const resposta = await filtroService.obterAnosLetivos();
-
     if (resposta?.length) {
       setAnosLetivos(resposta);
-      if (resposta.length === 1) onChange(resposta[0].value ?? null);
+      if (!form?.getFieldValue(nomeCampo)) {
+        form?.setFieldValue(nomeCampo, resposta[0].value);
+      }
     } else {
-      setAnosLetivos([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [onChange, setAnosLetivos]);
-
-  console.log('render AnosLetivos');
+  }, [form, setAnosLetivos]);
 
   useEffect(() => {
-    console.log('obterAnosLetivos');
     obterAnosLetivos();
   }, [obterAnosLetivos]);
 
-  return <Select value={value} options={options} onChange={(value) => onChange(value)} />;
+  return (
+    <Form.Item name={nomeCampo}>
+      <Select options={options} disabled={options?.length === 1} />
+    </Form.Item>
+  );
 };
 
 export default React.memo(AnosLetivos);

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { AppState } from '~/redux';
-import { setIsAuthenticated, setToken } from '~/redux/modules/auth/actions';
+import { setDataHoraExpiracao, setIsAuthenticated, setToken } from '~/redux/modules/auth/actions';
 import autenticacaoService from '~/services/autenticacao-service';
 
 const ContainerAutenticar = styled.div`
@@ -31,46 +31,37 @@ const Autenticar: React.FC<any> = () => {
 
   const validarCodigoLogin = useCallback(async () => {
     const codigo = paramsRouter?.codigoValidador || '';
+    setAutenticando(true);
 
-    const resposta = await autenticacaoService.autenticarValidar(codigo);
+    const resposta = await autenticacaoService
+      .autenticarValidar(codigo)
+      .catch(() => setAutenticando(false));
 
-    dispatch(setToken(resposta.data));
-
-    if (resposta?.data) {
+    if (resposta?.data?.token) {
       dispatch(setIsAuthenticated(true));
-      dispatch(setToken(resposta.data));
+      dispatch(setToken(resposta.data.token));
+      dispatch(setDataHoraExpiracao(resposta.data.dataHoraExpiracao));
       navigate('/');
     } else {
       setAutenticando(false);
       dispatch(setIsAuthenticated(false));
       dispatch(setToken(''));
+      dispatch(setDataHoraExpiracao(''));
     }
   }, [navigate, dispatch, paramsRouter]);
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     validarCodigoLogin();
-  //   } else {
-  //     navigate('/');
-  //   }
-  // }, [isAuthenticated, navigate, validarCodigoLogin]);
-
-  // TODO - remover mock de autenticação
   useEffect(() => {
     if (!isAuthenticated) {
-      setAutenticando(true);
-      setTimeout(() => {
-        setAutenticando(false);
-        dispatch(setIsAuthenticated(true));
-        navigate('/');
-      }, 5000);
+      validarCodigoLogin();
+    } else {
+      navigate('/');
     }
-  }, [dispatch, navigate, isAuthenticated]);
+  }, [isAuthenticated, navigate, validarCodigoLogin]);
 
   return (
     <ContainerAutenticar>
-      {!autenticando ? (
-        <Spin size='large' />
+      {autenticando ? (
+        <Spin tip='Autenticando' size='large' />
       ) : (
         <Result
           status='error'

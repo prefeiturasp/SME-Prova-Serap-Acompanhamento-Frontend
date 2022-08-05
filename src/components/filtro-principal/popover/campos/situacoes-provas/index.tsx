@@ -1,43 +1,41 @@
+import { Form, FormProps } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 
 import Select from '~/components/select';
-import { SelectValueType } from '~/domain/type/select';
 import filtroService from '~/services/filtro-service';
 
-interface SituacoesProvasProps {
-  onChange: (value: SelectValueType) => void;
-  value?: SelectValueType;
+interface SituacoesProvasProps extends FormProps {
   setSituacoesProvas: Dispatch<SetStateAction<DefaultOptionType[]>>;
   options: DefaultOptionType[];
 }
 
-const SituacoesProvas: React.FC<SituacoesProvasProps> = ({
-  onChange,
-  value,
-  setSituacoesProvas,
-  options,
-}) => {
+const SituacoesProvas: React.FC<SituacoesProvasProps> = ({ form, setSituacoesProvas, options }) => {
+  const nomeCampo = 'situacaoProva';
+
   const obterSituacoes = useCallback(async () => {
     const resposta = await filtroService.obterSituacoes();
 
     if (resposta?.length) {
       setSituacoesProvas(resposta);
-      if (resposta.length === 1) onChange(resposta[0].value ?? null);
+      if (!form?.getFieldValue(nomeCampo)) {
+        form?.setFieldValue(nomeCampo, resposta[0].value);
+      }
     } else {
       setSituacoesProvas([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [onChange, setSituacoesProvas]);
-
-  console.log('render SituacoesProvas');
+  }, [form, setSituacoesProvas]);
 
   useEffect(() => {
-    console.log('obterSituacoes');
     obterSituacoes();
   }, [obterSituacoes]);
 
-  return <Select value={value} options={options} onChange={(value) => onChange(value)} />;
+  return (
+    <Form.Item name={nomeCampo}>
+      <Select options={options} disabled={options?.length === 1} />
+    </Form.Item>
+  );
 };
 
 export default React.memo(SituacoesProvas);

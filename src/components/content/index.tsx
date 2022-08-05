@@ -10,9 +10,12 @@ const LayoutContent = styled(Layout.Content)`
   height: 100%;
   padding-left: 10%;
   padding-right: 10%;
+  justify-content: center;
+  display: grid;
 `;
 
 const CardContent = styled.div`
+  width: 960px;
   min-height: 80vh;
   background: #ffffff;
   box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.16);

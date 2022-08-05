@@ -1,4 +1,4 @@
-import { Table as TableAnt, TableProps } from 'antd';
+import { Empty, Table as TableAnt, TableProps } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 import { Colors } from '~/styles/colors';
@@ -18,7 +18,7 @@ const TableLayout = styled(TableAnt)`
     > tr > td {
       font-weight: 400;
       font-size: 9px;
-      border-bottom: 0.5px solid ${Colors.BorderTable};
+      border-bottom: 0.5px solid ${Colors.BorderTable} !important;
     }
     .ant-table-expanded-row {
       > td {
@@ -79,8 +79,19 @@ const TableLayout = styled(TableAnt)`
 const Table: React.FC<TableProps<any>> = (props) => (
   <TableLayout
     {...props}
-    pagination={{ ...props.pagination, size: 'default', position: ['bottomCenter'] }}
+    pagination={
+      props.pagination && { ...props.pagination, size: 'default', position: ['bottomCenter'] }
+    }
     size='small'
+    locale={{
+      emptyText: (
+        <Empty
+          description='Sem dados'
+          className='ant-empty-small'
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+        />
+      ),
+    }}
   />
 );
 

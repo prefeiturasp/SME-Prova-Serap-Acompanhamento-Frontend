@@ -1,24 +1,13 @@
-import { FiltroAtualProps } from './reducers';
+import { FiltroPrincipalProps } from './reducers';
 
-export const typeSetAbrirFiltroPrincipal = '@geral/setAbrirFiltroPrincipal';
-export const typeSetFiltroAtual = '@geral/setFiltroAtual';
+export const typeSetFiltroAtual = '@filtroPrincipal/setFiltroAtual';
 
-export interface SetAbrirFiltroPrincipal {
-  type: typeof typeSetAbrirFiltroPrincipal;
-  payload: boolean;
-}
 export interface SetFiltroAtual {
   type: typeof typeSetFiltroAtual;
-  payload: FiltroAtualProps;
+  payload: FiltroPrincipalProps;
 }
 
-export const setAbrirFiltroPrincipal = (payload: boolean): SetAbrirFiltroPrincipal => {
-  return {
-    type: typeSetAbrirFiltroPrincipal,
-    payload,
-  };
-};
-export const setFiltroAtual = (payload: FiltroAtualProps): SetFiltroAtual => {
+export const setFiltroAtual = (payload: FiltroPrincipalProps): SetFiltroAtual => {
   return {
     type: typeSetFiltroAtual,
     payload,

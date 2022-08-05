@@ -10,6 +10,8 @@ const Colors = {
   CinzaBorda: '#DEDFDF',
   CinzaBordaSelect: '#D9D9D9',
   CinzaIconSelect: '#686C6E',
+  CinzaCardTabela: '#F8F8F8',
+  CinzaBordaCardTabela: '#F3F3F3',
 };
 
 export { Colors };

@@ -1,60 +1,52 @@
+import { Form, FormProps } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 
 import Select from '~/components/select';
-import { SelectValueType } from '~/domain/type/select';
 import filtroService from '~/services/filtro-service';
 
-interface ProvasProps {
-  onChange: (value: SelectValueType) => void;
-  value?: SelectValueType;
+interface ProvasProps extends FormProps {
   setProvas: Dispatch<SetStateAction<DefaultOptionType[]>>;
   options: DefaultOptionType[];
-  anoLetivo: SelectValueType;
-  situacaoProva: SelectValueType;
 }
 
-const Provas: React.FC<ProvasProps> = ({
-  onChange,
-  value,
-  setProvas,
-  options,
-  anoLetivo,
-  situacaoProva,
-}) => {
+const Provas: React.FC<ProvasProps> = ({ form, setProvas, options }) => {
+  const nomeCampo = 'prova';
+
+  const anoLetivo = Form.useWatch('anoLetivo', form);
+  const situacaoProva = Form.useWatch('situacaoProva', form);
+
   const obterProvas = useCallback(async () => {
     const resposta = await filtroService.obterProvas(anoLetivo, situacaoProva);
 
     if (resposta?.length) {
       setProvas(resposta);
-      if (resposta.length === 1) onChange(resposta[0].value ?? null);
+      if (resposta.length === 1) form?.setFieldValue(nomeCampo, resposta[0].value);
     } else {
       setProvas([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [onChange, setProvas, anoLetivo, situacaoProva]);
-
-  console.log('render Provas');
+  }, [form, setProvas, anoLetivo, situacaoProva]);
 
   useEffect(() => {
-    console.log('obterProvas');
     if (anoLetivo && situacaoProva) {
       obterProvas();
     } else {
       setProvas([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [obterProvas, setProvas, onChange, anoLetivo, situacaoProva]);
+  }, [form, obterProvas, setProvas, anoLetivo, situacaoProva]);
 
   return (
-    <Select
-      value={value}
-      options={options}
-      onChange={(value) => onChange(value)}
-      placeholder='Prova'
-      allowClear
-      showSearch
-    />
+    <Form.Item name={nomeCampo}>
+      <Select
+        options={options}
+        disabled={options?.length === 1}
+        placeholder='Prova'
+        allowClear
+        showSearch
+      />
+    </Form.Item>
   );
 };
 

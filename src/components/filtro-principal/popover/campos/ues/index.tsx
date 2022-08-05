@@ -1,52 +1,52 @@
+import { Form, FormProps } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 
 import Select from '~/components/select';
-import { SelectValueType } from '~/domain/type/select';
 import filtroService from '~/services/filtro-service';
 
-interface UeProps {
-  onChange: (value: SelectValueType) => void;
-  value?: SelectValueType;
+interface UeProps extends FormProps {
   setUes: Dispatch<SetStateAction<DefaultOptionType[]>>;
   options: DefaultOptionType[];
-  dre: SelectValueType;
 }
 
-const Ue: React.FC<UeProps> = ({ onChange, value, setUes, options, dre }) => {
+const Ue: React.FC<UeProps> = ({ form, setUes, options }) => {
+  const nomeCampo = 'ue';
+
+  const dre = Form.useWatch('dre', form);
+  const modalidade = Form.useWatch('modalidade', form);
+
   const obterUe = useCallback(async () => {
     const resposta = await filtroService.obterUes(dre);
 
     if (resposta?.length) {
       setUes(resposta);
-      if (resposta.length === 1) onChange(resposta[0].value ?? null);
+      if (resposta.length === 1) form?.setFieldValue(nomeCampo, resposta[0].value);
     } else {
       setUes([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [onChange, setUes, dre]);
-
-  console.log('render Ue');
+  }, [form, setUes, dre]);
 
   useEffect(() => {
-    console.log('obterUe');
     if (dre) {
       obterUe();
     } else {
       setUes([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [setUes, dre, obterUe, onChange]);
+  }, [setUes, dre, obterUe, form]);
 
   return (
-    <Select
-      value={value}
-      options={options}
-      onChange={(value) => onChange(value)}
-      showSearch
-      allowClear
-      placeholder='Diretoria Regional de Educação (Ue)'
-    />
+    <Form.Item name={nomeCampo} rules={[{ required: !!modalidade, message: 'Campo obrigatório' }]}>
+      <Select
+        options={options}
+        disabled={options?.length === 1}
+        placeholder='Unidade Educacional (UE)'
+        allowClear
+        showSearch
+      />
+    </Form.Item>
   );
 };
 

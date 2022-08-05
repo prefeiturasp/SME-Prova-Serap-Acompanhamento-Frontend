@@ -1,45 +1,43 @@
+import { Form, FormProps } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { Dispatch, SetStateAction, useCallback, useEffect } from 'react';
 
 import Select from '~/components/select';
-import { SelectValueType } from '~/domain/type/select';
 import filtroService from '~/services/filtro-service';
 
-interface ModalidadeProps {
-  onChange: (value: SelectValueType) => void;
-  value?: SelectValueType;
+interface ModalidadeProps extends FormProps {
   setModalidades: Dispatch<SetStateAction<DefaultOptionType[]>>;
   options: DefaultOptionType[];
 }
 
-const Modalidade: React.FC<ModalidadeProps> = ({ onChange, value, setModalidades, options }) => {
+const Modalidade: React.FC<ModalidadeProps> = ({ form, setModalidades, options }) => {
+  const nomeCampo = 'modalidade';
+
   const obterModalidade = useCallback(async () => {
     const resposta = await filtroService.obterModalidades();
 
     if (resposta?.length) {
       setModalidades(resposta);
-      if (resposta.length === 1) onChange(resposta[0].value ?? null);
+      if (resposta.length === 1) form?.setFieldValue(nomeCampo, resposta[0].value);
     } else {
       setModalidades([]);
-      onChange(null);
+      form?.setFieldValue(nomeCampo, null);
     }
-  }, [onChange, setModalidades]);
-
-  console.log('render Modalidade');
+  }, [form, setModalidades]);
 
   useEffect(() => {
-    console.log('obterModalidade');
     obterModalidade();
   }, [obterModalidade]);
 
   return (
-    <Select
-      value={value}
-      options={options}
-      onChange={(value) => onChange(value)}
-      allowClear
-      placeholder='Modalidade'
-    />
+    <Form.Item name={nomeCampo}>
+      <Select
+        options={options}
+        disabled={options?.length === 1}
+        placeholder='Modalidade'
+        allowClear
+      />
+    </Form.Item>
   );
 };
 

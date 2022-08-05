@@ -1,67 +1,59 @@
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Form, Row } from 'antd';
 import { DefaultOptionType } from 'antd/lib/select';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-
-import { SelectValueType } from '~/domain/type/select';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '~/redux';
 import { setFiltroAtual } from '~/redux/modules/filtro-principal/actions';
-import { FiltroAtualProps } from '~/redux/modules/filtro-principal/reducers';
+
+import { FiltroPrincipalProps } from '~/redux/modules/filtro-principal/reducers';
+import { setAbrirFiltroPrincipal } from '~/redux/modules/geral/actions';
 import AnosEscolares from './anos-escolares';
 import AnosLetivos from './anos-letivos';
-import Dre from './dres';
+import Dres from './dres';
 import Modalidade from './modalidade';
 import Provas from './provas';
 import SituacoesProvas from './situacoes-provas';
 import { LabelPopover } from './styles';
 import Turmas from './turmas';
-import Ue from './ues';
+import Ues from './ues';
 
-interface CamposFiltroPrincipalProps {
-  filtroAtual: FiltroAtualProps;
-}
-
-const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtual }) => {
+const CamposFiltroPrincipal: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [anoLetivo, setAnoLetivo] = useState<SelectValueType>(null);
-  const [anosLetivos, setAnosLetivos] = useState<DefaultOptionType[]>(filtroAtual.anosLetivos);
+  const abrirFiltroPrincipal = useSelector((state: AppState) => state.geral.abrirFiltroPrincipal);
 
+  const filtroPrincipal = useSelector((state: AppState) => state.filtroPrincipal);
+
+  const [form] = Form.useForm();
+
+  const [anosLetivos, setAnosLetivos] = useState<DefaultOptionType[]>(filtroPrincipal.anosLetivos);
   const [situacoesProvas, setSituacoesProvas] = useState<DefaultOptionType[]>(
-    filtroAtual.situacoesProvas,
+    filtroPrincipal.situacoesProvas,
   );
-  const [situacaoProva, setSituacaoProva] = useState<SelectValueType>(null);
-
-  const [provas, setProvas] = useState<DefaultOptionType[]>(filtroAtual.provas);
-  const [prova, setProva] = useState<SelectValueType>(null);
-
-  const [modalidades, setModalidades] = useState<DefaultOptionType[]>(filtroAtual.modalidades);
-  const [modalidade, setModalidade] = useState<SelectValueType>(null);
-
-  const [dres, setDres] = useState<DefaultOptionType[]>(filtroAtual.dres);
-  const [dre, setDre] = useState<SelectValueType>(null);
-
-  const [ues, setUes] = useState<DefaultOptionType[]>(filtroAtual.ues);
-  const [ue, setUe] = useState<SelectValueType>(null);
-
+  const [provas, setProvas] = useState<DefaultOptionType[]>(filtroPrincipal.provas);
+  const [modalidades, setModalidades] = useState<DefaultOptionType[]>(filtroPrincipal.modalidades);
+  const [dres, setDres] = useState<DefaultOptionType[]>(filtroPrincipal.dres);
+  const [ues, setUes] = useState<DefaultOptionType[]>(filtroPrincipal.ues);
   const [anosEscolares, setAnosEscolares] = useState<DefaultOptionType[]>(
-    filtroAtual.anosEscolares,
+    filtroPrincipal.anosEscolares,
   );
-  const [anoEscolar, setAnoEscolar] = useState<SelectValueType>(null);
+  const [turmas, setTurmas] = useState<DefaultOptionType[]>(filtroPrincipal.turmas);
 
-  const [turmas, setTurmas] = useState<DefaultOptionType[]>(filtroAtual.turmas);
-  const [turma, setTurma] = useState<SelectValueType>(null);
+  useEffect(() => {
+    form.resetFields();
+  }, [form, abrirFiltroPrincipal]);
 
-  const onClickAplicarFiltro = () => {
+  const onClickAplicarFiltro = (valores: FiltroPrincipalProps) => {
     dispatch(
       setFiltroAtual({
-        anoLetivo,
-        situacaoProva,
-        prova,
-        modalidade,
-        dre,
-        ue,
-        anoEscolar,
-        turma,
+        anoLetivo: valores.anoLetivo,
+        situacaoProva: valores.situacaoProva,
+        prova: valores.prova,
+        modalidade: valores.modalidade,
+        dre: valores.dre,
+        ue: valores.ue,
+        anoEscolar: valores.anoEscolar,
+        turma: valores.turma,
         anosLetivos,
         situacoesProvas,
         provas,
@@ -72,83 +64,72 @@ const CamposFiltroPrincipal: React.FC<CamposFiltroPrincipalProps> = ({ filtroAtu
         turmas,
       }),
     );
+    dispatch(setAbrirFiltroPrincipal(false));
   };
 
   return (
-    <div>
+    <>
       <Row>
         <LabelPopover>Selecione itens abaixo para filtrar as informações</LabelPopover>
       </Row>
-      <Row gutter={[11, 11]}>
-        <Col span={4}>
-          <AnosLetivos
-            value={anoLetivo}
-            onChange={setAnoLetivo}
-            setAnosLetivos={setAnosLetivos}
-            options={anosLetivos}
-          />
-        </Col>
-        <Col span={8}>
-          <SituacoesProvas
-            value={situacaoProva}
-            onChange={setSituacaoProva}
-            setSituacoesProvas={setSituacoesProvas}
-            options={situacoesProvas}
-          />
-        </Col>
-        <Col span={12}>
-          <Provas
-            value={prova}
-            onChange={setProva}
-            setProvas={setProvas}
-            options={provas}
-            anoLetivo={anoLetivo}
-            situacaoProva={situacaoProva}
-          />
-        </Col>
-        <Col span={8}>
-          <Modalidade
-            value={modalidade}
-            onChange={setModalidade}
-            setModalidades={setModalidades}
-            options={modalidades}
-          />
-        </Col>
-        <Col span={16}>
-          <Dre value={dre} onChange={setDre} setDres={setDres} options={dres} />
-        </Col>
-        <Col span={24}>
-          <Ue value={ue} onChange={setUe} setUes={setUes} options={ues} dre={dre} />
-        </Col>
-        <Col span={7}>
-          <AnosEscolares
-            value={anoEscolar}
-            onChange={setAnoEscolar}
-            setAnosEscolares={setAnosEscolares}
-            options={anosEscolares}
-            anoLetivo={anoLetivo}
-            ue={ue}
-          />
-        </Col>
-        <Col span={12}>
-          <Turmas
-            value={turma}
-            onChange={setTurma}
-            setTurmas={setTurmas}
-            options={turmas}
-            anoLetivo={anoLetivo}
-            ue={ue}
-            modalidade={modalidade}
-            anoEscolar={anoEscolar}
-          />
-        </Col>
-        <Col span={5}>
-          <Button style={{ width: '100%' }} type='primary' onClick={() => onClickAplicarFiltro()}>
-            Aplicar filtro
-          </Button>
-        </Col>
-      </Row>
-    </div>
+      <Form
+        form={form}
+        initialValues={{
+          anoLetivo: filtroPrincipal.anoLetivo,
+          situacaoProva: filtroPrincipal.situacaoProva,
+          prova: filtroPrincipal.prova,
+          modalidade: filtroPrincipal.modalidade,
+          dre: filtroPrincipal.dre,
+          ue: filtroPrincipal.ue,
+          anoEscolar: filtroPrincipal.anoEscolar,
+          turma: filtroPrincipal.turma,
+        }}
+        onFinish={onClickAplicarFiltro}
+        autoComplete='off'
+      >
+        <Row gutter={11}>
+          <Col span={4}>
+            <AnosLetivos form={form} setAnosLetivos={setAnosLetivos} options={anosLetivos} />
+          </Col>
+          <Col span={8}>
+            <SituacoesProvas
+              form={form}
+              setSituacoesProvas={setSituacoesProvas}
+              options={situacoesProvas}
+            />
+          </Col>
+          <Col span={12}>
+            <Provas form={form} setProvas={setProvas} options={provas} />
+          </Col>
+          <Col span={8}>
+            <Modalidade form={form} setModalidades={setModalidades} options={modalidades} />
+          </Col>
+          <Col span={16}>
+            <Dres form={form} setDres={setDres} options={dres} />
+          </Col>
+          <Col span={24}>
+            <Ues form={form} setUes={setUes} options={ues} />
+          </Col>
+          <Col span={7}>
+            <AnosEscolares
+              form={form}
+              setAnosEscolares={setAnosEscolares}
+              options={anosEscolares}
+            />
+          </Col>
+          <Col span={12}>
+            <Turmas form={form} setTurmas={setTurmas} options={turmas} />
+          </Col>
+          <Col span={5}>
+            <Form.Item>
+              <Button htmlType='submit' style={{ width: '100%' }} type='primary'>
+                Aplicar filtro
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+    </>
   );
 };
 
