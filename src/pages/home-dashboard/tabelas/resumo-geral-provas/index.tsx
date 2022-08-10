@@ -1,21 +1,26 @@
 import { ColumnsType } from 'antd/lib/table';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Table from '~/components/table';
+import { AppState } from '~/redux';
 import resumoService from '~/services/resumo-service';
 import { CardTabelas, TituloCardTabelas } from '../styles';
 
 const TabelaResumoGeralProvas: React.FC = () => {
+  const filtroPrincipal = useSelector((state: AppState) => state.filtroPrincipal);
+
   const [dados, setDados] = useState<any[]>([]);
 
   const [totalRegistros, setTotalRegistros] = useState(0);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    setCarregando(true);
-    setTimeout(() => {
-      onChange(1);
-    }, 200);
-  }, []);
+    if (filtroPrincipal?.anoLetivo) {
+      onChange();
+    } else {
+      setDados([]);
+    }
+  }, [filtroPrincipal]);
 
   const columns: ColumnsType<any> = [
     {
@@ -106,7 +111,7 @@ const TabelaResumoGeralProvas: React.FC = () => {
     return <Table columns={columnsExpandedRow} dataSource={detalhes} pagination={false} />;
   };
 
-  const onChange = async (page: number) => {
+  const onChange = async (page = 1) => {
     setCarregando(true);
     const resposta = await resumoService.obterDadosResumoGeralProvas(page);
 
@@ -119,6 +124,7 @@ const TabelaResumoGeralProvas: React.FC = () => {
     }
     setCarregando(false);
   };
+
   return (
     <CardTabelas>
       <TituloCardTabelas>Resumo Geral das Provas</TituloCardTabelas>

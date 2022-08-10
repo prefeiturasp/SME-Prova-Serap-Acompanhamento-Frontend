@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CardsTotalizadores from '~/components/cards-totalizadores';
+import { AppState } from '~/redux';
 import { setDataUltimaAtualizacao } from '~/redux/modules/geral/actions';
 import geralService from '~/services/geral-service';
 
 const Totalizadores: React.FC = () => {
-  // TODO -  Pegar dados do filtro principal
-  const filtroPrincipal = useMemo(() => ({ anoLetivo: 2022 }), []);
+  const filtroPrincipal = useSelector((state: AppState) => state.filtroPrincipal);
 
   const dispatch = useDispatch();
 
@@ -15,19 +15,22 @@ const Totalizadores: React.FC = () => {
   const obterDadosCardsTotalizadores = useCallback(async () => {
     const resposta = await geralService.obterDadosCardsTotalizadores(filtroPrincipal);
 
-    if (resposta?.data) {
+    if (resposta?.data?.length) {
       setDadosTotalizadores(resposta.data);
-      dispatch(setDataUltimaAtualizacao(new Date()));
     } else {
       setDadosTotalizadores([]);
     }
+    dispatch(setDataUltimaAtualizacao(new Date()));
   }, [filtroPrincipal, dispatch]);
 
   useEffect(() => {
     if (filtroPrincipal?.anoLetivo) {
       obterDadosCardsTotalizadores();
+    } else {
+      setDadosTotalizadores([]);
+      dispatch(setDataUltimaAtualizacao(new Date()));
     }
-  }, [filtroPrincipal, obterDadosCardsTotalizadores]);
+  }, [filtroPrincipal, dispatch, obterDadosCardsTotalizadores]);
 
   return <CardsTotalizadores dados={dadosTotalizadores} />;
 };
