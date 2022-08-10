@@ -1,10 +1,13 @@
+import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColumnsType } from 'antd/lib/table';
 import React, { useEffect, useState } from 'react';
 import Table from '~/components/table';
-import resumoService from '~/services/resumo-service';
+import resumoProvasService from '~/services/resumo-service';
+import { Colors } from '~/styles/colors';
 import { CardTabelas, TituloCardTabelas } from '../styles';
 
-const TabelaResumoGeralProvas: React.FC = () => {
+const TabelaResumoGeralTurma: React.FC = () => {
   const [dados, setDados] = useState<any[]>([]);
 
   const [totalRegistros, setTotalRegistros] = useState(0);
@@ -64,51 +67,56 @@ const TabelaResumoGeralProvas: React.FC = () => {
   const expandedRowRender = (record: any) => {
     const columnsExpandedRow: ColumnsType<any> = [
       {
-        title: 'Data de início',
-        dataIndex: 'dataInicio',
-        key: 'dataInicio',
+        title: 'Nome do Estudante',
+        dataIndex: 'nomeEstudante',
+        key: 'nomeEstudante',
+      },
+      {
+        title: 'Fez Download',
+        dataIndex: 'fezDownload',
+        key: 'fezDownload',
+        align: 'center',
+        render(fezDownload) {
+          return fezDownload ? (
+            <FontAwesomeIcon icon={faCircleCheck} fontSize='14' color={Colors.SIGPAE} />
+          ) : (
+            <FontAwesomeIcon icon={faCircleXmark} fontSize='14' color={Colors.SupportWarning} />
+          );
+        },
+      },
+      {
+        title: 'Início da Prova',
+        dataIndex: 'inicioProva',
+        key: 'inicioProva',
         align: 'center',
       },
       {
-        title: 'Data de fim',
-        dataIndex: 'dataFim',
-        key: 'dataFim',
+        title: 'Fim da Prova',
+        dataIndex: 'fimProva',
+        key: 'fimProva',
         align: 'center',
       },
       {
-        title: 'Qtde. Questões da prova',
-        dataIndex: 'qtdQuestoesProva',
-        key: 'qtdQuestoesProva',
+        title: 'Tempo médio',
+        dataIndex: 'tempoMedio',
+        key: 'tempoMedio',
         align: 'center',
       },
       {
-        title: 'Total de Questões',
-        dataIndex: 'totalQuestoes',
-        key: 'totalQuestoes',
-        align: 'center',
-      },
-      {
-        title: 'Respondidas',
-        dataIndex: 'respondidas',
-        key: 'respondidas',
-        align: 'center',
-      },
-      {
-        title: 'Percentual respondido',
-        dataIndex: 'percentualRespondido',
-        key: 'percentualRespondido',
+        title: 'Questões Respondidas',
+        dataIndex: 'questoesRespondidas',
+        key: 'questoesRespondidas',
         align: 'center',
       },
     ];
 
     const detalhes = record?.detalhes?.length ? record.detalhes : [];
-
     return <Table columns={columnsExpandedRow} dataSource={detalhes} pagination={false} />;
   };
 
   const onChange = async (page: number) => {
     setCarregando(true);
-    const resposta = await resumoService.obterDadosResumoGeralProvas(page);
+    const resposta = await resumoProvasService.obterDadosResumoGeralTurma(page);
 
     if (resposta?.items?.length) {
       setTotalRegistros(resposta.totalRegistros);
@@ -121,7 +129,7 @@ const TabelaResumoGeralProvas: React.FC = () => {
   };
   return (
     <CardTabelas>
-      <TituloCardTabelas>Resumo Geral das Provas</TituloCardTabelas>
+      <TituloCardTabelas>Resumo Geral da Turma</TituloCardTabelas>
       <Table
         loading={carregando}
         columns={columns}
@@ -136,4 +144,4 @@ const TabelaResumoGeralProvas: React.FC = () => {
   );
 };
 
-export default TabelaResumoGeralProvas;
+export default TabelaResumoGeralTurma;
