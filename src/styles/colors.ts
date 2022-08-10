@@ -12,6 +12,8 @@ const Colors = {
   CinzaIconSelect: '#686C6E',
   CinzaCardTabela: '#F8F8F8',
   CinzaBordaCardTabela: '#F3F3F3',
+  SupportWarning: '#B40C02',
+  SIGPAE: '#198459',
 };
 
 export { Colors };
