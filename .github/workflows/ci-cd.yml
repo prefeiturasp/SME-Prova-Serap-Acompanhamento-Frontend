@@ -26,8 +26,8 @@ jobs:
       - name: Build the Docker image    
         run: |
              docker login ${{ secrets.REGISTRY_HOST }}
-             docker build . --file src/SME.SERAp.Prova.Api/Dockerfile --tag ${{ secrets.REGISTRY_HOST }}/${GITHUB_REF##*/}/serap-acompanhamento-frontend
-             docker push ${{ secrets.REGISTRY_HOST }}/${GITHUB_REF##*/}/serap-acompanhamento-frontend
+             docker build . --file Dockerfile --tag ${{ secrets.REGISTRY_HOST }}/${GITHUB_REF##*/}/serap-acompanhamento-front
+             docker push ${{ secrets.REGISTRY_HOST }}/${GITHUB_REF##*/}/serap-acompanhamento-front
              
   deploy-dev:
   
@@ -42,7 +42,7 @@ jobs:
         env: 
           RANCHER_URL: ${{ secrets.RANCHER_URL }}
           RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}
-          WORKLOAD: serap-acompanhamento-frontend
+          WORKLOAD: serap-acompanhamento-front
           NAMESPACE: sme-serap-acompanhamento
           
   deploy-hom:
@@ -58,7 +58,7 @@ jobs:
         env: 
           RANCHER_URL: ${{ secrets.RANCHER_URL }}
           RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}
-          WORKLOAD: serap-acompanhamento-frontend
+          WORKLOAD: serap-acompanhamento-front
           NAMESPACE: sme-serap-acompanhamento
           
   deploy-prod:
@@ -74,5 +74,5 @@ jobs:
         env: 
           RANCHER_URL: ${{ secrets.RANCHER_URL }}
           RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}
-          WORKLOAD: serap-acompanhamento-frontend
+          WORKLOAD: serap-acompanhamento-front
           NAMESPACE: sme-serap-acompanhamento
