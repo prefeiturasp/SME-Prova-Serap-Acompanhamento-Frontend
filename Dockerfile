@@ -12,8 +12,10 @@ FROM nginx:1.21-alpine
 
 COPY configuracoes/default.conf /etc/nginx/conf.d/
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
-COPY --from=build-deps /usr/src/app/docker/startup.sh  /
-EXPOSE 80
-RUN dos2unix "/startup.sh"
+
+COPY docker/startup.sh /
+
 RUN ["chmod", "+x", "/startup.sh"]
-CMD /startup.sh
+
+EXPOSE 80
+ENTRYPOINT ["/startup.sh"]
