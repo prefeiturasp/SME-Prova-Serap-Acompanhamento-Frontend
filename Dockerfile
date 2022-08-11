@@ -13,3 +13,7 @@ FROM nginx:1.21-alpine
 COPY configuracoes/default.conf /etc/nginx/conf.d/
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
 EXPOSE 80
+ADD docker/startup.sh /startup.sh
+RUN dos2unix "/startup.sh"
+RUN ["chmod", "+x", "/startup.sh"]
+CMD /startup.sh
