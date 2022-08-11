@@ -20,7 +20,6 @@ const ContainerTag = styled(Tag)`
 
 export interface TagItem {
   nomeCampo: string;
-  valor: SelectValueType;
   descricao: React.ReactNode;
 }
 
@@ -53,56 +52,57 @@ const TagFiltroPrincipal: React.FC = () => {
     if (anoLetivo) {
       dadosTagsNovo.push({
         nomeCampo: 'anoLetivo',
-        valor: anoLetivo,
         descricao: anosLetivos.find((item) => item.value === anoLetivo)?.label,
       });
     }
     if (situacaoProva) {
       dadosTagsNovo.push({
         nomeCampo: 'situacaoProva',
-        valor: situacaoProva,
         descricao: situacoesProvas.find((item) => item.value === situacaoProva)?.label,
       });
     }
-    if (prova) {
-      dadosTagsNovo.push({
-        nomeCampo: 'prova',
-        valor: prova,
-        descricao: provas.find((item) => item.value === prova)?.label,
-      });
+
+    if (prova?.length) {
+      const provasSelecionadas = provas.filter((item) =>
+        prova.includes(item?.value as SelectValueType),
+      );
+
+      if (provasSelecionadas?.length) {
+        provasSelecionadas.forEach((item) => {
+          dadosTagsNovo.push({
+            nomeCampo: 'prova',
+            descricao: item.label,
+          });
+        });
+      }
     }
     if (modalidade) {
       dadosTagsNovo.push({
         nomeCampo: 'modalidade',
-        valor: modalidade,
         descricao: modalidades.find((item) => item.value === modalidade)?.label,
       });
     }
     if (dre) {
       dadosTagsNovo.push({
         nomeCampo: 'dre',
-        valor: dre,
         descricao: dres.find((item) => item.value === dre)?.label,
       });
     }
     if (ue) {
       dadosTagsNovo.push({
         nomeCampo: 'ue',
-        valor: ue,
         descricao: ues.find((item) => item.value === ue)?.label,
       });
     }
     if (anoEscolar) {
       dadosTagsNovo.push({
         nomeCampo: 'turma',
-        valor: anoEscolar,
-        descricao: anosEscolares.find((item) => item.value === turma)?.label,
+        descricao: anosEscolares.find((item) => item.value === anoEscolar)?.label,
       });
     }
     if (turma) {
       dadosTagsNovo.push({
         nomeCampo: 'turma',
-        valor: turma,
         descricao: turmas.find((item) => item.value === turma)?.label,
       });
     }
@@ -120,7 +120,7 @@ const TagFiltroPrincipal: React.FC = () => {
       })}
     </>
   ) : (
-    <> </>
+    <></>
   );
 };
 

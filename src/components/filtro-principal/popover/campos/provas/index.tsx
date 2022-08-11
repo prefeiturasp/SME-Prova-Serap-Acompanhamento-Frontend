@@ -21,10 +21,10 @@ const Provas: React.FC<ProvasProps> = ({ form, setProvas, options }) => {
 
     if (resposta?.length) {
       setProvas(resposta);
-      if (resposta.length === 1) form?.setFieldValue(nomeCampo, resposta[0].value);
+      if (resposta.length === 1) form?.setFieldValue(nomeCampo, [resposta[0].value]);
     } else {
       setProvas([]);
-      form?.setFieldValue(nomeCampo, null);
+      form?.setFieldValue(nomeCampo, []);
     }
   }, [form, setProvas, anoLetivo, situacaoProva]);
 
@@ -33,7 +33,7 @@ const Provas: React.FC<ProvasProps> = ({ form, setProvas, options }) => {
       obterProvas();
     } else {
       setProvas([]);
-      form?.setFieldValue(nomeCampo, null);
+      form?.setFieldValue(nomeCampo, []);
     }
   }, [form, obterProvas, setProvas, anoLetivo, situacaoProva]);
 
@@ -45,6 +45,8 @@ const Provas: React.FC<ProvasProps> = ({ form, setProvas, options }) => {
         placeholder='Prova'
         allowClear
         showSearch
+        mode='multiple'
+        maxTagCount='responsive'
       />
     </Form.Item>
   );
