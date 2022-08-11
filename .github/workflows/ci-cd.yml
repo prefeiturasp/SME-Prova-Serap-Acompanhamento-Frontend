@@ -26,7 +26,7 @@ jobs:
       - name: Build the Docker image    
         run: |
              docker login ${{ secrets.REGISTRY_HOST }}
-             docker build . --file src/SME.SERAp.Prova.Api/Dockerfile --tag ${{ secrets.REGISTRY_HOST }}/${GITHUB_REF##*/}/serap-acompanhamento-frontend
+             docker build . --file Dockerfile --tag ${{ secrets.REGISTRY_HOST }}/${GITHUB_REF##*/}/serap-acompanhamento-frontend
              docker push ${{ secrets.REGISTRY_HOST }}/${GITHUB_REF##*/}/serap-acompanhamento-frontend
              
   deploy-dev:
