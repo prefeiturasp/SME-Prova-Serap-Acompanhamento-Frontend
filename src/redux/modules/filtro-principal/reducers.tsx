@@ -7,7 +7,7 @@ import { SetFiltroAtual, typeSetFiltroAtual } from './actions';
 export interface FiltroPrincipalProps {
   anoLetivo: SelectValueType;
   situacaoProva: SelectValueType;
-  prova: SelectValueType;
+  prova: SelectValueType[];
   modalidade: SelectValueType;
   dre: SelectValueType;
   ue: SelectValueType;
@@ -26,7 +26,7 @@ export interface FiltroPrincipalProps {
 const initialValues = {
   anoLetivo: null,
   situacaoProva: null,
-  prova: null,
+  prova: [],
   modalidade: null,
   dre: null,
   ue: null,

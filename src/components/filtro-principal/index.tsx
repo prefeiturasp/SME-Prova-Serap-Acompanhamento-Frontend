@@ -32,10 +32,11 @@ const FiltroPrincipal: React.FC = () => {
       : null;
 
     let provas: DefaultOptionType[] = [];
-    let prova = null;
+    let prova: SelectValueType[] = [];
+
     if (anoLetivo && situacaoProva) {
       provas = await filtroService.obterProvas(anoLetivo, situacaoProva);
-      prova = provas?.length === 1 ? (provas[0].value as SelectValueType) : null;
+      prova = provas?.length === 1 ? ([provas[0].value] as SelectValueType[]) : [];
     }
 
     const modalidades = await filtroService.obterModalidades();
@@ -106,7 +107,7 @@ const FiltroPrincipal: React.FC = () => {
           color={Colors.Label}
           style={{ margin: '10px' }}
         />
-        <ScrollContainer style={{ width: 549, display: 'flex' }}>
+        <ScrollContainer style={{ width: 549, display: 'flex', cursor: 'grab' }}>
           <TagFiltroPrincipal />
         </ScrollContainer>
         <PopoverFiltroPrincipal />
