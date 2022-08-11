@@ -1,10 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 
 cd /usr/share/nginx/html/assets
 files=$(ls)
 for file in $files
 do
-  envsubst < $file | tee $file
+  cp $file /tmp/$file
+  rm $file
+  envsubst < /tmp/$file > $file
 done
-cd
+
 nginx -g 'daemon off;'
