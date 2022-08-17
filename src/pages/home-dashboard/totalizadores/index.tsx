@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import CardsTotalizadores from '~/components/cards-totalizadores';
+import CardsTotalizadores, { CardTotalizador } from '~/components/cards-totalizadores';
 import { AppState } from '~/redux';
 import { setDataUltimaAtualizacao } from '~/redux/modules/geral/actions';
 import geralService from '~/services/geral-service';
@@ -10,7 +10,7 @@ const Totalizadores: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const [dadosTotalizadores, setDadosTotalizadores] = useState<any[]>([]);
+  const [dadosTotalizadores, setDadosTotalizadores] = useState<CardTotalizador[]>([]);
 
   const obterDadosCardsTotalizadores = useCallback(async () => {
     const resposta = await geralService.obterDadosCardsTotalizadores(filtroPrincipal);
