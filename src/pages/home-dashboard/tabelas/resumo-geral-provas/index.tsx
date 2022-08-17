@@ -3,11 +3,11 @@ import React from 'react';
 import Table from '~/components/table';
 
 interface TabelaDetalhesResumoGeralProvasProps {
-  dadosProva: any;
+  detalheProva: any;
 }
 
 const TabelaDetalhesResumoGeralProvas: React.FC<TabelaDetalhesResumoGeralProvasProps> = ({
-  dadosProva,
+  detalheProva,
 }) => {
   const columns: ColumnsType<any> = [
     {
@@ -47,8 +47,8 @@ const TabelaDetalhesResumoGeralProvas: React.FC<TabelaDetalhesResumoGeralProvasP
       align: 'center',
     },
   ];
-
-  return <Table columns={columns} dataSource={[dadosProva]} pagination={false} />;
+  const detalhes = detalheProva ? [detalheProva] : [];
+  return <Table columns={columns} dataSource={detalhes} pagination={false} />;
 };
 
 export default TabelaDetalhesResumoGeralProvas;
