@@ -71,16 +71,16 @@ const TabelaResumos: React.FC = () => {
   const expandedRowRender = (dadosProva: any) => {
     if (filtroPrincipal?.turma) return <TabelaDetalhesResumoGeralTurma dadosProva={dadosProva} />;
 
-    return <TabelaDetalhesResumoGeralProvas dadosProva={dadosProva} />;
+    return <TabelaDetalhesResumoGeralProvas detalheProva={dadosProva?.detalheProva} />;
   };
 
   const onChange = async (page = 1) => {
     setCarregando(true);
-    const resposta = await resumoService.obterDadosResumoGeralProvas(page);
+    const resposta = await resumoService.obterDadosResumoGeralProvas(page, filtroPrincipal);
 
-    if (resposta?.items?.length) {
-      setTotalRegistros(resposta.totalRegistros);
-      setDados(resposta.items);
+    if (resposta?.data?.items?.length) {
+      setTotalRegistros(resposta.data.totalRegistros);
+      setDados(resposta.data.items);
     } else {
       setTotalRegistros(0);
       setDados([]);
@@ -102,6 +102,7 @@ const TabelaResumos: React.FC = () => {
         dataSource={dados}
         expandable={{
           expandedRowRender,
+          rowExpandable: (record: any) => !!record?.detalheProva?.length,
         }}
         pagination={{ total: totalRegistros, pageSize: 10, onChange }}
       />
