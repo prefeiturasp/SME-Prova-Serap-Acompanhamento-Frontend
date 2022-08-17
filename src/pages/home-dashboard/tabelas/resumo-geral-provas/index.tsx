@@ -24,8 +24,8 @@ const TabelaDetalhesResumoGeralProvas: React.FC<TabelaDetalhesResumoGeralProvasP
     },
     {
       title: 'Qtde. Questões da prova',
-      dataIndex: 'qtdQuestoesProva',
-      key: 'qtdQuestoesProva',
+      dataIndex: 'qtdeQuestoesProva',
+      key: 'qtdeQuestoesProva',
       align: 'center',
     },
     {

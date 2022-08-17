@@ -3,22 +3,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColumnsType } from 'antd/lib/table';
 import React, { useCallback, useEffect, useState } from 'react';
 import Table from '~/components/table';
+import { AlunoTurmaDto } from '~/domain/dto/aluno-turma-dto';
 import resumoProvasService from '~/services/resumo-service';
 import { Colors } from '~/styles/colors';
 
 interface TabelaDetalhesResumoGeralTurmaProps {
   dadosProva: any;
+  turmaId: number;
 }
 
 const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaProps> = ({
+  turmaId,
   dadosProva,
 }) => {
-  const [dados, setDados] = useState<any[]>([]);
+  const [dados, setDados] = useState<AlunoTurmaDto[]>([]);
   const [carregando, setCarregando] = useState(true);
 
   const obterDados = useCallback(async () => {
     setCarregando(true);
-    const resposta = await resumoProvasService.obterDadosResumoGeralTurma(dadosProva?.idProva);
+    const resposta = await resumoProvasService.obterDadosResumoGeralTurma(
+      turmaId,
+      dadosProva?.provaId,
+    );
 
     if (resposta?.data?.length) {
       setDados(resposta.data);
@@ -26,7 +32,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       setDados([]);
     }
     setCarregando(false);
-  }, [dadosProva]);
+  }, [dadosProva, turmaId]);
 
   useEffect(() => {
     if (dadosProva?.idProva) {
@@ -36,7 +42,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
     }
   }, [dadosProva, obterDados]);
 
-  const columns: ColumnsType<any> = [
+  const columns: ColumnsType<AlunoTurmaDto> = [
     {
       title: 'Nome do Estudante',
       dataIndex: 'nomeEstudante',

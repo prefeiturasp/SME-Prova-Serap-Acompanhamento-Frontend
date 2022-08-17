@@ -3,6 +3,7 @@ import api from './api';
 import queryString from 'query-string';
 import { FiltroPrincipalProps } from '~/redux/modules/filtro-principal/reducers';
 import { AxiosResponse } from 'axios';
+import { AlunoTurmaDto } from '~/domain/dto/aluno-turma-dto';
 
 const obterDadosResumoGeralProvas = (
   page: number,
@@ -31,29 +32,11 @@ const obterDadosResumoGeralProvas = (
   });
 };
 
-const obterDadosResumoGeralTurma = (idProva: number): Promise<any> => {
-  console.log(idProva);
-
-  const mock: any[] = [];
-
-  for (let i = 0; i < 10; ++i) {
-    mock.push({
-      key: i.toString(),
-      nomeEstudante: 'Arthur Zemey Fahael - ' + i,
-      fezDownload: i > 5 ? true : false,
-      inicioProva: '06/07/2022 - 15:45',
-      fimProva: '06/07/2022 - 16:45',
-      tempoMedio: '60min',
-      questoesRespondidas: 28,
-    });
-  }
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ data: mock });
-    }, 2000);
-  });
-};
+const obterDadosResumoGeralTurma = (
+  turmaId: number,
+  provaId: number,
+): Promise<AxiosResponse<AlunoTurmaDto[]>> =>
+  api.get(`/api/v1/resumo/turma/${turmaId}/prova/${provaId}/alunos`);
 
 export default {
   obterDadosResumoGeralProvas,
