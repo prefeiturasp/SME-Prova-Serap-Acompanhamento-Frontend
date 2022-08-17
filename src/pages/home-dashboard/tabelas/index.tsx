@@ -16,6 +16,20 @@ const TabelaResumos: React.FC = () => {
   const [totalRegistros, setTotalRegistros] = useState(0);
   const [carregando, setCarregando] = useState(true);
 
+  const onChange = async (page = 1) => {
+    setCarregando(true);
+    const resposta = await resumoService.obterDadosResumoGeralProvas(page, filtroPrincipal);
+
+    if (resposta?.data?.items?.length) {
+      setTotalRegistros(resposta.data.totalRegistros);
+      setDados(resposta.data.items);
+    } else {
+      setTotalRegistros(0);
+      setDados([]);
+    }
+    setCarregando(false);
+  };
+
   useEffect(() => {
     if (filtroPrincipal?.anoLetivo) {
       onChange();
@@ -69,23 +83,11 @@ const TabelaResumos: React.FC = () => {
   ];
 
   const expandedRowRender = (dadosProva: any) => {
-    if (filtroPrincipal?.turma) return <TabelaDetalhesResumoGeralTurma dadosProva={dadosProva} />;
+    const turmaId = (filtroPrincipal?.turma as number) || 0;
+    if (filtroPrincipal?.turma)
+      return <TabelaDetalhesResumoGeralTurma dadosProva={dadosProva} turmaId={turmaId} />;
 
     return <TabelaDetalhesResumoGeralProvas detalheProva={dadosProva?.detalheProva} />;
-  };
-
-  const onChange = async (page = 1) => {
-    setCarregando(true);
-    const resposta = await resumoService.obterDadosResumoGeralProvas(page, filtroPrincipal);
-
-    if (resposta?.data?.items?.length) {
-      setTotalRegistros(resposta.data.totalRegistros);
-      setDados(resposta.data.items);
-    } else {
-      setTotalRegistros(0);
-      setDados([]);
-    }
-    setCarregando(false);
   };
 
   const obterTitulo = () => {
@@ -102,7 +104,6 @@ const TabelaResumos: React.FC = () => {
         dataSource={dados}
         expandable={{
           expandedRowRender,
-          rowExpandable: (record: any) => !!record?.detalheProva?.length,
         }}
         pagination={{ total: totalRegistros, pageSize: 10, onChange }}
       />

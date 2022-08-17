@@ -7,7 +7,7 @@ const Container = styled.div`
   height: 23px;
   display: flex;
   justify-content: flex-end;
-  font-size: 9px;
+  font-size: 11px;
   margin-top: 8px;
 `;
 
