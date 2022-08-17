@@ -59,7 +59,7 @@ const FiltroPrincipal: React.FC = () => {
       ue = ues?.length === 1 ? (ues[0].value as SelectValueType) : null;
 
       if (anoLetivo && ue) {
-        anosEscolares = await filtroService.obterAnosEscolares(anoLetivo, ue);
+        anosEscolares = await filtroService.obterAnosEscolares(anoLetivo, modalidade, ue);
         anoEscolar =
           anosEscolares?.length === 1 ? (anosEscolares[0].value as SelectValueType) : null;
       }
