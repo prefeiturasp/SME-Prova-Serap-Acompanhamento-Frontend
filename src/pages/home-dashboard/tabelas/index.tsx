@@ -99,6 +99,7 @@ const TabelaResumos: React.FC = () => {
     <CardTabelas>
       <TituloCardTabelas>{obterTitulo()}</TituloCardTabelas>
       <Table
+        rowKey='provaId'
         loading={carregando}
         columns={columns}
         dataSource={dados}
