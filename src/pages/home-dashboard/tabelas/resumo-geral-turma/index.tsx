@@ -4,11 +4,12 @@ import { ColumnsType } from 'antd/lib/table';
 import React, { useCallback, useEffect, useState } from 'react';
 import Table from '~/components/table';
 import { AlunoTurmaDto } from '~/domain/dto/aluno-turma-dto';
+import { ResumoGeralProvaDto } from '~/domain/dto/resumo-geral-prova-dto';
 import resumoProvasService from '~/services/resumo-service';
 import { Colors } from '~/styles/colors';
 
 interface TabelaDetalhesResumoGeralTurmaProps {
-  dadosProva: any;
+  dadosProva: ResumoGeralProvaDto;
   turmaId: number;
 }
 
@@ -23,7 +24,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
     setCarregando(true);
     const resposta = await resumoProvasService.obterDadosResumoGeralTurma(
       turmaId,
-      dadosProva?.provaId,
+      dadosProva.provaId,
     );
 
     if (resposta?.data?.length) {
