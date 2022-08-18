@@ -44,6 +44,7 @@ const Select: React.FC<SelectProps> = (props) => {
   return (
     <SelectContainer>
       <SelectAnt
+        getPopupContainer={(trigger) => trigger.parentNode}
         notFoundContent={
           <Empty
             description='Sem dados'
