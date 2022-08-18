@@ -17,7 +17,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
   dadosProva,
 }) => {
   const [dados, setDados] = useState<AlunoTurmaDto[]>([]);
-  const [carregando, setCarregando] = useState(true);
+  const [carregando, setCarregando] = useState(false);
 
   const obterDados = useCallback(async () => {
     setCarregando(true);
@@ -35,7 +35,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
   }, [dadosProva, turmaId]);
 
   useEffect(() => {
-    if (dadosProva?.idProva) {
+    if (dadosProva?.provaId) {
       obterDados();
     } else {
       setDados([]);
@@ -46,12 +46,10 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
     {
       title: 'Nome do Estudante',
       dataIndex: 'nomeEstudante',
-      key: 'nomeEstudante',
     },
     {
       title: 'Fez Download',
       dataIndex: 'fezDownload',
-      key: 'fezDownload',
       align: 'center',
       render(fezDownload) {
         return fezDownload ? (
@@ -64,30 +62,43 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
     {
       title: 'Início da Prova',
       dataIndex: 'inicioProva',
-      key: 'inicioProva',
       align: 'center',
+      render(inicioProva) {
+        return inicioProva ?? '-';
+      },
     },
     {
       title: 'Fim da Prova',
       dataIndex: 'fimProva',
-      key: 'fimProva',
       align: 'center',
+      render(fimProva) {
+        return fimProva ?? '-';
+      },
     },
     {
       title: 'Tempo médio',
       dataIndex: 'tempoMedio',
-      key: 'tempoMedio',
       align: 'center',
+      render(tempoMedio) {
+        return tempoMedio ?? '-';
+      },
     },
     {
       title: 'Questões Respondidas',
       dataIndex: 'questoesRespondidas',
-      key: 'questoesRespondidas',
       align: 'center',
     },
   ];
 
-  return <Table loading={carregando} columns={columns} dataSource={dados} pagination={false} />;
+  return (
+    <Table
+      rowKey='nomeEstudante'
+      loading={carregando}
+      columns={columns}
+      dataSource={dados}
+      pagination={false}
+    />
+  );
 };
 
 export default TabelaDetalhesResumoGeralTurma;

@@ -1,11 +1,18 @@
 import { DefaultOptionType } from 'antd/lib/select';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Select from '~/components/select';
+import {
+  setCarregarDadosResumoProva,
+  setCarregarDadosTotalizadores,
+} from '~/redux/modules/geral/actions';
 import geralService from '~/services/geral-service';
 import DataUltimaAtualizacao from './data-ultima-atualizacao';
 import { Actions, BotaoAtualizarDados, Container, Title } from './style';
 
 const HeaderHomeDashboard: React.FC = () => {
+  const dispatch = useDispatch();
+
   const [tiposVisualizacoesDados, setTiposVisualizacoesDados] = useState<DefaultOptionType[]>([]);
 
   const obterTiposVisualizacoesDados = async () => {
@@ -21,13 +28,17 @@ const HeaderHomeDashboard: React.FC = () => {
     obterTiposVisualizacoesDados();
   }, []);
 
+  const atualizarDados = () => {
+    dispatch(setCarregarDadosResumoProva(true));
+    dispatch(setCarregarDadosTotalizadores(true));
+  };
+
   return (
     <>
       <DataUltimaAtualizacao />
       <Container>
         <Title>Visão Geral das Provas</Title>
         <Actions>
-          {/* TODO - Mock select */}
           <Select
             value={1}
             disabled
@@ -36,7 +47,7 @@ const HeaderHomeDashboard: React.FC = () => {
           />
           <BotaoAtualizarDados
             onClick={() => {
-              // TODO - Aplicar filtro
+              atualizarDados();
             }}
           >
             Atualizar dados
