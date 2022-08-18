@@ -43,7 +43,7 @@ const obterTurmas = (
   anoEscolar: SelectValueType,
 ): Promise<DefaultOptionType[]> =>
   geralService.getDefaultSelect(
-    `${URL_DEFAULT}/turma/${anoLetivo}/ue/${ueId}/modalidade/${modalidade}/ano/${anoEscolar}`,
+    `${URL_DEFAULT}/turma/${anoLetivo}/modalidade/${modalidade}/ue/${ueId}/ano/${anoEscolar}`,
   );
 
 export default {

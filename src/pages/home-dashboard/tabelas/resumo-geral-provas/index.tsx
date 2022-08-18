@@ -1,54 +1,57 @@
 import { ColumnsType } from 'antd/lib/table';
+import moment from 'moment';
 import React from 'react';
 import Table from '~/components/table';
 
 interface TabelaDetalhesResumoGeralProvasProps {
-  detalheProva: any;
+  dadosProva: any;
 }
 
 const TabelaDetalhesResumoGeralProvas: React.FC<TabelaDetalhesResumoGeralProvasProps> = ({
-  detalheProva,
+  dadosProva,
 }) => {
   const columns: ColumnsType<any> = [
     {
       title: 'Data de início',
-      dataIndex: 'dataInicio',
-      key: 'dataInicio',
+      dataIndex: ['detalheProva', 'dataInicio'],
       align: 'center',
+      render(dataInicio) {
+        return dataInicio ? moment(dataInicio).format('DD/MM/YYYY') : '';
+      },
     },
     {
       title: 'Data de fim',
-      dataIndex: 'dataFim',
-      key: 'dataFim',
+      dataIndex: ['detalheProva', 'dataFim'],
       align: 'center',
+      render(dataFim) {
+        return dataFim ? moment(dataFim).format('DD/MM/YYYY') : '';
+      },
     },
     {
       title: 'Qtde. Questões da prova',
-      dataIndex: 'qtdeQuestoesProva',
-      key: 'qtdeQuestoesProva',
+      dataIndex: ['detalheProva', 'qtdeQuestoesProva'],
       align: 'center',
     },
     {
       title: 'Total de Questões',
-      dataIndex: 'totalQuestoes',
-      key: 'totalQuestoes',
+      dataIndex: ['detalheProva', 'totalQuestoes'],
       align: 'center',
     },
     {
       title: 'Respondidas',
-      dataIndex: 'respondidas',
-      key: 'respondidas',
+      dataIndex: ['detalheProva', 'respondidas'],
       align: 'center',
     },
     {
       title: 'Percentual respondido',
-      dataIndex: 'percentualRespondido',
-      key: 'percentualRespondido',
+      dataIndex: ['detalheProva', 'percentualRespondido'],
       align: 'center',
+      render(percentualRespondido) {
+        return `${percentualRespondido}%`;
+      },
     },
   ];
-  const detalhes = detalheProva ? [detalheProva] : [];
-  return <Table columns={columns} dataSource={detalhes} pagination={false} />;
+  return <Table rowKey='provaId' columns={columns} dataSource={[dadosProva]} pagination={false} />;
 };
 
 export default TabelaDetalhesResumoGeralProvas;

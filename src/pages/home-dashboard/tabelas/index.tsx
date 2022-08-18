@@ -1,15 +1,21 @@
 import { ColumnsType } from 'antd/lib/table';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Table from '~/components/table';
 import { AppState } from '~/redux';
 import resumoService from '~/services/resumo-service';
 import { CardTabelas, TituloCardTabelas } from './styles';
 import TabelaDetalhesResumoGeralProvas from './resumo-geral-provas';
 import TabelaDetalhesResumoGeralTurma from './resumo-geral-turma';
+import { setCarregarDadosResumoProva } from '~/redux/modules/geral/actions';
 
 const TabelaResumos: React.FC = () => {
+  const dispatch = useDispatch();
+
   const filtroPrincipal = useSelector((state: AppState) => state.filtroPrincipal);
+  const carregarDadosResumoProva = useSelector(
+    (state: AppState) => state.geral,
+  ).carregarDadosResumoProva;
 
   const [dados, setDados] = useState<any[]>([]);
 
@@ -38,47 +44,50 @@ const TabelaResumos: React.FC = () => {
     }
   }, [filtroPrincipal]);
 
+  useEffect(() => {
+    if (carregarDadosResumoProva) {
+      onChange();
+      dispatch(setCarregarDadosResumoProva(false));
+    }
+  }, [dispatch, carregarDadosResumoProva]);
+
   const columns: ColumnsType<any> = [
     {
       title: 'Título da Prova',
       dataIndex: 'tituloProva',
-      key: 'tituloProva',
     },
     {
       title: 'Total de alunos',
       dataIndex: 'totalAlunos',
-      key: 'totalAlunos',
       align: 'center',
     },
     {
       title: 'Provas iniciadas',
       dataIndex: 'provasIniciadas',
-      key: 'provasIniciadas',
       align: 'center',
     },
     {
       title: 'Provas não finalizadas',
       dataIndex: 'provasNaoFinalizadas',
-      key: 'provasNaoFinalizadas',
       align: 'center',
     },
     {
       title: 'Provas finalizadas',
       dataIndex: 'provasFinalizadas',
-      key: 'provasFinalizadas',
       align: 'center',
     },
     {
       title: 'Tempo médio',
       dataIndex: 'tempoMedio',
-      key: 'tempoMedio',
       align: 'center',
     },
     {
       title: 'Percentual realizado',
       dataIndex: 'percentualRealizado',
-      key: 'percentualRealizado',
       align: 'center',
+      render(percentualRealizado) {
+        return `${percentualRealizado}%`;
+      },
     },
   ];
 
@@ -87,7 +96,7 @@ const TabelaResumos: React.FC = () => {
     if (filtroPrincipal?.turma)
       return <TabelaDetalhesResumoGeralTurma dadosProva={dadosProva} turmaId={turmaId} />;
 
-    return <TabelaDetalhesResumoGeralProvas detalheProva={dadosProva?.detalheProva} />;
+    return <TabelaDetalhesResumoGeralProvas dadosProva={dadosProva} />;
   };
 
   const obterTitulo = () => {
