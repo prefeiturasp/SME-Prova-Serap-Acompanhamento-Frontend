@@ -2,9 +2,10 @@ import { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import React from 'react';
 import Table from '~/components/table';
+import { ResumoGeralProvaDto } from '~/domain/dto/resumo-geral-prova-dto';
 
 interface TabelaDetalhesResumoGeralProvasProps {
-  dadosProva: any;
+  dadosProva: ResumoGeralProvaDto;
 }
 
 const TabelaDetalhesResumoGeralProvas: React.FC<TabelaDetalhesResumoGeralProvasProps> = ({

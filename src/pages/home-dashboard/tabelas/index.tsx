@@ -8,6 +8,7 @@ import { CardTabelas, TituloCardTabelas } from './styles';
 import TabelaDetalhesResumoGeralProvas from './resumo-geral-provas';
 import TabelaDetalhesResumoGeralTurma from './resumo-geral-turma';
 import { setCarregarDadosResumoProva } from '~/redux/modules/geral/actions';
+import { ResumoGeralProvaDto } from '~/domain/dto/resumo-geral-prova-dto';
 
 const TabelaResumos: React.FC = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const TabelaResumos: React.FC = () => {
     (state: AppState) => state.geral,
   ).carregarDadosResumoProva;
 
-  const [dados, setDados] = useState<any[]>([]);
+  const [dados, setDados] = useState<ResumoGeralProvaDto[]>([]);
 
   const [totalRegistros, setTotalRegistros] = useState(0);
   const [carregando, setCarregando] = useState(true);
