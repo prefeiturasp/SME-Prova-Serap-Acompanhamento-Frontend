@@ -7,6 +7,7 @@ import { AlunoTurmaDto } from '~/domain/dto/aluno-turma-dto';
 import { ResumoGeralProvaDto } from '~/domain/dto/resumo-geral-prova-dto';
 import resumoProvasService from '~/services/resumo-service';
 import { Colors } from '~/styles/colors';
+import moment from 'moment';
 
 interface TabelaDetalhesResumoGeralTurmaProps {
   dadosProva: ResumoGeralProvaDto;
@@ -65,7 +66,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       dataIndex: 'inicioProva',
       align: 'center',
       render(inicioProva) {
-        return inicioProva ?? '-';
+        return inicioProva ? moment(inicioProva).format('DD/MM/YYYY - hh:mm') : '-';
       },
     },
     {
@@ -73,7 +74,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       dataIndex: 'fimProva',
       align: 'center',
       render(fimProva) {
-        return fimProva ?? '-';
+        return fimProva ? moment(fimProva).format('DD/MM/YYYY - hh:mm') : '-';
       },
     },
     {
