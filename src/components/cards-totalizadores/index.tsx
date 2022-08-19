@@ -1,5 +1,5 @@
-import { Space } from 'antd';
-import React from 'react';
+import { Space, Tooltip } from 'antd';
+import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 import { Colors } from '~/styles/colors';
@@ -37,23 +37,47 @@ export interface CardTotalizador {
   titulo: string;
   cor: string;
   valor: string | number;
+  tooltip?: string;
 }
 
 interface CardsTotalizadoresProps {
   dados: Array<CardTotalizador>;
 }
 
-const CardsTotalizadores: React.FC<CardsTotalizadoresProps> = ({ dados }) => (
-  <ContainerCards>
-    <Space size={12} wrap>
-      {dados?.map((dado: CardTotalizador, index: number) => (
-        <LayoutCard key={index}>
-          <Titulo>{dado.titulo}</Titulo>
-          <Valor color={dado.cor}>{dado.valor}</Valor>
-        </LayoutCard>
-      ))}
-    </Space>
-  </ContainerCards>
-);
+interface RenderToltipProps {
+  children: ReactNode;
+  tooltip?: string;
+  key: number;
+}
+
+const CardsTotalizadores: React.FC<CardsTotalizadoresProps> = ({ dados }) => {
+  const renderCardTooltip = ({ children, tooltip, key }: RenderToltipProps) =>
+    tooltip ? (
+      <Tooltip key={key} title={tooltip}>
+        {children}
+      </Tooltip>
+    ) : (
+      children
+    );
+
+  return (
+    <ContainerCards>
+      <Space size={12} wrap>
+        {dados?.map((card: CardTotalizador, index: number) =>
+          renderCardTooltip({
+            key: index,
+            tooltip: card.tooltip,
+            children: (
+              <LayoutCard key={index}>
+                <Titulo>{card.titulo}</Titulo>
+                <Valor color={card.cor}>{card.valor}</Valor>
+              </LayoutCard>
+            ),
+          }),
+        )}
+      </Space>
+    </ContainerCards>
+  );
+};
 
 export default CardsTotalizadores;
