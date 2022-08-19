@@ -28,6 +28,10 @@ const SelectContainer = styled.div`
       border: 1px solid ${Colors.CinzaBordaSelect};
     }
   }
+
+  .rc-virtual-list-scrollbar-show {
+    display: block !important;
+  }
 `;
 
 const Select: React.FC<SelectProps> = (props) => {
