@@ -37,6 +37,10 @@ const Ue: React.FC<UeProps> = ({ form, setUes, options }) => {
     }
   }, [setUes, dre, obterUe, form]);
 
+  useEffect(() => {
+    if (!modalidade) form?.setFieldValue(nomeCampo, null);
+  }, [modalidade, form]);
+
   return (
     <Form.Item name={nomeCampo} rules={[{ required: !!modalidade, message: 'Campo obrigatório' }]}>
       <Select
