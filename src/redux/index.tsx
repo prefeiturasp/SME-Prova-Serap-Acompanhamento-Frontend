@@ -1,4 +1,4 @@
-import storage from 'redux-persist/lib/storage';
+import sessionStorage from 'redux-persist/lib/storage/session';
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import rootReducer from './modules/reducers';
@@ -11,7 +11,7 @@ export type AppState = ReturnType<typeof rootReducer>;
 const persistedReducer = persistReducer(
   {
     key: 'SERAP-ACOMPANHAMENTO-PERSIST',
-    storage,
+    storage: sessionStorage,
     whitelist: ['auth', 'filtroPrincipal'],
   },
   rootReducer,
