@@ -1,153 +1,106 @@
 import { faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColumnsType } from 'antd/lib/table';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
 import Table from '~/components/table';
-import { AppState } from '~/redux';
+import { AlunoTurmaDto } from '~/domain/dto/aluno-turma-dto';
+import { ResumoGeralProvaDto } from '~/domain/dto/resumo-geral-prova-dto';
 import resumoProvasService from '~/services/resumo-service';
 import { Colors } from '~/styles/colors';
-import { CardTabelas, TituloCardTabelas } from '../styles';
+import moment from 'moment';
 
-const TabelaResumoGeralTurma: React.FC = () => {
-  const filtroPrincipal = useSelector((state: AppState) => state.filtroPrincipal);
+interface TabelaDetalhesResumoGeralTurmaProps {
+  dadosProva: ResumoGeralProvaDto;
+  turmaId: number;
+}
 
-  const [dados, setDados] = useState<any[]>([]);
+const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaProps> = ({
+  turmaId,
+  dadosProva,
+}) => {
+  const [dados, setDados] = useState<AlunoTurmaDto[]>([]);
+  const [carregando, setCarregando] = useState(false);
 
-  const [totalRegistros, setTotalRegistros] = useState(0);
-  const [carregando, setCarregando] = useState(true);
+  const obterDados = useCallback(async () => {
+    setCarregando(true);
+    const resposta = await resumoProvasService.obterDadosResumoGeralTurma(
+      turmaId,
+      dadosProva.provaId,
+    );
 
-  useEffect(() => {
-    if (filtroPrincipal?.anoLetivo) {
-      onChange();
+    if (resposta?.data?.length) {
+      setDados(resposta.data);
     } else {
       setDados([]);
     }
-  }, [filtroPrincipal]);
+    setCarregando(false);
+  }, [dadosProva, turmaId]);
 
-  const columns: ColumnsType<any> = [
+  useEffect(() => {
+    if (dadosProva?.provaId) {
+      obterDados();
+    } else {
+      setDados([]);
+    }
+  }, [dadosProva, obterDados]);
+
+  const columns: ColumnsType<AlunoTurmaDto> = [
     {
-      title: 'Título da Prova',
-      dataIndex: 'tituloProva',
-      key: 'tituloProva',
+      title: 'Nome do Estudante',
+      dataIndex: 'nomeEstudante',
     },
     {
-      title: 'Total de alunos',
-      dataIndex: 'totalAlunos',
-      key: 'totalAlunos',
+      title: 'Fez Download',
+      dataIndex: 'fezDownload',
       align: 'center',
+      render(fezDownload) {
+        return fezDownload ? (
+          <FontAwesomeIcon icon={faCircleCheck} fontSize='14' color={Colors.SIGPAE} />
+        ) : (
+          <FontAwesomeIcon icon={faCircleXmark} fontSize='14' color={Colors.SupportWarning} />
+        );
+      },
     },
     {
-      title: 'Provas iniciadas',
-      dataIndex: 'provasIniciadas',
-      key: 'provasIniciadas',
+      title: 'Início da Prova',
+      dataIndex: 'inicioProva',
       align: 'center',
+      render(inicioProva) {
+        return inicioProva ? moment(inicioProva).format('DD/MM/YYYY - hh:mm') : '-';
+      },
     },
     {
-      title: 'Provas não finalizadas',
-      dataIndex: 'provasNaoFinalizadas',
-      key: 'provasNaoFinalizadas',
+      title: 'Fim da Prova',
+      dataIndex: 'fimProva',
       align: 'center',
-    },
-    {
-      title: 'Provas finalizadas',
-      dataIndex: 'provasFinalizadas',
-      key: 'provasFinalizadas',
-      align: 'center',
+      render(fimProva) {
+        return fimProva ? moment(fimProva).format('DD/MM/YYYY - hh:mm') : '-';
+      },
     },
     {
       title: 'Tempo médio',
       dataIndex: 'tempoMedio',
-      key: 'tempoMedio',
       align: 'center',
+      render(tempoMedio) {
+        return tempoMedio ?? '-';
+      },
     },
     {
-      title: 'Percentual realizado',
-      dataIndex: 'percentualRealizado',
-      key: 'percentualRealizado',
+      title: 'Questões Respondidas',
+      dataIndex: 'questoesRespondidas',
       align: 'center',
     },
   ];
 
-  const expandedRowRender = (record: any) => {
-    const columnsExpandedRow: ColumnsType<any> = [
-      {
-        title: 'Nome do Estudante',
-        dataIndex: 'nomeEstudante',
-        key: 'nomeEstudante',
-      },
-      {
-        title: 'Fez Download',
-        dataIndex: 'fezDownload',
-        key: 'fezDownload',
-        align: 'center',
-        render(fezDownload) {
-          return fezDownload ? (
-            <FontAwesomeIcon icon={faCircleCheck} fontSize='14' color={Colors.SIGPAE} />
-          ) : (
-            <FontAwesomeIcon icon={faCircleXmark} fontSize='14' color={Colors.SupportWarning} />
-          );
-        },
-      },
-      {
-        title: 'Início da Prova',
-        dataIndex: 'inicioProva',
-        key: 'inicioProva',
-        align: 'center',
-      },
-      {
-        title: 'Fim da Prova',
-        dataIndex: 'fimProva',
-        key: 'fimProva',
-        align: 'center',
-      },
-      {
-        title: 'Tempo médio',
-        dataIndex: 'tempoMedio',
-        key: 'tempoMedio',
-        align: 'center',
-      },
-      {
-        title: 'Questões Respondidas',
-        dataIndex: 'questoesRespondidas',
-        key: 'questoesRespondidas',
-        align: 'center',
-      },
-    ];
-
-    const detalhes = record?.detalhes?.length ? record.detalhes : [];
-    return <Table columns={columnsExpandedRow} dataSource={detalhes} pagination={false} />;
-  };
-
-  const onChange = async (page = 1) => {
-    setCarregando(true);
-    const resposta = await resumoProvasService.obterDadosResumoGeralTurma(page);
-
-    if (resposta?.items?.length) {
-      setTotalRegistros(resposta.totalRegistros);
-      setDados(resposta.items);
-    } else {
-      setTotalRegistros(0);
-      setDados([]);
-    }
-    setCarregando(false);
-  };
-
   return (
-    <CardTabelas>
-      <TituloCardTabelas>Resumo Geral da Turma</TituloCardTabelas>
-      <Table
-        loading={carregando}
-        columns={columns}
-        dataSource={dados}
-        expandable={{
-          expandedRowRender,
-          rowExpandable: (record: any) => !!record?.detalhes?.length,
-        }}
-        pagination={{ total: totalRegistros, pageSize: 10, onChange }}
-      />
-    </CardTabelas>
+    <Table
+      rowKey='nomeEstudante'
+      loading={carregando}
+      columns={columns}
+      dataSource={dados}
+      pagination={false}
+    />
   );
 };
 
-export default TabelaResumoGeralTurma;
+export default TabelaDetalhesResumoGeralTurma;

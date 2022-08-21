@@ -2,43 +2,35 @@ import { DefaultOptionType } from 'antd/lib/select';
 import { AxiosResponse } from 'axios';
 import { CardTotalizador } from '~/components/cards-totalizadores';
 import { SelecioneDto } from '~/domain/dto/selecione-dto';
+import { FiltroPrincipalProps } from '~/redux/modules/filtro-principal/reducers';
 import { converterSelecineDto } from '~/utils/converte-dto';
+import queryString from 'query-string';
+
 import api from './api';
 
-// TODO: Implementar a chamada ao serviço
-const obterDadosCardsTotalizadores = (filtros: any): Promise<AxiosResponse> | any => {
-  console.log('Filtros: ', filtros);
+const URL_DEFAULT = '/api/v1/totalizadores';
 
-  const mock: Array<CardTotalizador> = [
-    {
-      titulo: 'Total de Provas ',
-      cor: '#1B80D4',
-      valor: '100',
+const obterDadosCardsTotalizadores = (
+  filtros: FiltroPrincipalProps,
+): Promise<AxiosResponse<CardTotalizador[]>> => {
+  const params = {
+    anoLetivo: filtros.anoLetivo,
+    modalidade: filtros.modalidade,
+    dreId: filtros.dre,
+    ueId: filtros.ue,
+    anoEscolar: filtros.anoEscolar,
+    turmaId: filtros.turma,
+    provasId: filtros.prova,
+    provaSituacao: filtros.situacaoProva,
+  };
+  return api.get(URL_DEFAULT, {
+    params,
+    paramsSerializer(params) {
+      return queryString.stringify(params, {
+        skipEmptyString: true,
+        skipNull: true,
+      });
     },
-    {
-      titulo: 'Provas Iniciadas',
-      cor: '#198459',
-      valor: '120',
-    },
-    {
-      titulo: 'Provas Não Finalizadas',
-      cor: '#B40C02',
-      valor: '35',
-    },
-    {
-      titulo: 'Provas Finalizadas',
-      cor: '#198459',
-      valor: '85',
-    },
-    {
-      titulo: 'Percentual Realizado',
-      cor: '#1B80D4',
-      valor: '51%',
-    },
-  ];
-
-  return new Promise((resolve) => {
-    setTimeout(() => resolve({ data: mock }), 2000);
   });
 };
 

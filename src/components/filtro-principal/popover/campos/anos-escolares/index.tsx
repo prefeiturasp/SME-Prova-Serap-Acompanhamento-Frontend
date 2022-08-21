@@ -18,7 +18,7 @@ const AnosEscolares: React.FC<AnosEscolaresProps> = ({ form, setAnosEscolares, o
   const modalidade = Form.useWatch('modalidade', form);
 
   const obterAnosEscolares = useCallback(async () => {
-    const resposta = await filtroService.obterAnosEscolares(anoLetivo, ue);
+    const resposta = await filtroService.obterAnosEscolares(anoLetivo, modalidade, ue);
 
     if (resposta?.length) {
       setAnosEscolares(resposta);
@@ -27,7 +27,7 @@ const AnosEscolares: React.FC<AnosEscolaresProps> = ({ form, setAnosEscolares, o
       setAnosEscolares([]);
       form?.setFieldValue(nomeCampo, null);
     }
-  }, [form, setAnosEscolares, anoLetivo, ue]);
+  }, [form, setAnosEscolares, anoLetivo, modalidade, ue]);
 
   useEffect(() => {
     if (anoLetivo && ue) {
