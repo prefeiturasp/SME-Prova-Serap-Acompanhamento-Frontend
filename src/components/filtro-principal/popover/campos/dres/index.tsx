@@ -31,8 +31,8 @@ const Dre: React.FC<DreProps> = ({ form, setDres, options }) => {
   }, [obterDre]);
 
   useEffect(() => {
-    if (!modalidade) form?.setFieldValue(nomeCampo, null);
-  }, [modalidade, form]);
+    if (!modalidade && options?.length > 1) form?.setFieldValue(nomeCampo, null);
+  }, [modalidade, form, options]);
 
   return (
     <Form.Item name={nomeCampo} rules={[{ required: !!modalidade, message: 'Campo obrigatório' }]}>
