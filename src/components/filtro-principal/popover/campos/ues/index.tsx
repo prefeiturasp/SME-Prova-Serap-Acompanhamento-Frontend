@@ -38,8 +38,8 @@ const Ue: React.FC<UeProps> = ({ form, setUes, options }) => {
   }, [setUes, dre, obterUe, form]);
 
   useEffect(() => {
-    if (!modalidade) form?.setFieldValue(nomeCampo, null);
-  }, [modalidade, form]);
+    if (!modalidade && options?.length > 1) form?.setFieldValue(nomeCampo, null);
+  }, [modalidade, form, options]);
 
   return (
     <Form.Item name={nomeCampo} rules={[{ required: !!modalidade, message: 'Campo obrigatório' }]}>
