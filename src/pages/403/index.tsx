@@ -1,10 +1,7 @@
 import { Button, Result } from 'antd';
+import { voltarAoSerap } from '~/utils/converte-dto';
 
 const NaoAutenticado = () => {
-  const URL_SERAP = import.meta.env.VITE_SME_SERAP;
-
-  const voltarAoSerap = () => window.location.replace(URL_SERAP);
-
   return (
     <Result
       status='403'

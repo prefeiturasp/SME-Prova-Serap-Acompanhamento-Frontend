@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Colors } from '~/styles/colors';
+import { voltarAoSerap } from '~/utils/converte-dto';
 import FiltroPrincipal from '../filtro-principal';
 
 const ContainerHeader = styled(Layout.Header)`
@@ -56,9 +57,6 @@ const BackPreviousPage = styled.div`
 `;
 
 const Header: React.FC = () => {
-  const URL_SERAP = import.meta.env.VITE_SME_SERAP;
-  const voltarAoSerap = () => window.location.replace(URL_SERAP);
-
   return (
     <ContainerHeader>
       <HeaderTitle>

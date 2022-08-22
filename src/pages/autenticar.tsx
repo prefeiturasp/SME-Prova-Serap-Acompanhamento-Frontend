@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { AppState } from '~/redux';
 import { setDataHoraExpiracao, setIsAuthenticated, setToken } from '~/redux/modules/auth/actions';
 import autenticacaoService from '~/services/autenticacao-service';
+import { voltarAoSerap } from '~/utils/converte-dto';
 
 const ContainerAutenticar = styled.div`
   display: flex;
@@ -24,10 +25,6 @@ const Autenticar: React.FC<any> = () => {
   const isAuthenticated = useSelector((state: AppState) => state.auth.isAuthenticated);
 
   const [autenticando, setAutenticando] = useState(true);
-
-  const URL_SERAP = import.meta.env.VITE_SME_SERAP;
-
-  const voltarAoSerap = () => window.location.replace(URL_SERAP);
 
   const validarCodigoLogin = useCallback(async () => {
     const codigo = paramsRouter?.codigoValidador || '';
