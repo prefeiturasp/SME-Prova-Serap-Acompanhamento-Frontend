@@ -81,6 +81,9 @@ const TabelaResumos: React.FC = () => {
       title: 'Tempo médio',
       dataIndex: 'tempoMedio',
       align: 'center',
+      render(tempoMedio) {
+        return `${tempoMedio}min`
+      }
     },
     {
       title: 'Percentual realizado',
