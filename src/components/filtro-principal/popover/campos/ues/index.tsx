@@ -17,7 +17,7 @@ const Ue: React.FC<UeProps> = ({ form, setUes, options }) => {
   const modalidade = Form.useWatch('modalidade', form);
 
   const obterUe = useCallback(async () => {
-    const resposta = await filtroService.obterUes(dre);
+    const resposta = await filtroService.obterUes(dre, modalidade);
 
     if (resposta?.length) {
       setUes(resposta);

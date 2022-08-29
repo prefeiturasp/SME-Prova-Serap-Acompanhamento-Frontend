@@ -24,8 +24,10 @@ const obterModalidades = (): Promise<DefaultOptionType[]> =>
 const obterDres = (): Promise<DefaultOptionType[]> =>
   geralService.getDefaultSelect(`${URL_DEFAULT}/dre`);
 
-const obterUes = (dreId: SelectValueType): Promise<DefaultOptionType[]> =>
-  geralService.getDefaultSelect(`${URL_DEFAULT}/ue/${dreId}`);
+const obterUes = (
+  dreId: SelectValueType,
+  modalidade: SelectValueType ): Promise<DefaultOptionType[]> =>
+  geralService.getDefaultSelect(`${URL_DEFAULT}/ue/${dreId}/modalidade/${modalidade}`);
 
 const obterAnosEscolares = (
   anoLetivo: SelectValueType,
