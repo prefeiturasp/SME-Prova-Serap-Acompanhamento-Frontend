@@ -66,7 +66,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       dataIndex: 'inicioProva',
       align: 'center',
       render(inicioProva) {
-        return inicioProva ? moment(inicioProva).format('DD/MM/YYYY - hh:mm') : '-';
+        return inicioProva ? moment(inicioProva).format('DD/MM/YYYY - HH:mm') : '-';
       },
     },
     {
@@ -74,7 +74,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       dataIndex: 'fimProva',
       align: 'center',
       render(fimProva) {
-        return fimProva ? moment(fimProva).format('DD/MM/YYYY - hh:mm') : '-';
+        return fimProva ? moment(fimProva).format('DD/MM/YYYY - HH:mm') : '-';
       },
     },
     {
