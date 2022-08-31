@@ -82,7 +82,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       dataIndex: 'tempoMedio',
       align: 'center',
       render(tempoMedio) {
-        return tempoMedio ?? '-';
+        return tempoMedio != null ? `${tempoMedio}min` : '-';
       },
     },
     {
