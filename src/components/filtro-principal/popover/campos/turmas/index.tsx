@@ -23,7 +23,10 @@ const Turmas: React.FC<TurmasProps> = ({ form, setTurmas, options }) => {
 
     if (resposta?.length) {
       setTurmas(resposta);
-      if (resposta.length === 1) form?.setFieldValue(nomeCampo, resposta[0].value);
+      if (resposta.length === 1)
+        form?.setFieldValue(nomeCampo, resposta[0].value);
+      else
+        form?.setFieldValue(nomeCampo, null);
     } else {
       setTurmas([]);
       form?.setFieldValue(nomeCampo, null);
