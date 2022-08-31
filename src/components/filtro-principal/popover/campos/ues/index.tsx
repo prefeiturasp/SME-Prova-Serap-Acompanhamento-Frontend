@@ -13,11 +13,12 @@ interface UeProps extends FormProps {
 const Ue: React.FC<UeProps> = ({ form, setUes, options }) => {
   const nomeCampo = 'ue';
 
-  const dre = Form.useWatch('dre', form);
+  const anoLetivo = Form.useWatch('anoLetivo', form);
   const modalidade = Form.useWatch('modalidade', form);
+  const dre = Form.useWatch('dre', form);
 
   const obterUe = useCallback(async () => {
-    const resposta = await filtroService.obterUes(dre);
+    const resposta = await filtroService.obterUes(anoLetivo, modalidade, dre);
 
     if (resposta?.length) {
       setUes(resposta);
@@ -26,7 +27,7 @@ const Ue: React.FC<UeProps> = ({ form, setUes, options }) => {
       setUes([]);
       form?.setFieldValue(nomeCampo, null);
     }
-  }, [form, setUes, dre]);
+  }, [form, setUes, anoLetivo, modalidade, dre]);
 
   useEffect(() => {
     if (dre) {
@@ -35,7 +36,7 @@ const Ue: React.FC<UeProps> = ({ form, setUes, options }) => {
       setUes([]);
       form?.setFieldValue(nomeCampo, null);
     }
-  }, [setUes, dre, obterUe, form]);
+  }, [setUes, anoLetivo, modalidade, dre, obterUe, form]);
 
   useEffect(() => {
     if (!modalidade && options?.length > 1) form?.setFieldValue(nomeCampo, null);
