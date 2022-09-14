@@ -4,6 +4,7 @@ import queryString from 'query-string';
 import { FiltroPrincipalProps } from '~/redux/modules/filtro-principal/reducers';
 import { AxiosResponse } from 'axios';
 import { AlunoTurmaDto } from '~/domain/dto/aluno-turma-dto';
+import { ReabrirProvaDto } from '~/domain/dto/reabrir-prova-dto';
 
 const obterDadosResumoGeralProvas = (
   page: number,
@@ -38,7 +39,15 @@ const obterDadosResumoGeralTurma = (
 ): Promise<AxiosResponse<AlunoTurmaDto[]>> =>
   api.get(`/api/v1/resumo/turma/${turmaId}/prova/${provaId}/alunos`);
 
+const reabrirProvaAluno = (dtoReabrir: ReabrirProvaDto): Promise<AxiosResponse<boolean>> => {
+  const params = dtoReabrir;
+  return api.post('/api/v1/', {
+    params,
+  });
+};
+
 export default {
   obterDadosResumoGeralProvas,
   obterDadosResumoGeralTurma,
+  reabrirProvaAluno,
 };
