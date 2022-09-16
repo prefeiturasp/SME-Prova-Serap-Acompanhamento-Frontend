@@ -41,7 +41,7 @@ const obterDadosResumoGeralTurma = (
 
 const reabrirProvaAluno = (dtoReabrir: ReabrirProvaDto): Promise<AxiosResponse<boolean>> => {
   const params = dtoReabrir;
-  return api.post('/api/v1/', {
+  return api.post('/api/v1/resumo-geral/reabrir-prova-aluno', {
     params,
   });
 };

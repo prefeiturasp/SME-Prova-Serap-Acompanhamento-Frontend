@@ -39,8 +39,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
     );
 
     if (resposta?.data?.length) {
-      //setDados(resposta.data);
-      gerarMock(); // remover depois dos testes
+      setDados(resposta.data);
     } else {
       setDados([]);
     }
@@ -178,16 +177,6 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
   const reabrirProva = useCallback(async () => {
     setCarregando(true);
 
-    const resposta = await resumoProvasService.obterDadosResumoGeralTurma(
-      turmaId,
-      dadosProva.provaId,
-    );
-    if (resposta?.data?.length) {
-      setDados(resposta.data);
-    } else {
-      setDados([]);
-    }
-    /*
     const dtoReabrirProva: ReabrirProvaDto = {
       alunoRa: estudante?.ra,
       provaId: dadosProva.provaId,
@@ -196,73 +185,13 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
     if (respostaReabertura?.data) {
       obterDados();
       setEstudante({});
-      exibirAlerta('success', 'Solicitação de reabertura de prova feita com sucesso.');
+      exibirAlerta('success', 'Solicitação de reabertura de prova realizada com sucesso.');
     } else {
       setCarregando(false);
       setEstudante({});
       exibirAlerta('error', 'Erro ao solicitar reabertura de prova.');
-    }*/
-
-    setTimeout(() => {
-      setCarregando(false);
-      setEstudante({});
-      exibirAlerta('success', 'Solicitação de reabertura de prova feita com sucesso.');
-    }, 2000);
-  }, [estudante?.ra, dadosProva.provaId]);
-
-  const gerarMock = () => {
-    const lista: AlunoTurmaDto[] = [
-      {
-        ra: 1,
-        nomeEstudante: 'Teste aluno 1',
-        fezDownload: true,
-        inicioProva: new Date(),
-        fimProva: new Date(),
-        tempoMedio: 1,
-        questoesRespondidas: 10,
-        ultimaReabertura: 'Teste reabertura',
-        podeReabrirProva: false,
-        situacaoProvaAluno: 3,
-      },
-      {
-        ra: 2,
-        nomeEstudante: 'Teste aluno 2',
-        fezDownload: true,
-        inicioProva: new Date(),
-        fimProva: new Date(),
-        tempoMedio: 5,
-        questoesRespondidas: 15,
-        //ultimaReabertura: ,
-        podeReabrirProva: true,
-        situacaoProvaAluno: 2,
-      },
-      {
-        ra: 3,
-        nomeEstudante: 'Teste aluno 3',
-        fezDownload: true,
-        inicioProva: new Date(),
-        fimProva: new Date(),
-        tempoMedio: 10,
-        questoesRespondidas: 20,
-        ultimaReabertura: 'Teste reabertura 3',
-        podeReabrirProva: false,
-        situacaoProvaAluno: 1,
-      },
-      {
-        ra: 4,
-        nomeEstudante: 'Teste aluno 4',
-        fezDownload: true,
-        inicioProva: new Date(),
-        fimProva: new Date(),
-        tempoMedio: 15,
-        questoesRespondidas: 25,
-        ultimaReabertura: 'Teste reabertura 4',
-        podeReabrirProva: true,
-        situacaoProvaAluno: 3,
-      },
-    ];
-    setDados(lista);
-  };
+    }
+  }, [estudante?.ra, dadosProva.provaId, obterDados]);
 
   return (
     <>
@@ -274,7 +203,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
         onOk={() => reabrirProva()}
         confirmLoading={carregando}
         footer={[
-          <Button key='cancelar' onClick={() => fecharModal()}>
+          <Button key='cancelar' loading={carregando} onClick={() => fecharModal()}>
             Cancelar
           </Button>,
           <Button key='reabrir' type='primary' loading={carregando} onClick={() => reabrirProva()}>
