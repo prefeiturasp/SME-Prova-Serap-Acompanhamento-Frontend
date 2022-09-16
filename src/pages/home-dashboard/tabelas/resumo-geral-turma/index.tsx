@@ -181,7 +181,15 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       alunoRa: estudante?.ra,
       provaId: dadosProva.provaId,
     };
-    const respostaReabertura = await resumoProvasService.reabrirProvaAluno(dtoReabrirProva);
+
+    const respostaReabertura = await resumoProvasService
+      .reabrirProvaAluno(dtoReabrirProva)
+      .catch(() => {
+        setCarregando(false);
+        setEstudante({});
+        exibirAlerta('error', 'Erro ao solicitar reabertura de prova.');
+      });
+
     if (respostaReabertura?.data) {
       obterDados();
       setEstudante({});
@@ -189,7 +197,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
     } else {
       setCarregando(false);
       setEstudante({});
-      exibirAlerta('error', 'Erro ao solicitar reabertura de prova.');
+      exibirAlerta('error', 'Não foi possível reabrir a prova do aluno.');
     }
   }, [estudante?.ra, dadosProva.provaId, obterDados]);
 
@@ -200,7 +208,6 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
         centered
         visible={estudante?.ra}
         onCancel={() => fecharModal()}
-        onOk={() => reabrirProva()}
         confirmLoading={carregando}
         footer={[
           <Button key='cancelar' loading={carregando} onClick={() => fecharModal()}>
@@ -218,7 +225,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       </Modal>
 
       <Table
-        rowKey='nomeEstudante'
+        rowKey='ra'
         loading={carregando}
         columns={columns}
         dataSource={dados}

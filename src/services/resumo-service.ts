@@ -39,12 +39,11 @@ const obterDadosResumoGeralTurma = (
 ): Promise<AxiosResponse<AlunoTurmaDto[]>> =>
   api.get(`/api/v1/resumo/turma/${turmaId}/prova/${provaId}/alunos`);
 
-const reabrirProvaAluno = (dtoReabrir: ReabrirProvaDto): Promise<AxiosResponse<boolean>> => {
-  const params = dtoReabrir;
-  return api.post('/api/v1/resumo-geral/reabrir-prova-aluno', {
-    params,
+const reabrirProvaAluno = (dtoReabrir: ReabrirProvaDto): Promise<AxiosResponse<boolean>> =>
+  api.post('/api/v1/resumo-geral/reabrir-prova-aluno', {
+    alunoRa: dtoReabrir.alunoRa,
+    provaId: dtoReabrir.provaId,
   });
-};
 
 export default {
   obterDadosResumoGeralProvas,
