@@ -182,6 +182,25 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       provaId: dadosProva.provaId,
     };
 
+    const aluno: AlunoTurmaDto = {
+      ra: estudante?.ra,
+      nomeEstudante: estudante?.nomeEstudante,
+      fezDownload: estudante?.fezDownload,
+      inicioProva: undefined,
+      fimProva: undefined,
+      tempoMedio: estudante?.tempoMedio,
+      questoesRespondidas: estudante?.questoesRespondidas,
+      ultimaReabertura: estudante?.ultimaReabertura,
+      podeReabrirProva: false,
+      situacaoProvaAluno: ProvaSituacao.Reabrindo,
+    };
+
+    const dadosAtualizados = dados;
+    const index = dadosAtualizados.map((t) => t.ra).indexOf(aluno.ra);
+    dadosAtualizados.splice(index, 1);
+    dadosAtualizados.push(aluno);
+    dadosAtualizados.sort((a, b) => a.nomeEstudante.localeCompare(b.nomeEstudante));
+    setDados([...dadosAtualizados]);
     const respostaReabertura = await resumoProvasService
       .reabrirProvaAluno(dtoReabrirProva)
       .catch(() => {
@@ -191,7 +210,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       });
 
     if (respostaReabertura?.data) {
-      obterDados();
+      setCarregando(false);
       setEstudante({});
       exibirAlerta('success', 'Solicitação de reabertura de prova realizada com sucesso.');
     } else {
@@ -199,7 +218,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       setEstudante({});
       exibirAlerta('error', 'Não foi possível reabrir a prova do aluno.');
     }
-  }, [estudante?.ra, dadosProva.provaId, obterDados]);
+  }, [dados, dadosProva.provaId, estudante]);
 
   return (
     <>
