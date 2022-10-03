@@ -1,6 +1,7 @@
 import { Spin } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import GraficoProva, { Graficos } from '~/components/grafico-prova';
 import { AppState } from '~/redux';
 
@@ -9,6 +10,27 @@ import {
   setDataUltimaAtualizacao,
 } from '~/redux/modules/geral/actions';
 import geralService from '~/services/geral-service';
+import { Colors } from '~/styles/colors';
+
+export const ContainerGraficos = styled.div`
+  display: flex;
+  flew-flow: row wrap;
+`;
+
+export const ContainerGraficoItem = styled.div`
+  width: 50%;
+`;
+
+export const ContainerCard = styled.div`
+  background: ${Colors.AzulFundoCard};
+  margin: 20px 16px;
+`;
+
+export const Titulo = styled.div`
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+`;
 
 const GraficosContainer: React.FC = () => {
   const filtroPrincipal = useSelector((state: AppState) => state.filtroPrincipal);
@@ -58,14 +80,31 @@ const GraficosContainer: React.FC = () => {
 
   return (
     <Spin spinning={carregando}>
-      Total Provas Iniciadas VS Iniciadas
-      <GraficoProva dados={dadosGraficos.totalProvasVsIniciadas} />
-      {/* Total Provas Iniciadas VS Finalizadas
-      <GraficoProva dados={dadosGraficos.totalProvasVsFinalizadas} />
-      Questões Prevista Vs Respondidas
-      <GraficoProva dados={dadosGraficos.questoesPrevistasVsQuestoesRespondidas} />
-      Tempo médio de realização de provas.
-      <GraficoProva dados={dadosGraficos.provaVsTempoMedio} /> */}
+      <ContainerGraficos>
+        <ContainerGraficoItem>
+          <ContainerCard>
+            <Titulo>Total Provas Iniciadas VS Iniciadas</Titulo>
+            <GraficoProva dados={dadosGraficos.totalProvasVsIniciadas} />
+          </ContainerCard>
+        </ContainerGraficoItem>
+        <ContainerGraficoItem>
+          <ContainerCard>
+            <Titulo>Total Provas Iniciadas VS Finalizadas</Titulo>
+            <GraficoProva dados={dadosGraficos.totalProvasVsFinalizadas} />
+          </ContainerCard>
+        </ContainerGraficoItem>
+      </ContainerGraficos>
+
+      <ContainerGraficos>
+        <ContainerGraficoItem>
+          <Titulo> Questões Prevista Vs Respondidas</Titulo>
+          <GraficoProva dados={dadosGraficos.questoesPrevistasVsQuestoesRespondidas} />
+        </ContainerGraficoItem>
+        <ContainerGraficoItem>
+          <Titulo> Tempo médio de realização de provas.</Titulo>
+          <GraficoProva dados={dadosGraficos.provaVsTempoMedio} />
+        </ContainerGraficoItem>
+      </ContainerGraficos>
     </Spin>
   );
 };

@@ -45,6 +45,9 @@ const GraficoProva: React.FC<GraficosProps> = (dados) => {
     xField: 'valor',
     yField: 'descricao',
     seriesField: 'tipo',
+    legend: {
+      position: 'bottom',
+    },
     marginRatio: 0,
     test: {
       position: 'middle',
@@ -61,12 +64,7 @@ const GraficoProva: React.FC<GraficosProps> = (dados) => {
       ],
     },
   };
-  return (
-    <GraficoCards>
-      {' '}
-      <Bar {...config} />{' '}
-    </GraficoCards>
-  );
+  return <Bar {...config} />;
 };
 
 export interface GraficoItem {
