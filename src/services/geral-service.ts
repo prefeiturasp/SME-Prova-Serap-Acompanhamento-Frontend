@@ -1,6 +1,7 @@
 import { DefaultOptionType } from 'antd/lib/select';
 import { AxiosResponse } from 'axios';
 import { CardTotalizador } from '~/components/cards-totalizadores';
+import {Graficos} from '~/components/grafico-prova';
 import { SelecioneDto } from '~/domain/dto/selecione-dto';
 import { FiltroPrincipalProps } from '~/redux/modules/filtro-principal/reducers';
 import { converterSelecineDto } from '~/utils/converte-dto';
@@ -33,6 +34,29 @@ const obterDadosCardsTotalizadores = (
     },
   });
 };
+
+const obterDadosGraficos = (filtros: FiltroPrincipalProps): Promise<AxiosResponse<Graficos>> => {
+  const params = {
+    anoLetivo: filtros.anoLetivo,
+    modalidade: filtros.modalidade,
+    dreId: filtros.dre,
+    ueId: filtros.ue,
+    anoEscolar: filtros.anoEscolar,
+    turmaId: filtros.turma,
+    provasId: filtros.prova,
+    provaSituacao: filtros.situacaoProva,
+  };
+  return api.get(URL_DEFAULT + '/graficos', {
+    params,
+    paramsSerializer(params) {
+      return queryString.stringify(params, {
+        skipEmptyString: true,
+        skipNull: true,
+      });
+    },
+  });
+};
+
 
 const obterTiposVisualizacoesDados = (): Promise<AxiosResponse> | any => {
   const mock: Array<any> = [
@@ -70,5 +94,6 @@ const getDefaultSelect = (url: string): Promise<DefaultOptionType[]> =>
 export default {
   obterDadosCardsTotalizadores,
   obterTiposVisualizacoesDados,
+  obterDadosGraficos,
   getDefaultSelect,
 };
