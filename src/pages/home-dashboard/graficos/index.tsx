@@ -39,7 +39,7 @@ const GraficosContainer: React.FC = () => {
   const dispatch = useDispatch();
 
   const [dadosGraficos, setDadosGraficos] = useState<Graficos>({
-    provaVsTempoMedio: [],
+    provaVSTempoMedio: [],
     questoesPrevistasVsQuestoesRespondidas: [],
     totalProvasVsFinalizadas: [],
     totalProvasVsIniciadas: [],
@@ -54,7 +54,7 @@ const GraficosContainer: React.FC = () => {
       setDadosGraficos(resposta.data);
     } else {
       setDadosGraficos({
-        provaVsTempoMedio: [],
+        provaVSTempoMedio: [],
         questoesPrevistasVsQuestoesRespondidas: [],
         totalProvasVsFinalizadas: [],
         totalProvasVsIniciadas: [],
@@ -97,12 +97,16 @@ const GraficosContainer: React.FC = () => {
 
       <ContainerGraficos>
         <ContainerGraficoItem>
-          <Titulo> Questões Prevista Vs Respondidas</Titulo>
-          <GraficoProva dados={dadosGraficos.questoesPrevistasVsQuestoesRespondidas} />
+          <ContainerCard>
+            <Titulo> Questões Prevista Vs Respondidas</Titulo>
+            <GraficoProva dados={dadosGraficos.questoesPrevistasVsQuestoesRespondidas} />
+          </ContainerCard>
         </ContainerGraficoItem>
         <ContainerGraficoItem>
-          <Titulo> Tempo médio de realização de provas.</Titulo>
-          <GraficoProva dados={dadosGraficos.provaVsTempoMedio} />
+          <ContainerCard>
+            <Titulo> Tempo médio de realização de provas.</Titulo>
+            <GraficoProva dados={dadosGraficos.provaVSTempoMedio} />
+          </ContainerCard>
         </ContainerGraficoItem>
       </ContainerGraficos>
     </Spin>

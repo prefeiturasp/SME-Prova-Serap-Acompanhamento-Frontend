@@ -69,18 +69,6 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       dataIndex: 'nomeEstudante',
     },
     {
-      title: 'Fez Download',
-      dataIndex: 'fezDownload',
-      align: 'center',
-      render(fezDownload) {
-        return fezDownload ? (
-          <FontAwesomeIcon icon={faCircleCheck} fontSize='14' color={Colors.SIGPAE} />
-        ) : (
-          <FontAwesomeIcon icon={faCircleXmark} fontSize='14' color={Colors.SupportWarning} />
-        );
-      },
-    },
-    {
       title: 'Início da Prova',
       dataIndex: 'inicioProva',
       align: 'center',
