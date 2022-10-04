@@ -30,6 +30,7 @@ export const Titulo = styled.div`
   font-size: 12px;
   font-weight: 400;
   text-align: center;
+  padding: 20px 16px;
 `;
 
 const GraficosContainer: React.FC = () => {

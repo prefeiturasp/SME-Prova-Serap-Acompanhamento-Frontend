@@ -5,6 +5,7 @@ import Select from '~/components/select';
 import {
   setCarregarDadosResumoProva,
   setCarregarDadosTotalizadores,
+  setCarregarDadosGraficos,
 } from '~/redux/modules/geral/actions';
 import geralService from '~/services/geral-service';
 import DataUltimaAtualizacao from './data-ultima-atualizacao';
@@ -31,6 +32,7 @@ const HeaderHomeDashboard: React.FC = () => {
   const atualizarDados = () => {
     dispatch(setCarregarDadosResumoProva(true));
     dispatch(setCarregarDadosTotalizadores(true));
+    dispatch(setCarregarDadosGraficos(true));
   };
 
   return (

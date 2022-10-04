@@ -1,11 +1,11 @@
-import { Bar } from '@ant-design/plots';
+import { Bar, BarConfig } from '@ant-design/plots';
 
 interface GraficosProps {
   dados: GraficoItem[];
 }
 
 const GraficoProva: React.FC<GraficosProps> = (dados) => {
-  const config = {
+  const config: BarConfig = {
     data: dados.dados,
     isGroup: true,
     xField: 'valor',
@@ -16,19 +16,9 @@ const GraficoProva: React.FC<GraficosProps> = (dados) => {
       position: 'bottom',
     },
     marginRatio: 0,
-    test: {
-      position: 'middle',
-      layout: [
-        {
-          type: 'interval-adjust-position',
-        },
-        {
-          type: 'interval-hide-overlap',
-        },
-        {
-          type: 'adjust-color',
-        },
-      ],
+
+    scrollbar: {
+      type: 'vertical',
     },
   };
   return <Bar {...config} />;
