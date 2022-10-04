@@ -5,9 +5,11 @@ import {
   SetCarregarDadosResumoProva,
   SetCarregarDadosTotalizadores,
   SetDataUltimaAtualizacao,
+  SetCarregarDadosGraficos,
   typeSetAbrirFiltroPrincipal,
   typeSetCarregarDadosResumoProva,
   typeSetCarregarDadosTotalizadores,
+  typeSetCarregarDadosGraficos,
   typeSetDataUltimaAtualizacao,
 } from './actions';
 
@@ -16,6 +18,7 @@ export interface GeralProps {
   abrirFiltroPrincipal: boolean;
   carregarDadosResumoProva: boolean;
   carregarDadosTotalizadores: boolean;
+  carregarDadosGraficos: boolean;
 }
 
 const initialValues = {
@@ -23,6 +26,7 @@ const initialValues = {
   abrirFiltroPrincipal: false,
   carregarDadosResumoProva: false,
   carregarDadosTotalizadores: false,
+  carregarDadosGraficos: false,
 };
 
 const geral = (
@@ -31,7 +35,8 @@ const geral = (
     | SetDataUltimaAtualizacao
     | SetAbrirFiltroPrincipal
     | SetCarregarDadosResumoProva
-    | SetCarregarDadosTotalizadores,
+    | SetCarregarDadosTotalizadores
+    | SetCarregarDadosGraficos,
 ) => {
   return produce(state, (draft) => {
     switch (action.type) {
@@ -46,6 +51,9 @@ const geral = (
         break;
       case typeSetCarregarDadosTotalizadores:
         draft.carregarDadosTotalizadores = action.payload;
+        break;
+      case typeSetCarregarDadosGraficos:
+        draft.carregarDadosGraficos = action.payload;
         break;
       default:
         break;

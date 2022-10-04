@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CardsTotalizadores, { CardTotalizador } from '~/components/cards-totalizadores';
 import { AppState } from '~/redux';
+
 import {
   setCarregarDadosTotalizadores,
   setDataUltimaAtualizacao,
@@ -25,6 +26,7 @@ const Totalizadores: React.FC = () => {
     const resposta = await geralService.obterDadosCardsTotalizadores(filtroPrincipal);
 
     if (resposta?.data?.length) {
+      console.log('Totalizadores', resposta.data);
       setDadosTotalizadores(resposta.data);
     } else {
       setDadosTotalizadores([]);
