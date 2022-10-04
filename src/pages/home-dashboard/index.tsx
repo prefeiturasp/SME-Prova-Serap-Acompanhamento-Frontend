@@ -3,7 +3,7 @@ import Content from '~/components/content';
 import HeaderHomeDashboard from './header';
 import TabelasResumos from './tabelas';
 import Totalizadores from './totalizadores';
-import GraficosContainer from './Graficos';
+import GraficosContainer from './graficos';
 
 const HomeDashboard: React.FC = () => {
   return (
