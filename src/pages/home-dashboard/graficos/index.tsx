@@ -5,11 +5,7 @@ import styled from 'styled-components';
 import GraficoProva, { Graficos } from '~/components/grafico-prova';
 import { AppState } from '~/redux';
 
-import {
-  setCarregarDadosGraficos,
-  setCarregarDadosTotalizadores,
-  setDataUltimaAtualizacao,
-} from '~/redux/modules/geral/actions';
+import { setCarregarDadosGraficos, setDataUltimaAtualizacao } from '~/redux/modules/geral/actions';
 import geralService from '~/services/geral-service';
 import { Colors } from '~/styles/colors';
 
