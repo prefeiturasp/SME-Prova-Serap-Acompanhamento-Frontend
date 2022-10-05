@@ -6,6 +6,7 @@ import GraficoProva, { Graficos } from '~/components/grafico-prova';
 import { AppState } from '~/redux';
 
 import {
+  setCarregarDadosGraficos,
   setCarregarDadosTotalizadores,
   setDataUltimaAtualizacao,
 } from '~/redux/modules/geral/actions';
@@ -76,7 +77,7 @@ const GraficosContainer: React.FC = () => {
 
   useEffect(() => {
     if (carregarDadosGraficos) obterDadosGraficosProva();
-    dispatch(setCarregarDadosTotalizadores(false));
+    dispatch(setCarregarDadosGraficos(false));
   }, [dispatch, obterDadosGraficosProva, carregarDadosGraficos]);
 
   return (
