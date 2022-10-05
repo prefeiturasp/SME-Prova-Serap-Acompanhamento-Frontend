@@ -26,7 +26,6 @@ const Totalizadores: React.FC = () => {
     const resposta = await geralService.obterDadosCardsTotalizadores(filtroPrincipal);
 
     if (resposta?.data?.length) {
-      console.log('Totalizadores', resposta.data);
       setDadosTotalizadores(resposta.data);
     } else {
       setDadosTotalizadores([]);
