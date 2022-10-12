@@ -3,7 +3,7 @@ name: Docker Image CI
 on:
 
   push:
-    branches: [ develop, master, release ]
+    branches: [ develop, master, release, release-r2 ]
     paths-ignore:
     - ".github/workflows/**"  
   
@@ -60,7 +60,23 @@ jobs:
           RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}
           WORKLOAD: serap-acompanhamento-front
           NAMESPACE: sme-serap-acompanhamento
-          
+
+  deploy-hom2:
+  
+    runs-on: self-hosted
+    needs: [ build ]
+    if: ${{ github.ref == 'refs/heads/release-r2' }}        
+    environment:
+      name: release
+    steps:
+      - name: Redeploy
+        uses: prefeiturasp/SME-GithubAction-Images/@kubectl-v2.0
+        env: 
+          RANCHER_URL: ${{ secrets.RANCHER_URL }}
+          RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}
+          WORKLOAD: serap-acompanhamento-front
+          NAMESPACE: sme-serap-acompanhamento-r2
+
   deploy-prod:
   
     runs-on: self-hosted
