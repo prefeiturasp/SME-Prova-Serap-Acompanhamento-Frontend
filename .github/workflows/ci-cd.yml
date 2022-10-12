@@ -74,7 +74,7 @@ jobs:
         env: 
           RANCHER_URL: ${{ secrets.RANCHER_URL }}
           RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}
-          WORKLOAD: serap-acompanhamento-front
+          WORKLOAD: acompanhamento-front
           NAMESPACE: sme-serap-acompanhamento-r2
 
   deploy-prod:
