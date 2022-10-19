@@ -33,17 +33,26 @@ export const LayoutCard = styled.div`
   background: ${Colors.AzulFundoCard};
 `;
 
+// export interface CardTotalizador {
+//   titulo: string;
+//   cor: string;
+//   valor: string | number;
+//   tooltip?: string;
+// }
+
+// interface CardsTotalizadoresProps {
+//   dados: Array<CardTotalizador>;
+// }
+
 export interface CardTotalizador {
   titulo: string;
   cor: string;
   valor: string | number;
   tooltip?: string;
 }
-
 interface CardsTotalizadoresProps {
   dados: Array<CardTotalizador>;
 }
-
 interface RenderToltipProps {
   children: ReactNode;
   tooltip?: string;

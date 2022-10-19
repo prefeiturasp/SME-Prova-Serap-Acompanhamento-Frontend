@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CardsTotalizadores, { CardTotalizador } from '~/components/cards-totalizadores';
 import { AppState } from '~/redux';
+
 import {
   setCarregarDadosTotalizadores,
   setDataUltimaAtualizacao,

@@ -55,7 +55,7 @@ const FiltroPrincipal: React.FC = () => {
     let turma = null;
 
     if (dre) {
-      ues = await filtroService.obterUes(dre);
+      ues = await filtroService.obterUes(anoLetivo, modalidade, dre);
       ue = ues?.length === 1 ? (ues[0].value as SelectValueType) : null;
 
       if (anoLetivo && ue) {
