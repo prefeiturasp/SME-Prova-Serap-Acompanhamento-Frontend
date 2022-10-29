@@ -1,106 +1,89 @@
-import { ColumnsType } from 'antd/lib/table';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Table from '~/components/table';
+import React, { useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { ResumoGeralProvaDto } from '~/domain/dto/resumo-geral-prova-dto';
 import { AppState } from '~/redux';
 import resumoService from '~/services/resumo-service';
-import { CardTabelas, TituloCardTabelas } from './styles';
+import TabelaResumoGeralPadrao from './resumo-geral-padrao';
 import TabelaDetalhesResumoGeralProvas from './resumo-geral-provas';
 import TabelaDetalhesResumoGeralTurma from './resumo-geral-turma';
-import { setCarregarDadosResumoProva } from '~/redux/modules/geral/actions';
-import { ResumoGeralProvaDto } from '~/domain/dto/resumo-geral-prova-dto';
+import { CardTabelas, TituloCardTabelas } from './styles';
 
 const TabelaResumos: React.FC = () => {
-  const dispatch = useDispatch();
-
   const filtroPrincipal = useSelector((state: AppState) => state.filtroPrincipal);
-  const carregarDadosResumoProva = useSelector(
-    (state: AppState) => state.geral,
-  ).carregarDadosResumoProva;
 
-  const [dados, setDados] = useState<ResumoGeralProvaDto[]>([]);
+  const expandedRowRenderTurmas = (dadosProva: ResumoGeralProvaDto, turmaId: number) => (
+    <TabelaDetalhesResumoGeralTurma dadosProva={dadosProva} turmaId={turmaId} />
+  );
 
-  const [totalRegistros, setTotalRegistros] = useState(0);
-  const [carregando, setCarregando] = useState(true);
-
-  const onChange = async (page = 1) => {
-    setCarregando(true);
-    const resposta = await resumoService.obterDadosResumoGeralProvas(page, filtroPrincipal);
-
-    if (resposta?.data?.items?.length) {
-      setTotalRegistros(resposta.data.totalRegistros);
-      setDados(resposta.data.items);
-    } else {
-      setTotalRegistros(0);
-      setDados([]);
-    }
-    setCarregando(false);
+  const expandedRowRenderTurmasUe = (dadosProva: ResumoGeralProvaDto, provaId: number) => {
+    return (
+      <TabelaResumoGeralPadrao
+        key='TABELA_RESUMO_PROVAS_UES'
+        rowKey='provaId'
+        consultarDados={(page: number) =>
+          resumoService.obterDadosResumoGeralProvasTurmas(
+            page,
+            filtroPrincipal,
+            provaId,
+            dadosProva?.ueId,
+          )
+        }
+        titleFirstColumn='Turmas da UE'
+        expandedRowRender={(dados: ResumoGeralProvaDto) =>
+          expandedRowRenderTurmas(dados, dadosProva.provaId)
+        }
+      />
+    );
   };
 
-  useEffect(() => {
-    if (filtroPrincipal?.anoLetivo) {
-      onChange();
-    } else {
-      setDados([]);
-    }
-  }, [filtroPrincipal]);
+  const expandedRowRenderUes = (dadosProva: ResumoGeralProvaDto, provaId: number) => {
+    return (
+      <TabelaResumoGeralPadrao
+        key='TABELA_RESUMO_PROVAS_UES'
+        rowKey='provaId'
+        consultarDados={(page: number) =>
+          resumoService.obterDadosResumoGeralProvasUes(
+            page,
+            filtroPrincipal,
+            provaId,
+            dadosProva?.dreId,
+          )
+        }
+        titleFirstColumn='Unidade Educacional'
+        expandedRowRender={(dados: ResumoGeralProvaDto) =>
+          expandedRowRenderTurmasUe(dados, dadosProva.provaId)
+        }
+      />
+    );
+  };
 
-  useEffect(() => {
-    if (carregarDadosResumoProva) {
-      onChange();
-      dispatch(setCarregarDadosResumoProva(false));
-    }
-  }, [dispatch, carregarDadosResumoProva]);
+  const expandedRowRenderDres = (dadosProva: ResumoGeralProvaDto) => {
+    return (
+      <TabelaResumoGeralPadrao
+        key='TABELA_RESUMO_PROVAS_DRES'
+        rowKey='provaId'
+        consultarDados={(page: number) =>
+          resumoService.obterDadosResumoGeralProvasDres(page, filtroPrincipal, dadosProva.provaId)
+        }
+        titleFirstColumn='Diretoria Regional de Educação'
+        expandedRowRender={(dados: ResumoGeralProvaDto) =>
+          expandedRowRenderUes(dados, dadosProva.provaId)
+        }
+      />
+    );
+  };
 
-  const columns: ColumnsType<any> = [
-    {
-      title: 'Título da Prova',
-      dataIndex: 'tituloProva',
-    },
-    {
-      title: 'Total de alunos',
-      dataIndex: 'totalAlunos',
-      align: 'center',
-    },
-    {
-      title: 'Provas iniciadas',
-      dataIndex: 'provasIniciadas',
-      align: 'center',
-    },
-    {
-      title: 'Provas não finalizadas',
-      dataIndex: 'provasNaoFinalizadas',
-      align: 'center',
-    },
-    {
-      title: 'Provas finalizadas',
-      dataIndex: 'provasFinalizadas',
-      align: 'center',
-    },
-    {
-      title: 'Tempo médio',
-      dataIndex: 'tempoMedio',
-      align: 'center',
-      render(tempoMedio) {
-        return `${tempoMedio}min`
-      }
-    },
-    {
-      title: 'Percentual realizado',
-      dataIndex: 'percentualRealizado',
-      align: 'center',
-      render(percentualRealizado) {
-        return `${percentualRealizado}%`;
-      },
-    },
-  ];
-
-  const expandedRowRender = (dadosProva: any) => {
+  const expandedRowRender = (dadosProva: ResumoGeralProvaDto) => {
     const turmaId = (filtroPrincipal?.turma as number) || 0;
     if (filtroPrincipal?.turma)
       return <TabelaDetalhesResumoGeralTurma dadosProva={dadosProva} turmaId={turmaId} />;
 
-    return <TabelaDetalhesResumoGeralProvas dadosProva={dadosProva} />;
+    return (
+      <>
+        <TabelaDetalhesResumoGeralProvas dadosProva={dadosProva} />
+        {expandedRowRenderDres(dadosProva)}
+      </>
+    );
   };
 
   const obterTitulo = () => {
@@ -108,18 +91,22 @@ const TabelaResumos: React.FC = () => {
     return 'Resumo Geral das Provas';
   };
 
+  const obterDadosResumoGeralProvas = useCallback(
+    (page: number) => {
+      return resumoService.obterDadosResumoGeralProvas(page, filtroPrincipal);
+    },
+    [filtroPrincipal],
+  );
+
   return (
     <CardTabelas>
       <TituloCardTabelas>{obterTitulo()}</TituloCardTabelas>
-      <Table
+      <TabelaResumoGeralPadrao
+        key='TABELA_RESUMO_PROVAS'
         rowKey='provaId'
-        loading={carregando}
-        columns={columns}
-        dataSource={dados}
-        expandable={{
-          expandedRowRender,
-        }}
-        pagination={{ total: totalRegistros, pageSize: 10, onChange }}
+        consultarDados={(page: number) => obterDadosResumoGeralProvas(page)}
+        titleFirstColumn='Título da Prova'
+        expandedRowRender={expandedRowRender}
       />
     </CardTabelas>
   );
