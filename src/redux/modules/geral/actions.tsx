@@ -2,6 +2,7 @@ export const typeSetDataUltimaAtualizacao = '@geral/setDataUltimaAtualizacao';
 export const typeSetAbrirFiltroPrincipal = '@geral/setAbrirFiltroPrincipal';
 export const typeSetCarregarDadosResumoProva = '@geral/setCarregarDadosResumoProva';
 export const typeSetCarregarDadosTotalizadores = '@geral/setCarregarDadosTotalizadores';
+export const typeSetCarregarDadosGraficos = '@geral/setCarregarDadosGraficos';
 
 export interface SetDataUltimaAtualizacao {
   type: typeof typeSetDataUltimaAtualizacao;
@@ -20,6 +21,11 @@ export interface SetCarregarDadosResumoProva {
 
 export interface SetCarregarDadosTotalizadores {
   type: typeof typeSetCarregarDadosTotalizadores;
+  payload: boolean;
+}
+
+export interface SetCarregarDadosGraficos {
+  type: typeof typeSetCarregarDadosGraficos;
   payload: boolean;
 }
 
@@ -47,6 +53,13 @@ export const setCarregarDadosResumoProva = (payload: boolean): SetCarregarDadosR
 export const setCarregarDadosTotalizadores = (payload: boolean): SetCarregarDadosTotalizadores => {
   return {
     type: typeSetCarregarDadosTotalizadores,
+    payload,
+  };
+};
+
+export const setCarregarDadosGraficos = (payload: boolean): SetCarregarDadosGraficos => {
+  return {
+    type: typeSetCarregarDadosGraficos,
     payload,
   };
 };

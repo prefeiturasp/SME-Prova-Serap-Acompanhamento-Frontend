@@ -1,4 +1,4 @@
-import { faCircleCheck, faCircleXmark, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ColumnsType } from 'antd/lib/table';
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
@@ -67,18 +67,6 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
     {
       title: 'Nome do Estudante',
       dataIndex: 'nomeEstudante',
-    },
-    {
-      title: 'Fez Download',
-      dataIndex: 'fezDownload',
-      align: 'center',
-      render(fezDownload) {
-        return fezDownload ? (
-          <FontAwesomeIcon icon={faCircleCheck} fontSize='14' color={Colors.SIGPAE} />
-        ) : (
-          <FontAwesomeIcon icon={faCircleXmark} fontSize='14' color={Colors.SupportWarning} />
-        );
-      },
     },
     {
       title: 'Início da Prova',
