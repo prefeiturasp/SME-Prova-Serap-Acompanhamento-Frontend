@@ -11,7 +11,7 @@ interface TabelaDetalhesResumoGeralProvasProps {
 const TabelaDetalhesResumoGeralProvas: React.FC<TabelaDetalhesResumoGeralProvasProps> = ({
   dadosProva,
 }) => {
-  const columns: ColumnsType<any> = [
+  const columns: ColumnsType<ResumoGeralProvaDto> = [
     {
       title: 'Data de início',
       dataIndex: ['detalheProva', 'dataInicio'],

@@ -1,7 +1,7 @@
 import React from 'react';
 import Content from '~/components/content';
 import HeaderHomeDashboard from './header';
-import TabelasResumos from './tabelas';
+import TabelaResumos from './tabelas';
 import Totalizadores from './totalizadores';
 import GraficosContainer from './graficos';
 
@@ -10,7 +10,7 @@ const HomeDashboard: React.FC = () => {
     <Content header={<HeaderHomeDashboard />}>
       <Totalizadores />
       <GraficosContainer />
-      <TabelasResumos />
+      <TabelaResumos />
     </Content>
   );
 };
