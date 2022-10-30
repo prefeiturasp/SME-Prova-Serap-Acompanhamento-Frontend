@@ -33,7 +33,7 @@ const obterDadosResumoGeralProvas = (
   });
 };
 
-const obterDadosResumoGeralProvasDres = async (
+const obterDadosResumoGeralProvasDres = (
   page: number,
   filtros: FiltroPrincipalProps,
   provaId: number,
@@ -50,7 +50,7 @@ const obterDadosResumoGeralProvasDres = async (
     numeroPagina: page,
     numeroRegistros: 10,
   };
-  const retorno = await api.get(`/api/v1/resumo/dres/prova/${provaId}`, {
+  return api.get(`/api/v1/resumo/dres/prova/${provaId}`, {
     params,
     paramsSerializer(params) {
       return queryString.stringify(params, {
@@ -59,18 +59,9 @@ const obterDadosResumoGeralProvasDres = async (
       });
     },
   });
-  // TODO
-  const retornoMock: AxiosResponse<PaginacaoDto> = retorno;
-  const retornoMockPaginado: PaginacaoDto = {
-    items: retorno.data,
-    totalPaginas: 1,
-    totalRegistros: 10,
-  };
-  retorno.data = retornoMockPaginado;
-  return retornoMock;
 };
 
-const obterDadosResumoGeralProvasUes = async (
+const obterDadosResumoGeralProvasUes = (
   page: number,
   filtros: FiltroPrincipalProps,
   provaId: number,
@@ -88,7 +79,7 @@ const obterDadosResumoGeralProvasUes = async (
     numeroPagina: page,
     numeroRegistros: 10,
   };
-  const retorno = await api.get(`/api/v1/resumo/ues/dre/${dreId}/prova/${provaId}`, {
+  return api.get(`/api/v1/resumo/ues/dre/${dreId}/prova/${provaId}`, {
     params,
     paramsSerializer(params) {
       return queryString.stringify(params, {
@@ -97,18 +88,9 @@ const obterDadosResumoGeralProvasUes = async (
       });
     },
   });
-  // TODO
-  const retornoMock: AxiosResponse<PaginacaoDto> = retorno;
-  const retornoMockPaginado: PaginacaoDto = {
-    items: retorno.data,
-    totalPaginas: 1,
-    totalRegistros: 10,
-  };
-  retorno.data = retornoMockPaginado;
-  return retornoMock;
 };
 
-const obterDadosResumoGeralProvasTurmas = async (
+const obterDadosResumoGeralProvasTurmas = (
   page: number,
   filtros: FiltroPrincipalProps,
   provaId: number,
@@ -127,7 +109,7 @@ const obterDadosResumoGeralProvasTurmas = async (
     numeroRegistros: 10,
   };
 
-  const retorno = await api.get(`/api/v1/resumo/turmas/ue/${ueId}/prova/${provaId}`, {
+  return api.get(`/api/v1/resumo/turmas/ue/${ueId}/prova/${provaId}`, {
     params,
     paramsSerializer(params) {
       return queryString.stringify(params, {
@@ -136,15 +118,6 @@ const obterDadosResumoGeralProvasTurmas = async (
       });
     },
   });
-  // TODO
-  const retornoMock: AxiosResponse<PaginacaoDto> = retorno;
-  const retornoMockPaginado: PaginacaoDto = {
-    items: retorno.data,
-    totalPaginas: 1,
-    totalRegistros: 10,
-  };
-  retorno.data = retornoMockPaginado;
-  return retornoMock;
 };
 
 const obterDadosResumoGeralTurma = (
