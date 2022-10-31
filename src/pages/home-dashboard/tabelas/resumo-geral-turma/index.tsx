@@ -85,7 +85,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       },
     },
     {
-      title: 'Tempo médio',
+      title: 'Tempo Total',
       dataIndex: 'tempoMedio',
       align: 'center',
       render(tempoMedio) {
