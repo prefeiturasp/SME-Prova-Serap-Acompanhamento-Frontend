@@ -14,12 +14,14 @@ interface TabelaResumoGeralPadraoProps
   extends Pick<ExpandableConfig<ResumoGeralDetalhesDto>, 'expandedRowRender'> {
   consultarDados: (page: number, provaId?: number) => Promise<AxiosResponse<PaginacaoDto>>;
   titleFirstColumn: string;
+  paginacao: boolean;
 }
 
 const TabelaResumoGeralPadrao: React.FC<TabelaResumoGeralPadraoProps> = ({
   expandedRowRender,
   consultarDados,
   titleFirstColumn,
+  paginacao = false,
 }) => {
   const dispatch = useDispatch();
 
@@ -119,7 +121,7 @@ const TabelaResumoGeralPadrao: React.FC<TabelaResumoGeralPadraoProps> = ({
       expandable={{
         expandedRowRender,
       }}
-      pagination={{ total: totalRegistros, pageSize: 10, onChange }}
+      pagination={paginacao === true ? { total: totalRegistros, pageSize: 10, onChange } : false}
     />
   );
 };
