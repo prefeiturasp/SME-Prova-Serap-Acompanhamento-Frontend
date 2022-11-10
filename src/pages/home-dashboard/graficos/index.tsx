@@ -81,13 +81,13 @@ const GraficosContainer: React.FC = () => {
       <ContainerGraficos>
         <ContainerGraficoItem>
           <ContainerCard>
-            <Titulo>Total Provas Iniciadas VS Iniciadas</Titulo>
+            <Titulo>Total de provas X Provas Iniciadas</Titulo>
             <GraficoProva dados={dadosGraficos.totalProvasVsIniciadas} />
           </ContainerCard>
         </ContainerGraficoItem>
         <ContainerGraficoItem>
           <ContainerCard>
-            <Titulo>Total Provas Iniciadas VS Finalizadas</Titulo>
+            <Titulo>Total de Provas X Provas Finalizadas</Titulo>
             <GraficoProva dados={dadosGraficos.totalProvasVsFinalizadas} />
           </ContainerCard>
         </ContainerGraficoItem>
@@ -96,13 +96,13 @@ const GraficosContainer: React.FC = () => {
       <ContainerGraficos>
         <ContainerGraficoItem>
           <ContainerCard>
-            <Titulo> Questões Prevista Vs Respondidas</Titulo>
+            <Titulo>Questões Previstas X Questões Respondidas</Titulo>
             <GraficoProva dados={dadosGraficos.questoesPrevistasVsQuestoesRespondidas} />
           </ContainerCard>
         </ContainerGraficoItem>
         <ContainerGraficoItem>
           <ContainerCard>
-            <Titulo> Tempo médio de realização de provas.</Titulo>
+            <Titulo>Tempo médio de realização das provas</Titulo>
             <GraficoProva dados={dadosGraficos.provaVSTempoMedio} />
           </ContainerCard>
         </ContainerGraficoItem>
