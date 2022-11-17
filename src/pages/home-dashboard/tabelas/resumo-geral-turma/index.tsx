@@ -85,11 +85,11 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       },
     },
     {
-      title: 'Tempo médio',
-      dataIndex: 'tempoMedio',
+      title: 'Tempo Total',
+      dataIndex: 'tempoTotal',
       align: 'center',
-      render(tempoMedio) {
-        return tempoMedio != null ? `${tempoMedio}min` : '-';
+      render(tempoTotal) {
+        return tempoTotal != null ? `${tempoTotal}min` : '-';
       },
     },
     {
@@ -176,7 +176,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       fezDownload: estudante?.fezDownload,
       inicioProva: undefined,
       fimProva: undefined,
-      tempoMedio: estudante?.tempoMedio,
+      tempoTotal: estudante?.tempoTotal,
       questoesRespondidas: estudante?.questoesRespondidas,
       ultimaReabertura: estudante?.ultimaReabertura,
       podeReabrirProva: false,

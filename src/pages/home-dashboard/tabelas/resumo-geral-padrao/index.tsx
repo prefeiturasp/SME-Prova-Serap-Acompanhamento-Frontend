@@ -1,31 +1,45 @@
 import { ColumnsType } from 'antd/lib/table';
+import { ExpandableConfig } from 'antd/lib/table/interface';
+import { AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from '~/components/table';
-import { ResumoGeralProvaDto } from '~/domain/dto/resumo-geral-prova-dto';
+import { PaginacaoDto } from '~/domain/dto/paginacao-dto';
+import { ResumoGeralDetalhesDto } from '~/domain/dto/resumo-geral-detalhes';
 import { AppState } from '~/redux';
 import { setCarregarDadosResumoProva } from '~/redux/modules/geral/actions';
-import resumoService from '~/services/resumo-service';
-import TabelaResumoGeralDetalhes from './resumo-geral-detalhes';
-import TabelaDetalhesResumoGeralTurma from './resumo-geral-turma';
-import { CardTabelas, TituloCardTabelas } from './styles';
+import { exibirAlerta } from '~/services/alerta-service';
 
-const TabelaResumos: React.FC = () => {
+interface TabelaResumoGeralPadraoProps
+  extends Pick<ExpandableConfig<ResumoGeralDetalhesDto>, 'expandedRowRender'> {
+  consultarDados: (page: number, provaId?: number) => Promise<AxiosResponse<PaginacaoDto>>;
+  titleFirstColumn: string;
+  paginacao: boolean;
+}
+
+const TabelaResumoGeralPadrao: React.FC<TabelaResumoGeralPadraoProps> = ({
+  expandedRowRender,
+  consultarDados,
+  titleFirstColumn,
+  paginacao = false,
+}) => {
   const dispatch = useDispatch();
 
-  const filtroPrincipal = useSelector((state: AppState) => state.filtroPrincipal);
+  const anoLetivo = useSelector((state: AppState) => state.filtroPrincipal)?.anoLetivo;
   const carregarDadosResumoProva = useSelector(
     (state: AppState) => state.geral,
   ).carregarDadosResumoProva;
 
-  const [dados, setDados] = useState<ResumoGeralProvaDto[]>([]);
+  const [dados, setDados] = useState<ResumoGeralDetalhesDto[]>([]);
 
   const [totalRegistros, setTotalRegistros] = useState(0);
   const [carregando, setCarregando] = useState(true);
 
   const onChange = async (page = 1) => {
     setCarregando(true);
-    const resposta = await resumoService.obterDadosResumoGeralProvas(page, filtroPrincipal);
+    const resposta = await consultarDados(page).catch(() =>
+      exibirAlerta('error', 'Erro ao consultar dados'),
+    );
 
     if (resposta?.data?.items?.length) {
       setTotalRegistros(resposta.data.totalRegistros);
@@ -38,13 +52,13 @@ const TabelaResumos: React.FC = () => {
   };
 
   useEffect(() => {
-    if (filtroPrincipal?.anoLetivo) {
+    if (anoLetivo) {
       onChange();
     } else {
       setDados([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filtroPrincipal]);
+  }, []);
 
   useEffect(() => {
     if (carregarDadosResumoProva) {
@@ -54,34 +68,34 @@ const TabelaResumos: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, carregarDadosResumoProva]);
 
-  const columns: ColumnsType<ResumoGeralProvaDto> = [
+  const columns: ColumnsType<ResumoGeralDetalhesDto[]> = [
     {
-      title: 'Título da Prova',
-      dataIndex: 'tituloProva',
+      title: titleFirstColumn,
+      dataIndex: 'nome',
     },
     {
       title: 'Total de alunos',
-      dataIndex: 'totalAlunos',
+      dataIndex: ['item', 'totalAlunos'],
       align: 'center',
     },
     {
       title: 'Provas iniciadas',
-      dataIndex: 'provasIniciadas',
+      dataIndex: ['item', 'provasIniciadas'],
       align: 'center',
     },
     {
       title: 'Provas não finalizadas',
-      dataIndex: 'provasNaoFinalizadas',
+      dataIndex: ['item', 'provasNaoFinalizadas'],
       align: 'center',
     },
     {
       title: 'Provas finalizadas',
-      dataIndex: 'provasFinalizadas',
+      dataIndex: ['item', 'provasFinalizadas'],
       align: 'center',
     },
     {
       title: 'Tempo médio',
-      dataIndex: 'tempoMedio',
+      dataIndex: ['item', 'tempoMedio'],
       align: 'center',
       render(tempoMedio) {
         return `${tempoMedio}min`;
@@ -89,7 +103,7 @@ const TabelaResumos: React.FC = () => {
     },
     {
       title: 'Percentual realizado',
-      dataIndex: 'percentualRealizado',
+      dataIndex: ['item', 'percentualRealizado'],
       align: 'center',
       render(percentualRealizado) {
         return `${percentualRealizado}%`;
@@ -97,34 +111,19 @@ const TabelaResumos: React.FC = () => {
     },
   ];
 
-  const expandedRowRender = (dadosProva: any) => {
-    const turmaId = (filtroPrincipal?.turma as number) || 0;
-    if (filtroPrincipal?.turma)
-      return <TabelaDetalhesResumoGeralTurma dadosProva={dadosProva} turmaId={turmaId} />;
-
-    return <TabelaResumoGeralDetalhes dadosProva={dadosProva} />;
-  };
-
-  const obterTitulo = () => {
-    if (filtroPrincipal?.turma) return 'Resumo Geral da Turma';
-    return 'Resumo Geral das Provas';
-  };
-
   return (
-    <CardTabelas>
-      <TituloCardTabelas>{obterTitulo()}</TituloCardTabelas>
-      <Table
-        rowKey='provaId'
-        loading={carregando}
-        columns={columns}
-        dataSource={dados}
-        expandable={{
-          expandedRowRender,
-        }}
-        pagination={{ total: totalRegistros, pageSize: 10, onChange }}
-      />
-    </CardTabelas>
+    <Table
+      style={{ marginTop: 14 }}
+      rowKey='id'
+      loading={carregando}
+      columns={columns}
+      dataSource={dados}
+      expandable={{
+        expandedRowRender,
+      }}
+      pagination={paginacao === true ? { total: totalRegistros, pageSize: 10, onChange } : false}
+    />
   );
 };
 
-export default TabelaResumos;
+export default TabelaResumoGeralPadrao;
