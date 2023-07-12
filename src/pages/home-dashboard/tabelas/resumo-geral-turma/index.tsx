@@ -66,7 +66,10 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
   const columns: ColumnsType<AlunoTurmaDto> = [
     {
       title: 'Estudante',
-      dataIndex: 'nomeEstudanteComRa',
+      dataIndex: 'nomeEstudante',
+      render(nomeEstudante, ra) {
+        return `${nomeEstudante} (${ra})`
+      }
     },
     {
       title: 'Início da Prova',
@@ -180,8 +183,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       questoesRespondidas: estudante?.questoesRespondidas,
       ultimaReabertura: estudante?.ultimaReabertura,
       podeReabrirProva: false,
-      situacaoProvaAluno: ProvaSituacao.Reabrindo,
-      nomeEstudanteComRa: `${estudante?.nomeEstudante} (${estudante?.ra})`
+      situacaoProvaAluno: ProvaSituacao.Reabrindo
     };
 
     const dadosAtualizados = dados;
