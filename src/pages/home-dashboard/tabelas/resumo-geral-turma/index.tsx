@@ -67,8 +67,8 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
     {
       title: 'Estudante',
       dataIndex: 'nomeEstudante',
-      render(nomeEstudante, ra) {
-        return `${nomeEstudante} (${ra})`
+      render(nomeEstudante, estudante) {
+        return `${nomeEstudante} (${estudante.ra})`
       }
     },
     {
