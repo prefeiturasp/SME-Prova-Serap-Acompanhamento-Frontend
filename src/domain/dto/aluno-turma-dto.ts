@@ -9,4 +9,5 @@ export interface AlunoTurmaDto {
   ultimaReabertura?: string;
   podeReabrirProva: boolean;
   situacaoProvaAluno: number;
+  nomeEstudanteComRa: string;
 }
