@@ -72,6 +72,10 @@ const TabelaResumoGeralPadrao: React.FC<TabelaResumoGeralPadraoProps> = ({
     {
       title: titleFirstColumn,
       dataIndex: 'nome',
+      render(nome, resumo, index)
+      {
+        return `${nome} (${resumo[index].turno})`
+      }
     },
     {
       title: 'Total de alunos',
