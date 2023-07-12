@@ -4,9 +4,10 @@ export interface AlunoTurmaDto {
   fezDownload: boolean;
   inicioProva?: Date;
   fimProva?: Date;
-  tempoMedio?: number;
+  tempoTotal?: number;
   questoesRespondidas?: number;
   ultimaReabertura?: string;
   podeReabrirProva: boolean;
   situacaoProvaAluno: number;
+  nomeEstudanteComRa: string;
 }

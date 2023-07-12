@@ -35,6 +35,7 @@ const TabelaResumoGeralDetalhes: React.FC<TabelaResumoGeralDetalhesProps> = ({ d
         }
         titleFirstColumn='Turmas da UE'
         expandedRowRender={expandedRowRenderTurmas}
+        paginacao={false}
       />
     );
   };
@@ -53,6 +54,7 @@ const TabelaResumoGeralDetalhes: React.FC<TabelaResumoGeralDetalhesProps> = ({ d
         }
         titleFirstColumn='Unidade Educacional'
         expandedRowRender={expandedRowRenderTurmasUe}
+        paginacao={false}
       />
     );
   };
@@ -66,6 +68,7 @@ const TabelaResumoGeralDetalhes: React.FC<TabelaResumoGeralDetalhesProps> = ({ d
         }
         titleFirstColumn='Diretoria Regional de Educação'
         expandedRowRender={expandedRowRenderUes}
+        paginacao={false}
       />
     );
   };
