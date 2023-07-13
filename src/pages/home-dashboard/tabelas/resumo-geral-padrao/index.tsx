@@ -68,17 +68,18 @@ const TabelaResumoGeralPadrao: React.FC<TabelaResumoGeralPadraoProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, carregarDadosResumoProva]);
 
-  const columns: ColumnsType<ResumoGeralDetalhesDto[]> = [
+  const columns: ColumnsType<ResumoGeralDetalhesDto> = [
     {
       title: titleFirstColumn,
       dataIndex: 'nome',
-      render(nome, resumo, index)
+      render(nome, resumo)
       {
-        var item = resumo[index];
-        console.log(`Item: ${item}`);
-        console.log(`Resumo: ${resumo}`);
-        console.log(`Index: ${index}`);
-        return nome;
+        let turno = resumo.turno;
+
+        if (!!turno)
+          return `${nome} (${resumo.turno})`;
+        else
+          return nome;
       }
     },
     {
