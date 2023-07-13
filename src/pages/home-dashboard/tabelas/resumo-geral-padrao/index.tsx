@@ -74,12 +74,9 @@ const TabelaResumoGeralPadrao: React.FC<TabelaResumoGeralPadraoProps> = ({
       dataIndex: 'nome',
       render(nome, resumo, index)
       {
-        var turno = resumo[index].turno;
-
-        if (turno === undefined)
-          return nome;
-        else
-          return `${nome} (${resumo[index].turno})`
+        console.log(resumo);
+        console.log(index);
+        return nome;
       }
     },
     {
