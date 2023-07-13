@@ -74,8 +74,10 @@ const TabelaResumoGeralPadrao: React.FC<TabelaResumoGeralPadraoProps> = ({
       dataIndex: 'nome',
       render(nome, resumo, index)
       {
-        console.log(resumo);
-        console.log(index);
+        var item = resumo[index];
+        console.log(`Item: ${item}`);
+        console.log(`Resumo: ${resumo}`);
+        console.log(`Index: ${index}`);
         return nome;
       }
     },
