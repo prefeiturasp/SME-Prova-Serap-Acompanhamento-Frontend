@@ -17,6 +17,8 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
+.yarn
+.yarnrc.yml
 .DS_Store
 *.suo
 *.ntvs*
