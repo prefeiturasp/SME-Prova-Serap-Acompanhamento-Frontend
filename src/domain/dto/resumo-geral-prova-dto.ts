@@ -1,6 +1,6 @@
 import { AlunoTurmaDto } from './aluno-turma-dto';
 
-export interface ResumoGeralProvaDto {
+export interface ResumoGeralProvaDto {  
   provaId: number;
   tituloProva: string;
   totalAlunos: number;
@@ -10,4 +10,5 @@ export interface ResumoGeralProvaDto {
   provasFinalizadas: number;
   pencentualRealizado: number;
   detalheProva: AlunoTurmaDto;
+  formatoTai: boolean;
 }
