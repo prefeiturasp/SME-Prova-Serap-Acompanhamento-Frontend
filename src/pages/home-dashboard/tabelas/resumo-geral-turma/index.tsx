@@ -205,17 +205,28 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       .catch(() => {
         setCarregando(false);
         setEstudante({});
-        exibirAlerta('error', 'Erro ao solicitar reabertura de prova.');
+        exibirAlerta(
+          'error',
+          `Erro ao solicitar ${formatoTai ? 'a reinicialização' : 'reabertura'} de prova.`,
+        );
       });
 
     if (respostaReabertura?.data) {
       setCarregando(false);
       setEstudante({});
-      exibirAlerta('success', 'Solicitação de reabertura de prova realizada com sucesso.');
+      exibirAlerta(
+        'success',
+        `Solicitação de ${
+          formatoTai ? 'reinicialização' : 'reabertura'
+        } de prova realizada com sucesso.`,
+      );
     } else {
       setCarregando(false);
       setEstudante({});
-      exibirAlerta('error', 'Não foi possível reabrir a prova do aluno.');
+      exibirAlerta(
+        'error',
+        `Não foi possível ${formatoTai ? 'reiniciar' : 'reabrir'} a prova do aluno.`,
+      );
     }
   }, [dados, dadosProva.provaId, estudante]);
 
