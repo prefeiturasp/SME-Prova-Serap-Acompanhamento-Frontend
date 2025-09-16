@@ -30,9 +30,11 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
   const [dados, setDados] = useState<AlunoTurmaDto[]>([]);
   const [carregando, setCarregando] = useState(false);
   const [estudante, setEstudante] = useState<any>({});
+  const [formatoTai, setFormatoTai] = useState(false);
 
   const obterDados = useCallback(async () => {
     setCarregando(true);
+    setFormatoTai(dadosProva.formatoTai);
     const resposta = await resumoProvasService.obterDadosResumoGeralTurma(
       turmaId,
       dadosProva.provaId,
@@ -68,8 +70,8 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       title: 'Estudante',
       dataIndex: 'nomeEstudante',
       render(nomeEstudante, estudante) {
-        return `${nomeEstudante} (${estudante.ra})`
-      }
+        return `${nomeEstudante} (${estudante.ra})`;
+      },
     },
     {
       title: 'Início da Prova',
@@ -154,7 +156,13 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
   };
 
   const gerarTextoAcao = (aluno: AlunoTurmaDto) => {
-    return aluno.situacaoProvaAluno === ProvaSituacao.Reabrindo ? 'Reabrindo' : 'Reabrir prova';
+    return aluno.situacaoProvaAluno === ProvaSituacao.Reabrindo
+      ? formatoTai
+        ? 'Reiniciando'
+        : 'Reabrindo'
+      : formatoTai
+      ? 'Reiniciar prova'
+      : 'Reabrir prova';
   };
 
   const exibirModal = (aluno: AlunoTurmaDto) => {
@@ -183,7 +191,7 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       questoesRespondidas: estudante?.questoesRespondidas,
       ultimaReabertura: estudante?.ultimaReabertura,
       podeReabrirProva: false,
-      situacaoProvaAluno: ProvaSituacao.Reabrindo
+      situacaoProvaAluno: ProvaSituacao.Reabrindo,
     };
 
     const dadosAtualizados = dados;
@@ -197,42 +205,68 @@ const TabelaDetalhesResumoGeralTurma: React.FC<TabelaDetalhesResumoGeralTurmaPro
       .catch(() => {
         setCarregando(false);
         setEstudante({});
-        exibirAlerta('error', 'Erro ao solicitar reabertura de prova.');
+        exibirAlerta(
+          'error',
+          `Erro ao solicitar ${formatoTai ? 'a reinicialização' : 'reabertura'} de prova.`,
+        );
       });
 
     if (respostaReabertura?.data) {
       setCarregando(false);
       setEstudante({});
-      exibirAlerta('success', 'Solicitação de reabertura de prova realizada com sucesso.');
+      exibirAlerta(
+        'success',
+        `Solicitação de ${
+          formatoTai ? 'reinicialização' : 'reabertura'
+        } de prova realizada com sucesso.`,
+      );
     } else {
       setCarregando(false);
       setEstudante({});
-      exibirAlerta('error', 'Não foi possível reabrir a prova do aluno.');
+      exibirAlerta(
+        'error',
+        `Não foi possível ${formatoTai ? 'reiniciar' : 'reabrir'} a prova do aluno.`,
+      );
     }
   }, [dados, dadosProva.provaId, estudante]);
 
   return (
     <>
-      <Modal
-        title='Reabrir prova do estudante'
-        centered
-        visible={estudante?.ra}
-        onCancel={() => fecharModal()}
-        confirmLoading={carregando}
-        footer={[
-          <Button key='cancelar' loading={carregando} onClick={() => fecharModal()}>
-            Cancelar
-          </Button>,
-          <Button key='reabrir' type='primary' loading={carregando} onClick={() => reabrirProva()}>
-            Reabrir
-          </Button>,
-        ]}
-      >
-        <span style={{ fontSize: 14 }}>
-          Deseja reabrir a <b>{dadosProva.tituloProva}</b> para o estudante{' '}
-          <b>{estudante?.nomeEstudante}</b> ?
-        </span>
-      </Modal>
+      {(() => {
+        const tituloModal = formatoTai
+          ? 'Reiniciar prova do estudante'
+          : 'Reabrir prova do estudante';
+        const conteudoModal = formatoTai ? 'Deseja reiniciar a ' : 'Deseja reabrir a ';
+        const tituloBotao = formatoTai ? 'Reiniciar' : 'Reabrir';
+
+        return (
+          <Modal
+            title={tituloModal}
+            centered
+            visible={estudante?.ra}
+            onCancel={() => fecharModal()}
+            confirmLoading={carregando}
+            footer={[
+              <Button key='cancelar' loading={carregando} onClick={() => fecharModal()}>
+                Cancelar
+              </Button>,
+              <Button
+                key='reabrir'
+                type='primary'
+                loading={carregando}
+                onClick={() => reabrirProva()}
+              >
+                {tituloBotao}
+              </Button>,
+            ]}
+          >
+            <span style={{ fontSize: 14 }}>
+              {conteudoModal} <b>{dadosProva.tituloProva}</b> para o estudante{' '}
+              <b>{estudante?.nomeEstudante}</b> ?
+            </span>
+          </Modal>
+        );
+      })()}
 
       <Table
         rowKey='ra'
